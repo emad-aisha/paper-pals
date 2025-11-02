@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     // Unity variables
-
+    
+    [SerializeField] CharacterController controller;
+    
     // movement
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
@@ -12,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] int gravity;
 
     // personal variables
-    CharacterController controller;
+    
 
     // movement
     Vector3 moveDir;
@@ -24,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        controller = GetComponent<CharacterController>();
+
     }
 
     // Update is called once per frame
