@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
     
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask IgnoreLayer;
+
     [SerializeField] int HP;
 
     // movement
@@ -16,13 +17,13 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] int maxJumps;
     [SerializeField] int gravity;
 
+    // shooting
     [SerializeField] int ShootDamage;
     [SerializeField] int ShootDistance;
     [SerializeField] float FireRate;
 
 
-    // personal variables
-
+    // Personal Variables
 
     // movement
     Vector3 moveDir;
@@ -30,7 +31,6 @@ public class PlayerController : MonoBehaviour {
 
     int jumpCount;
     float FireTimer;
-
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
