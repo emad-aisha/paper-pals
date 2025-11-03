@@ -9,10 +9,16 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     [SerializeField] int HP;
 
+    [SerializeField] Transform ShootPos;
+    [SerializeField] GameObject Bullet;
+    [SerializeField] float ShootRate;
+
+
     Color OGColor;
 
     bool PlayerInTrigger;
 
+    float ShootTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,11 +29,18 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        ShootTimer += Time.deltaTime;
+
         //if player is in the trigger collider
         if (PlayerInTrigger)
         {
             //will look for player position and move towards it
             AgentAI.SetDestination(gameManager.instance.player.transform.position);
+
+            if (ShootTimer >= ShootRate)
+            {
+                Shoot();
+            }
         }
 
     }
@@ -38,10 +51,12 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
+            //will destroy self 
             Destroy(gameObject);
         }
         else
         {
+            //else if it survives will flash white
             StartCoroutine(FlashWhite());
         }
     }
@@ -69,4 +84,13 @@ public class EnemyAI : MonoBehaviour, IDamage
         Model.material.color = OGColor;
     }
 
+    void Shoot()
+    {
+        ShootTimer = 0f;
+        
+        //Will created an object at the shoot pos
+        Instantiate(Bullet, ShootPos.position, transform.rotation);
+
+        Debug.Log("Player was shot");
+    }
 }
