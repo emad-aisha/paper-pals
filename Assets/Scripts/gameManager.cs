@@ -12,11 +12,15 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] TextMeshPro HoveredButton;
 
+    public TMP_Text gameGoalCountText;
+
     public GameObject player;
     public PlayerController controller;
 
     public bool isPaused;
     float originalTimeScale;
+
+    int gameGoalCount = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -64,4 +68,16 @@ public class gameManager : MonoBehaviour
         menuActive = null;
     }
 
+    public void updateGameGoal(int amount)
+    {
+        gameGoalCount += amount;
+
+        if (gameGoalCount >= 1)
+        {
+            PauseGame();
+            menuActive = menuWin;
+            menuActive.SetActive(true);
+        }
+    }
+    
 }
