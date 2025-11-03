@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour, IInteractable
     float FireTimer;
 
     int OGspeed;
+    int HPOrig;
+
+    bool isInvincible;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -146,5 +150,22 @@ public class PlayerController : MonoBehaviour, IInteractable
 
             //TODO: make inventory UI
         }
+    }
+    public void Heal(int amount)
+    {
+        HP += amount;
+        if(HP > HPOrig)
+        {
+            HP = HPOrig;
+
+        }
+    }
+    public IEnumerator Shield(int duration)
+    {
+        bool original = isInvincible;
+        isInvincible = true;
+        yield return new WaitForSeconds(duration);
+       isInvincible = original;
+
     }
 }
