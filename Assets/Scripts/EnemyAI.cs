@@ -11,6 +11,8 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     Color OGColor;
 
+    bool PlayerInTrigger;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,8 +23,13 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        //will look for player position and move towards it
-        AgentAI.SetDestination(gameManager.instance.player.transform.position); 
+        //if player is in the trigger collider
+        if (PlayerInTrigger)
+        {
+            //will look for player position and move towards it
+            AgentAI.SetDestination(gameManager.instance.player.transform.position);
+        }
+
     }
 
     public void TakeDamage(int amount)
@@ -36,6 +43,22 @@ public class EnemyAI : MonoBehaviour, IDamage
         else
         {
             StartCoroutine(FlashWhite());
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerInTrigger = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player")) 
+        {
+            PlayerInTrigger = false;
         }
     }
 
