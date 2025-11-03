@@ -1,11 +1,16 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, IInteractable 
+{
     // Unity variables
     
     [SerializeField] CharacterController controller;
     [SerializeField] LayerMask IgnoreLayer;
+
+    [SerializeField] LayerMask DialougeLayer;
+    [SerializeField] LayerMask PickupLayer;
+    [SerializeField] int interactDistance;
 
     [SerializeField] int HP;
 
@@ -32,10 +37,11 @@ public class PlayerController : MonoBehaviour {
     int jumpCount;
     float FireTimer;
 
+    int OGspeed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-
+        OGspeed = speed;
     }
 
     // Update is called once per frame
@@ -68,6 +74,9 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Fire1") && FireTimer >= FireRate)
         {
             Shoot();
+        }
+        if (Input.GetButtonDown("Interact")) {
+            Interact();
         }
     }
 
@@ -117,4 +126,25 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void Interact() {
+        RaycastHit hit;
+
+        // Dialouge
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialougeLayer)) {
+            // dialouge
+            gameManager.instance.Dialouge();
+            speed = 0;
+
+            // stop player   
+            controller.Move(Vector3.zero);
+
+            speed = OGspeed;
+        }
+        // Pickup
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, PickupLayer)) {
+            Debug.Log("pick up able");
+
+            //TODO: make inventory UI
+        }
+    }
 }

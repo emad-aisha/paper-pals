@@ -11,6 +11,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuDialouge;
     [SerializeField] TextMeshPro HoveredButton;
 
     public TMP_Text gameGoalCountText;
@@ -88,4 +89,16 @@ public class gameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
+    public void Dialouge() {
+        if (menuActive == null) {
+            Time.timeScale = 0;
+            menuActive = menuDialouge;
+            menuActive.SetActive(true);
+        }
+        else {
+            Time.timeScale = originalTimeScale;
+            menuActive.SetActive(false);
+            menuActive = null;
+        }  
+    }
 }
