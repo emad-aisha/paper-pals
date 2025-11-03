@@ -38,5 +38,6 @@ public class PowerBonuses : MonoBehaviour
         {
             player.StartCoroutine(player.Shield(shieldDur));
         }
+        Destroy(gameObject);
     }
 }
