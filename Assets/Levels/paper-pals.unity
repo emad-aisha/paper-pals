@@ -2532,7 +2532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   AgentAI: {fileID: 992630783}
-  ModelColor: {fileID: 992630780}
+  Model: {fileID: 992630780}
   HP: 10
 --- !u!1 &1000024871
 GameObject:
@@ -3439,11 +3439,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   controller: {fileID: 1171195662}
+  IgnoreLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  HP: 5
   speed: 20
   sprintMod: 2
   jumpSpeed: 10
   maxJumps: 1
-  gravity: 20
+  gravity: 35
+  ShootDamage: 3
+  ShootDistance: 150
+  FireRate: 0.5
 --- !u!54 &1171195664
 Rigidbody:
   m_ObjectHideFlags: 0
