@@ -12,7 +12,9 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuDialouge;
-    [SerializeField] TextMeshPro HoveredButton;
+
+    [SerializeField] GameObject Interactable;
+    public bool isInteractOn;
 
     public TMP_Text gameGoalCountText;
 
@@ -100,5 +102,21 @@ public class gameManager : MonoBehaviour
             menuActive.SetActive(false);
             menuActive = null;
         }  
+    }
+
+    public void InteractOn() {
+        if (menuActive == null) {
+            isInteractOn = true;
+            menuActive = Interactable;
+            menuActive.SetActive(true);
+        }
+    }
+
+    public void InteractOff() {
+        if (menuActive != null) {
+            isInteractOn = false;
+            menuActive.SetActive(false);
+            menuActive = null;
+        } 
     }
 }

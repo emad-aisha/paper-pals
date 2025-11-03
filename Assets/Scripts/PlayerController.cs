@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     int jumpCount;
     float FireTimer;
-
     int OGspeed;
     int HPOrig;
 
@@ -45,12 +44,32 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        OGspeed = speed;
+
     }
 
     // Update is called once per frame
     void Update() {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
+
+        // interactable icon showing up
+        RaycastHit hit;
+
+        // TODO: fix the bug where
+        //       if you are looking at an object, you cant pause
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)
+            && gameManager.instance.isPaused == false) {
+
+            if (hit.collider.gameObject.layer == 7)
+                gameManager.instance.InteractOn();
+
+            else if (gameManager.instance.isInteractOn)
+                gameManager.instance.InteractOff();
+
+        }
+        else if (hit.collider == null && gameManager.instance.isPaused == false) {
+            gameManager.instance.InteractOff();
+        }
+
         FireTimer += Time.deltaTime;
         Movement();
         Sprint();
@@ -120,6 +139,26 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
+    void OnObjectChange() {
+        RaycastHit hit;
+
+        // TODO: fix the bug where
+        //       if you are looking at an object, you cant pause
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer) 
+            && gameManager.instance.isPaused == false) {
+
+            if (hit.collider.gameObject.layer == 7) 
+                gameManager.instance.InteractOn();
+            
+            else 
+                gameManager.instance.InteractOff();
+            
+        }
+        else if (gameObject == null && gameManager.instance.isPaused == false) {
+            gameManager.instance.InteractOff();
+        }
+    }
+
     public void TakeDamage(int amount)
     {
         HP -= amount;
@@ -137,12 +176,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialougeLayer)) {
             // dialouge
             gameManager.instance.Dialouge();
-            speed = 0;
 
-            // stop player   
-            controller.Move(Vector3.zero);
-
-            speed = OGspeed;
         }
         // Pickup
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, PickupLayer)) {
