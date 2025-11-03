@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEditor;
 
 public class gameManager : MonoBehaviour
 {
@@ -79,5 +80,12 @@ public class gameManager : MonoBehaviour
             menuActive.SetActive(true);
         }
     }
-    
+
+    public void Defeat()
+    {
+        PauseGame();
+        menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+
 }
