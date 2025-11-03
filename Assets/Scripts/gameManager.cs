@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class gameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] TextMeshPro HoveredButton;
 
     public GameObject player;
     public PlayerController controller;
@@ -46,7 +48,7 @@ public class gameManager : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
-        originalTimeScale = 0;
+        Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -61,4 +63,5 @@ public class gameManager : MonoBehaviour
         menuActive.SetActive(false);
         menuActive = null;
     }
+
 }
