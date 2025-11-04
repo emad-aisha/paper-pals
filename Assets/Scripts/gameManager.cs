@@ -14,6 +14,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuDialouge;
 
     [SerializeField] GameObject Interactable;
+
+    public GameObject interactActive;
     public bool isInteractOn;
 
     public TMP_Text gameGoalCountText;
@@ -105,18 +107,18 @@ public class gameManager : MonoBehaviour
     }
 
     public void InteractOn() {
-        if (menuActive == null) {
+        if (interactActive == null) {
             isInteractOn = true;
-            menuActive = Interactable;
-            menuActive.SetActive(true);
+            interactActive = Interactable;
+            interactActive.SetActive(true);
         }
     }
 
     public void InteractOff() {
-        if (menuActive != null) {
+        if (interactActive != null) {
             isInteractOn = false;
-            menuActive.SetActive(false);
-            menuActive = null;
+            interactActive.SetActive(false);
+            interactActive = null;
         } 
     }
 }
