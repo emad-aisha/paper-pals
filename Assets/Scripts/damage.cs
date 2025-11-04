@@ -53,8 +53,7 @@ public class damage : MonoBehaviour
            dmg.TakeDamage(damageAmount);
         }
 
-        if(type == damageType.moving || type == damageType.homing)
-        {
+        if(type == damageType.moving || type == damageType.homing) {
             Destroy(gameObject);
         }
        
