@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
-    [SerializeField] int gravity;
+    [SerializeField] float gravity;
 
     // shooting
     [SerializeField] int ShootDamage;
@@ -34,18 +34,22 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     // movement
     Vector3 moveDir;
     Vector3 jumpVelocity;
+    int OGGravity;
+    float maxGravity;
 
     int jumpCount;
     float FireTimer;
 
     int MaxHP;
-    int OGspeed;
+    int OGSpeed;
 
     bool isInvincible;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         MaxHP = HP;
+        OGGravity = (int)gravity;
+        maxGravity = gravity * 1.2f;
     }
 
     // Update is called once per frame
@@ -66,7 +70,6 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         }
 
 
-
         FireTimer += Time.deltaTime;
         Movement();
         Sprint();
@@ -78,9 +81,11 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         if (controller.isGrounded) {
             jumpVelocity = Vector3.zero;
             jumpCount = 0;
+            gravity = OGGravity;
         }
         else {
             jumpVelocity.y -= (gravity * Time.deltaTime);
+            if (gravity < maxGravity) gravity = gravity * 1.005f;
         }
 
         // movement
