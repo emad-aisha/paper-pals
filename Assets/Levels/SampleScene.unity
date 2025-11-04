@@ -714,6 +714,133 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1688965257}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1123706228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123706229}
+  - component: {fileID: 1123706233}
+  - component: {fileID: 1123706232}
+  - component: {fileID: 1123706231}
+  - component: {fileID: 1123706230}
+  m_Layer: 0
+  m_Name: Healing Lava
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123706229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123706228}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.25, y: -5.75, z: 14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1688965257}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1123706230
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123706228}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1123706231
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123706228}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1123706232
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123706228}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1123706233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123706228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b179d212be5384f44a22c50ad3a3c2a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  rb: {fileID: 0}
+  damageAmount: -1
+  damageRate: 1
+  speed: 0
+  destroyTime: 0
 --- !u!1001 &1277771627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -722,29 +849,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 131500598912637225, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 131500598912637225, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_LocalScale.x
+    - target: {fileID: 53328564636710655, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 131500598912637225, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 131500598912637225, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 131500598912637225, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 131500598912637225, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 467029650737544465, guid: e99fa26be94321646966991befeb6455, type: 3}
       propertyPath: m_LocalPosition.x
@@ -786,17 +893,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1615788938196927661, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 1845548259252846867, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133270832560407756, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 2242296898390361391, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 2478427753759694928, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 3434249846051071239, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886488236680417720, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
     - target: {fileID: 4935904025420309614, guid: e99fa26be94321646966991befeb6455, type: 3}
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
-    - target: {fileID: 8200471491801653071, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: HealthBar
-      value: 
-      objectReference: {fileID: 2111047493}
-    - target: {fileID: 8836573040920063869, guid: e99fa26be94321646966991befeb6455, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 500
+    - target: {fileID: 7947218300825168169, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847086260702319972, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_text
+      value: YOU LOST. . .
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -968,6 +1103,7 @@ Transform:
   - {fileID: 956674688}
   - {fileID: 429807261}
   - {fileID: 2046915518}
+  - {fileID: 1123706229}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2046915517
@@ -1097,11 +1233,6 @@ MonoBehaviour:
   damageRate: 1
   speed: 0
   destroyTime: 0
---- !u!1 &2111047493 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3671722029355836641, guid: e99fa26be94321646966991befeb6455, type: 3}
-  m_PrefabInstance: {fileID: 1277771627}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2639659947844426515
 PrefabInstance:
   m_ObjectHideFlags: 0
