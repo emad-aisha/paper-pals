@@ -10,7 +10,9 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     [SerializeField] LayerMask IgnoreLayer;
 
     [SerializeField] LayerMask DialougeLayer;
-    [SerializeField] LayerMask PickupLayer;
+    [SerializeField] LayerMask TapeLayer;
+    [SerializeField] LayerMask AmmoLayer;
+    [SerializeField] LayerMask CoinLayer;
     [SerializeField] int interactDistance;
 
     [SerializeField] int HP;
@@ -73,17 +75,12 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         }
 
         // TODO: update heal amount with health amount
-        if (Input.GetButtonDown("Heal")) {
-            Debug.Log("intput");
-        }
-
         if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
             Debug.Log("rage....");
             Heal(2);
             HaveTape = false;
-            gameManager.instance.publicTapeImage.SetActive(false);
+            gameManager.instance.TapeImage.SetActive(false);
         }
-
 
         FireTimer += Time.deltaTime;
         Movement();
@@ -164,7 +161,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
         if (healthBarPosition > 280) healthBarPosition = 280;
 
-        gameManager.instance.publicHealthBar.transform.position = new Vector3(healthBarPosition, 1000, 0);
+        gameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 1000, 0);
     }
 
     public void TakeDamage(int amount)
@@ -187,17 +184,24 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
             gameManager.instance.Dialouge();
         }
         // Pickup
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, PickupLayer)) {
-            Debug.Log("pick up able");
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, TapeLayer) && !HaveTape) {
+            HaveTape = true;
+            gameManager.instance.TapeImage.SetActive(true);
 
-            if (!HaveTape) {
-                HaveTape = true;
-                gameManager.instance.publicTapeImage.SetActive(true);
+            Destroy(hit.collider.gameObject);
+        }
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, CoinLayer)) {
+            gameManager.instance.UpdateCoinCount(1);
 
-                Destroy(hit.collider.gameObject);
-            }
+            Destroy(hit.collider.gameObject);
+        }
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, AmmoLayer)) {
+            gameManager.instance.UpdateAmmoCount(1);
+
+            Destroy(hit.collider.gameObject);
         }
     }
+
     public void Heal(int amount)
     {
         HP += amount;

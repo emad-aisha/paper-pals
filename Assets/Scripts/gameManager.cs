@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using TMPro;
 
 public class gameManager : MonoBehaviour
 {
@@ -14,17 +15,18 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuDialouge;
 
     [SerializeField] GameObject Interactable;
-    [SerializeField] GameObject HealthBar;
-    [SerializeField] GameObject TapeImage;
+    [SerializeField] TMP_Text CoinCountText;
+    [SerializeField] TMP_Text AmmoCountText;
 
     // interaction
     public GameObject interactActive;
     public bool isInteractOn;
+    public GameObject AmmoAmount;
 
-    public GameObject publicTapeImage;
+    public GameObject TapeImage;
 
     // health bar + paused
-    public GameObject publicHealthBar;
+    public GameObject HealthBar;
     public bool isPaused;
 
     // game goal
@@ -40,6 +42,9 @@ public class gameManager : MonoBehaviour
     float originalTimeScale;
     int gameGoalCount = 0;
 
+    int coinCount;
+    int ammoCount;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -49,9 +54,6 @@ public class gameManager : MonoBehaviour
         
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
-        publicHealthBar = HealthBar;
-
-        publicTapeImage = TapeImage;
     }
 
     // Update is called once per frame
@@ -137,5 +139,15 @@ public class gameManager : MonoBehaviour
             interactActive.SetActive(false);
             interactActive = null;
         } 
+    }
+
+    public void UpdateCoinCount(int ammount) {
+        if (coinCount < 999) coinCount += ammount;
+        CoinCountText.text = coinCount.ToString("F0");
+    }
+
+    public void UpdateAmmoCount(int ammount) {
+        if (ammoCount < 999) ammoCount += ammount;
+        AmmoCountText.text = ammoCount.ToString("F0");
     }
 }
