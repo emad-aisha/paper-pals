@@ -16,18 +16,28 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject Interactable;
     [SerializeField] GameObject HealthBar;
 
+    // interaction
     public GameObject interactActive;
     public bool isInteractOn;
 
+    // health bar + paused
+    public GameObject publicHealthBar;
+    public bool isPaused;
+
+    // game goal
     public TMP_Text gameGoalCountText;
 
+    // player
     public GameObject player;
     public PlayerController controller;
 
-    public bool isPaused;
-    float originalTimeScale;
+    
 
+    // private variables
+    float originalTimeScale;
     int gameGoalCount = 0;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -36,6 +46,7 @@ public class gameManager : MonoBehaviour
         
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
+        publicHealthBar = HealthBar;
     }
 
     // Update is called once per frame

@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IInteractable 
+public class PlayerController : MonoBehaviour, IInteractable, IDamage
 {
     // Unity variables
     
@@ -37,14 +37,15 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     int jumpCount;
     float FireTimer;
+
+    int MaxHP;
     int OGspeed;
-    int HPOrig;
 
     bool isInvincible;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-
+        MaxHP = HP;
     }
 
     // Update is called once per frame
@@ -136,35 +137,21 @@ public class PlayerController : MonoBehaviour, IInteractable
     }
 
     void UpdateHealthBar() {
-        // health = 5
-        // health bar length = 500
-        float healthBarMult = HP / 500;
+        float healthDecimal = HP / (float)MaxHP;
+        float healthBarPercent = healthDecimal * 500;
 
-        // get the mult, mult health, thats the pos the bar should be
-        // clamp so that it cant go over or under a certain am of health
+        float healthBarPosition = healthBarPercent - 500 + 280;
+        // the 280 it to counter the origin
 
-        // need to be negative
-        int healthBarPosition = ((int)healthBarMult * HP) - 500;
+        if (healthBarPosition > 280) healthBarPosition = 280;
 
-        // clamp
-        if (healthBarPosition < -500) healthBarPosition = -500;
-        
-        /*
-            get health
-            get health bar length
-            
-            [-------]
-            5/500 = full
-            
-            
-         */
-
-
+        gameManager.instance.publicHealthBar.transform.position = new Vector3(healthBarPosition, 1000, 0);
     }
 
     public void TakeDamage(int amount)
     {
         HP -= amount;
+        UpdateHealthBar();
 
         if (HP <= 0)
         {
@@ -191,9 +178,9 @@ public class PlayerController : MonoBehaviour, IInteractable
     public void Heal(int amount)
     {
         HP += amount;
-        if(HP > HPOrig)
+        if(HP > MaxHP)
         {
-            HP = HPOrig;
+            HP = MaxHP;
 
         }
     }

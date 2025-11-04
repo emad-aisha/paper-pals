@@ -55,7 +55,7 @@ public class damage : MonoBehaviour
 
         if(type == damageType.moving || type == damageType.homing)
         {
-                       Destroy(gameObject);
+            Destroy(gameObject);
         }
        
     }
@@ -67,7 +67,7 @@ public class damage : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
 
-        if (dmg != null && type == damageType.DOT && isDamaging == true)
+        if (dmg != null && type == damageType.DOT && isDamaging != true)
         {
             StartCoroutine(DamageOther(dmg));
         }
@@ -78,5 +78,6 @@ public class damage : MonoBehaviour
         isDamaging = true;
         d.TakeDamage(damageAmount);
         yield return new WaitForSeconds(damageRate);
+        isDamaging = false;
     }
 }
