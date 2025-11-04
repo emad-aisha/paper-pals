@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     int OGGravity;
     float maxGravity;
 
+    bool HaveTape;
+
     int jumpCount;
     float FireTimer;
 
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         MaxHP = HP;
         OGGravity = (int)gravity;
         maxGravity = gravity * 1.2f;
+        HaveTape = false;
     }
 
     // Update is called once per frame
@@ -69,6 +72,18 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
             gameManager.instance.InteractOff();
         }
 
+        // TODO: update heal amount with health amount
+        if (Input.GetButtonDown("Heal")) {
+            Debug.Log("intput");
+        }
+
+        if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
+            Debug.Log("rage....");
+            Heal(2);
+            HaveTape = false;
+            gameManager.instance.publicTapeImage.SetActive(false);
+        }
+
 
         FireTimer += Time.deltaTime;
         Movement();
@@ -77,7 +92,6 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
     void Movement() {
         // jump physics
-        // TODO: add acceleration to the fall
         if (controller.isGrounded) {
             jumpVelocity = Vector3.zero;
             jumpCount = 0;
@@ -171,23 +185,25 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialougeLayer)) {
             // dialouge
             gameManager.instance.Dialouge();
-
         }
         // Pickup
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, PickupLayer)) {
             Debug.Log("pick up able");
 
-            //TODO: make inventory UI
+            if (!HaveTape) {
+                HaveTape = true;
+                gameManager.instance.publicTapeImage.SetActive(true);
+
+                Destroy(hit.collider.gameObject);
+            }
         }
     }
     public void Heal(int amount)
     {
         HP += amount;
-        if(HP > MaxHP)
-        {
-            HP = MaxHP;
+        if (HP > MaxHP) HP = MaxHP;
 
-        }
+        UpdateHealthBar();
     }
     public IEnumerator Shield(int duration)
     {

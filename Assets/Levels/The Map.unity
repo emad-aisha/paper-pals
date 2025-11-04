@@ -16340,6 +16340,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4903040893199729536, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4935904025420309614, guid: e99fa26be94321646966991befeb6455, type: 3}
       propertyPath: m_Name
       value: UI
@@ -26941,7 +26945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7021778962833836625, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.04
+      value: 1.04
       objectReference: {fileID: 0}
     - target: {fileID: 7021778962833836625, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36104,10 +36108,10 @@ MeshFilter:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1038351471}
+  - {fileID: 698000866}
   - {fileID: 700225542}
   - {fileID: 372826442}
   - {fileID: 1396591163}
   - {fileID: 1641680576}
-  - {fileID: 1038351471}
   - {fileID: 1230320759}
-  - {fileID: 698000866}

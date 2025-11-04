@@ -15,10 +15,13 @@ public class gameManager : MonoBehaviour
 
     [SerializeField] GameObject Interactable;
     [SerializeField] GameObject HealthBar;
+    [SerializeField] GameObject TapeImage;
 
     // interaction
     public GameObject interactActive;
     public bool isInteractOn;
+
+    public GameObject publicTapeImage;
 
     // health bar + paused
     public GameObject publicHealthBar;
@@ -47,6 +50,8 @@ public class gameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
         publicHealthBar = HealthBar;
+
+        publicTapeImage = TapeImage;
     }
 
     // Update is called once per frame
