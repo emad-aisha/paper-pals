@@ -48,12 +48,13 @@ public class damage : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
 
-        if(dmg != null && type != damageType.DOT)
+        if (dmg != null && type != damageType.DOT)
         {
            dmg.TakeDamage(damageAmount);
         }
 
-        if(type == damageType.moving || type == damageType.homing) {
+        if (type == damageType.moving || type == damageType.homing) {
+            Debug.Log("Player was shot");
             Destroy(gameObject);
         }
        

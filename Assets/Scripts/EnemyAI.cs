@@ -91,6 +91,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         //Will created an object at the shoot pos
         Instantiate(Bullet, ShootPos.position, transform.rotation);
 
-        Debug.Log("Player was shot");
+        Debug.Log("Shoot");
     }
 }
