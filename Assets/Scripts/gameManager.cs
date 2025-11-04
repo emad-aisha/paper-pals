@@ -14,6 +14,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuDialouge;
 
     [SerializeField] GameObject Interactable;
+    [SerializeField] GameObject HealthBar;
 
     public GameObject interactActive;
     public bool isInteractOn;

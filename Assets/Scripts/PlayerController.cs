@@ -53,22 +53,18 @@ public class PlayerController : MonoBehaviour, IInteractable
 
         // interactable icon showing up
         RaycastHit hit;
-
-        // TODO: fix the bug where
-        //       if you are looking at an object, you cant pause
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)
             && gameManager.instance.isPaused == false) {
 
-            if (hit.collider.gameObject.layer == 7)
-                gameManager.instance.InteractOn();
-
-            else if (gameManager.instance.isInteractOn)
-                gameManager.instance.InteractOff();
+            if (hit.collider.gameObject.layer == 7) gameManager.instance.InteractOn();
+            else if (gameManager.instance.isInteractOn) gameManager.instance.InteractOff();
 
         }
         else if (hit.collider == null && gameManager.instance.isPaused == false) {
             gameManager.instance.InteractOff();
         }
+
+
 
         FireTimer += Time.deltaTime;
         Movement();
@@ -139,24 +135,31 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
-    void OnObjectChange() {
-        RaycastHit hit;
+    void UpdateHealthBar() {
+        // health = 5
+        // health bar length = 500
+        float healthBarMult = HP / 500;
 
-        // TODO: fix the bug where
-        //       if you are looking at an object, you cant pause
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer) 
-            && gameManager.instance.isPaused == false) {
+        // get the mult, mult health, thats the pos the bar should be
+        // clamp so that it cant go over or under a certain am of health
 
-            if (hit.collider.gameObject.layer == 7) 
-                gameManager.instance.InteractOn();
+        // need to be negative
+        int healthBarPosition = ((int)healthBarMult * HP) - 500;
+
+        // clamp
+        if (healthBarPosition < -500) healthBarPosition = -500;
+        
+        /*
+            get health
+            get health bar length
             
-            else 
-                gameManager.instance.InteractOff();
+            [-------]
+            5/500 = full
             
-        }
-        else if (gameObject == null && gameManager.instance.isPaused == false) {
-            gameManager.instance.InteractOff();
-        }
+            
+         */
+
+
     }
 
     public void TakeDamage(int amount)
