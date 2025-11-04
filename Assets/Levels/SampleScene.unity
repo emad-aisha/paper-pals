@@ -1061,13 +1061,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4903040893199729536, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4935904025420309614, guid: e99fa26be94321646966991befeb6455, type: 3}
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 8200471491801653071, guid: e99fa26be94321646966991befeb6455, type: 3}
+      propertyPath: TapeImage
+      value: 
+      objectReference: {fileID: 1437325195}
     - target: {fileID: 8428439099891877983, guid: e99fa26be94321646966991befeb6455, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1138,6 +1146,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1437325195 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4903040893199729536, guid: e99fa26be94321646966991befeb6455, type: 3}
+  m_PrefabInstance: {fileID: 1277771627}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1521538203
 GameObject:
   m_ObjectHideFlags: 0

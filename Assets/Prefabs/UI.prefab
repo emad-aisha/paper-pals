@@ -1736,8 +1736,10 @@ MonoBehaviour:
   menuDialouge: {fileID: 7565142301635737938}
   Interactable: {fileID: 5696753205832432710}
   HealthBar: {fileID: 3671722029355836641}
+  TapeImage: {fileID: 4903040893199729536}
   interactActive: {fileID: 0}
   isInteractOn: 0
+  publicTapeImage: {fileID: 0}
   publicHealthBar: {fileID: 0}
   isPaused: 0
   gameGoalCountText: {fileID: 0}
@@ -5116,7 +5118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1744238790420121621
 RectTransform:
   m_ObjectHideFlags: 0
