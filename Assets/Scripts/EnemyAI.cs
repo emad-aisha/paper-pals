@@ -22,12 +22,15 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int chargeMaxSpeed = 30;       
     [SerializeField] int accelerationTime = 2;     
     [SerializeField] int chargeDuration = 3;       
-    [SerializeField] int chargeCooldown = 5;       
+    [SerializeField] int chargeCooldown = 5;
 
     //[SerializeField] Transform ShootPos;
     //[SerializeField] GameObject Bullet;
     //[SerializeField] float ShootRate;
 
+    //power up fields
+    [SerializeField] GameObject[] Powerbonusprefab;
+    [SerializeField] int dropPowerbonus;
 
     Color OGColor;
 
