@@ -4,6 +4,9 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
+    public enum EnemyType {ranged, melee, bull};
+
+
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] Renderer Model;
 
@@ -12,6 +15,14 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int contactDamage;
     [SerializeField] float attackRange;
     [SerializeField] float attackCooldown;
+
+    [SerializeField] EnemyType enemyType = EnemyType.melee;
+
+    //Bull Fields
+    [SerializeField] int chargeMaxSpeed = 30;       
+    [SerializeField] int accelerationTime = 2;     
+    [SerializeField] int chargeDuration = 3;       
+    [SerializeField] int chargeCooldown = 5;       
 
     //[SerializeField] Transform ShootPos;
     //[SerializeField] GameObject Bullet;
@@ -25,6 +36,10 @@ public class EnemyAI : MonoBehaviour, IDamage
     float ShootTimer;
 
     float attackTimer = 0f;
+
+    float chargeTimer = 0f;
+
+    bool isCharging = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -77,9 +92,16 @@ public class EnemyAI : MonoBehaviour, IDamage
             }
         }
 
+        if (enemyType == EnemyType.bull && PlayerInTrigger && !isCharging)
+        {
+            chargeTimer += Time.deltaTime;
 
-
-    }
+            if (chargeTimer >= chargeCooldown)
+            {
+                StartCoroutine(BullCharge());
+            }
+        }
+     }
 
     public void TakeDamage(int amount)
     {
@@ -128,5 +150,40 @@ public class EnemyAI : MonoBehaviour, IDamage
         //  Instantiate(Bullet, ShootPos.position, transform.rotation);
 
         Debug.Log("Shoot");
+    }
+
+    IEnumerator BullCharge()
+    {
+        isCharging = true;
+        chargeTimer = 0f;
+
+        // Direction toward player at start
+        Vector3 dir = (gameManager.instance.player.transform.position - transform.position).normalized;
+        float time = 0f;
+
+        // Temporarily stop pathfinding so we can move manually
+        AgentAI.isStopped = true;
+
+       
+        while (time < accelerationTime)
+        {
+            AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, time / accelerationTime);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // Maintain max speed for charge duration
+        float chargeTime = 0f;
+        while (chargeTime < chargeDuration)
+        {
+            AgentAI.velocity = dir * chargeMaxSpeed;
+            chargeTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Stop and resume normal AI
+        AgentAI.velocity = Vector3.zero;
+        AgentAI.isStopped = false;
+        isCharging = false;
     }
 }
