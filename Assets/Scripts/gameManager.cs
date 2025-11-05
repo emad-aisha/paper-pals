@@ -93,7 +93,7 @@ public class gameManager : MonoBehaviour
         menuActive = null;
     }
 
-    public void updateGameGoal(int amount)
+    public void winTrophy(int amount)
     {
         gameGoalCount += amount;
 

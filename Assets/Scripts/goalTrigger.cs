@@ -7,7 +7,7 @@ public class goalTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player reached goal!");
-            gameManager.instance.updateGameGoal(1);
+            gameManager.instance.winTrophy(1);
         }
     }
   
