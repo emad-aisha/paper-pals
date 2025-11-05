@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEditor;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class gameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuDialouge;
+    [SerializeField] GameObject mainMenu;
 
     [SerializeField] GameObject Interactable;
     [SerializeField] TMP_Text CoinCountText;
@@ -36,10 +38,12 @@ public class gameManager : MonoBehaviour
     public GameObject player;
     public PlayerController controller;
 
-    
+    // main menu stuff
+    public bool mainMenuActive = true;
+
 
     // private variables
-    float originalTimeScale;
+    float originalTimeScale = 1f;
     int gameGoalCount = 0;
 
     int coinCount;
@@ -54,6 +58,14 @@ public class gameManager : MonoBehaviour
         
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
+    }
+
+    private void Start() // using for main menu
+    {
+        mainMenu.SetActive(true);
+        PauseGame();
+        mainMenuActive = true;
+        menuActive = mainMenu;
     }
 
     // Update is called once per frame
