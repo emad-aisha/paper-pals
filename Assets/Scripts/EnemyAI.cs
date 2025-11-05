@@ -167,7 +167,7 @@ public class EnemyAI : MonoBehaviour, IDamage
        
         while (timer < accelerationTime)
         {
-            AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, time / accelerationTime);
+            AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, timer / accelerationTime);
             timer += Time.deltaTime;
             yield return null;
         }
