@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] Renderer Model;
-
+  
     [SerializeField] int HP;
 
     [SerializeField] int contactDamage;
@@ -152,7 +152,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         //Will created an object at the shoot pos
         //  Instantiate(Bullet, ShootPos.position, transform.rotation);
 
-        Debug.Log("Shoot");
+     //   Debug.Log("Shoot");
     }
 
     IEnumerator BullCharge()
