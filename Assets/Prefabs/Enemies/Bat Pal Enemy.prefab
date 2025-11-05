@@ -211,11 +211,16 @@ MonoBehaviour:
   contactDamage: 1
   attackRange: 3
   attackCooldown: 0.5
-  enemyType: 1
+  enemyType: 0
   chargeMaxSpeed: 30
   accelerationTime: 2
   chargeDuration: 3
   chargeCooldown: 5
+  ShootPos: {fileID: 0}
+  Bullet: {fileID: 0}
+  ShootRate: 0
+  Powerbonusprefab: []
+  dropPowerbonus: 0
 --- !u!33 &7865710480378140534
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -24,9 +24,10 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int chargeDuration = 3;       
     [SerializeField] int chargeCooldown = 5;
 
-    //[SerializeField] Transform ShootPos;
-    //[SerializeField] GameObject Bullet;
-    //[SerializeField] float ShootRate;
+    //Ranged fields
+    [SerializeField] Transform ShootPos;
+    [SerializeField] GameObject Bullet;
+    [SerializeField] float ShootRate;
 
     //power up fields
     [SerializeField] GameObject[] Powerbonusprefab;
@@ -38,6 +39,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     float ShootTimer;
 
+    //bull variables
     float attackTimer = 0f;
 
     float chargeTimer = 0f;
@@ -77,7 +79,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
             AgentAI.speed = 15;
 
-            //  if (ShootTimer >= ShootRate)
+            if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged)
             {
                 Shoot();
             }
@@ -89,7 +91,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
 
             // If close enough to attack, and cooldown is ready
-            if (distance <= attackRange && attackTimer >= attackCooldown)
+            if (distance <= attackRange && attackTimer >= attackCooldown && enemyType == EnemyType.melee)
             {
                 AttackPlayer();
             }
@@ -150,9 +152,10 @@ public class EnemyAI : MonoBehaviour, IDamage
         ShootTimer = 0f;
 
         //Will created an object at the shoot pos
-        //  Instantiate(Bullet, ShootPos.position, transform.rotation);
+        Instantiate(Bullet, ShootPos.position, transform.rotation);
 
-     //   Debug.Log("Shoot");
+        //to see if shoot works
+        Debug.Log("Shoot");
     }
 
     IEnumerator BullCharge()
