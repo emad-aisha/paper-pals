@@ -159,16 +159,16 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         // Direction toward player at start
         Vector3 dir = (gameManager.instance.player.transform.position - transform.position).normalized;
-        float time = 0f;
+        float timer = 0f;
 
         // Temporarily stop pathfinding so we can move manually
         AgentAI.isStopped = true;
 
        
-        while (time < accelerationTime)
+        while (timer < accelerationTime)
         {
             AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, time / accelerationTime);
-            time += Time.deltaTime;
+            timer += Time.deltaTime;
             yield return null;
         }
 
