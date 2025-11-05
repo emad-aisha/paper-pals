@@ -9,9 +9,13 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     [SerializeField] int HP;
 
-    [SerializeField] Transform ShootPos;
-    [SerializeField] GameObject Bullet;
-    [SerializeField] float ShootRate;
+    [SerializeField] int contactDamage;
+    [SerializeField] float attackRange;
+    [SerializeField] float attackCooldown;
+
+    //[SerializeField] Transform ShootPos;
+    //[SerializeField] GameObject Bullet;
+    //[SerializeField] float ShootRate;
 
 
     Color OGColor;
@@ -20,10 +24,26 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     float ShootTimer;
 
+    float attackTimer = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         OGColor = Model.material.color;
+    }
+
+    void AttackPlayer()
+    {
+        attackTimer = 0f; // reset cooldown timer
+
+        // Try to get the player's damage interface
+        IDamage dmg = gameManager.instance.player.GetComponent<IDamage>();
+
+        if (dmg != null)
+        {
+            dmg.TakeDamage(contactDamage);
+            Debug.Log("Enemy attacked the player!");
+        }
     }
 
     // Update is called once per frame
@@ -37,11 +57,27 @@ public class EnemyAI : MonoBehaviour, IDamage
             //will look for player position and move towards it
             AgentAI.SetDestination(gameManager.instance.player.transform.position);
 
-            if (ShootTimer >= ShootRate)
+            AgentAI.speed = 15;
+
+            //  if (ShootTimer >= ShootRate)
             {
                 Shoot();
             }
+
+            // Update attack timer
+            attackTimer += Time.deltaTime;
+
+            // Check distance between enemy and player
+            float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+
+            // If close enough to attack, and cooldown is ready
+            if (distance <= attackRange && attackTimer >= attackCooldown)
+            {
+                AttackPlayer();
+            }
         }
+
+
 
     }
 
@@ -71,7 +107,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player"))
         {
             PlayerInTrigger = false;
         }
@@ -87,9 +123,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     void Shoot()
     {
         ShootTimer = 0f;
-        
+
         //Will created an object at the shoot pos
-        Instantiate(Bullet, ShootPos.position, transform.rotation);
+        //  Instantiate(Bullet, ShootPos.position, transform.rotation);
 
         Debug.Log("Shoot");
     }
