@@ -4,12 +4,12 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour, IDamage
 {
-    public enum EnemyType {ranged, melee, bull};
+    public enum EnemyType { ranged, melee, bull };
 
 
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] Renderer Model;
-  
+
     [SerializeField] int HP;
 
     [SerializeField] int contactDamage;
@@ -19,9 +19,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] EnemyType enemyType = EnemyType.melee;
 
     //Bull Fields
-    [SerializeField] int chargeMaxSpeed = 30;       
-    [SerializeField] int accelerationTime = 2;     
-    [SerializeField] int chargeDuration = 3;       
+    [SerializeField] int chargeMaxSpeed = 30;
+    [SerializeField] int accelerationTime = 2;
+    [SerializeField] int chargeDuration = 3;
     [SerializeField] int chargeCooldown = 5;
 
     //Ranged fields
@@ -39,7 +39,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int FaceTargetSpeed;
     float AngleToPlayer;
     Vector3 playerDirection;
-
+    float StoppingDistanceOG;
 
     Color OGColor;
 
@@ -58,6 +58,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     void Start()
     {
         OGColor = Model.material.color;
+
+        //copying the stopping distance
+        StoppingDistanceOG = AgentAI.stoppingDistance;
     }
 
     void AttackPlayer()
@@ -82,7 +85,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         //if player is in the trigger collider
         if (PlayerInTrigger && CanSeePlayer())
         {
-          
+
         }
         // Bull charge logic
         if (enemyType == EnemyType.bull && PlayerInTrigger && !isCharging)
@@ -104,17 +107,16 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         //Calculate the angle between the enemy's forward direction and the direction to the player
         AngleToPlayer = Vector3.Angle(playerDirection, transform.forward);
-
         Debug.DrawRay(HeadPosition.position, playerDirection, Color.green);
 
         RaycastHit hit;
 
         //cast a ray from the enemy to the player to check for obstacles
-        if(Physics.Raycast(HeadPosition.position, playerDirection, out hit))
+        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit))
         {
             Debug.Log(hit.collider.name);
 
-            if(AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            if (AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
 
                 //will look for player position and move towards it
@@ -137,7 +139,11 @@ public class EnemyAI : MonoBehaviour, IDamage
                     AttackPlayer();
                 }
 
-                
+                //if close enough to the player will face them
+                if(AgentAI.remainingDistance <= StoppingDistanceOG)
+                {
+                    FaceTarget();
+                }
 
                 return true;
             }
@@ -147,16 +153,26 @@ public class EnemyAI : MonoBehaviour, IDamage
         return false;
     }
 
+    void FaceTarget()
+    {
+        //calculate the rotation needed to look at the player
+        Quaternion Rotate =
+            Quaternion.LookRotation(new Vector3(playerDirection.x, transform.position.y, playerDirection.z));
+
+        //smoothly rotate towards the player
+        transform.rotation = Quaternion.Lerp(transform.rotation, Rotate, FaceTargetSpeed * Time.deltaTime);
+    }
+
     public void TakeDamage(int amount)
     {
         HP -= amount;
-        
+
 
         if (HP <= 0)
         {
             //will destroy self 
             Destroy(gameObject);
-            Debug.Log("Enemy Destroyed"); 
+            Debug.Log("Enemy Destroyed");
         }
         else
         {
@@ -212,7 +228,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         // Temporarily stop pathfinding so we can move manually
         AgentAI.isStopped = true;
 
-       
+
         while (timer < accelerationTime)
         {
             AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, timer / accelerationTime);

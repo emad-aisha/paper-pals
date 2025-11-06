@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1032627752736191821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 949228130875270768}
+  m_Layer: 9
+  m_Name: HeadPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &949228130875270768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032627752736191821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5899224539548496475}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2607623846965005629
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +121,7 @@ Transform:
   m_Children:
   - {fileID: 4317935627528394946}
   - {fileID: 5815035593122598167}
+  - {fileID: 949228130875270768}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6743716789184489476
@@ -115,6 +147,14 @@ MonoBehaviour:
   accelerationTime: 2
   chargeDuration: 3
   chargeCooldown: 5
+  ShootPos: {fileID: 0}
+  Bullet: {fileID: 0}
+  ShootRate: 0
+  Powerbonusprefab: []
+  dropPowerbonus: 0
+  HeadPosition: {fileID: 949228130875270768}
+  FOV: 0
+  FaceTargetSpeed: 0
 --- !u!33 &458197448807722588
 MeshFilter:
   m_ObjectHideFlags: 0
