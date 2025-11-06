@@ -6,8 +6,8 @@ public class PowerBonuses : MonoBehaviour
     enum powerBonusType { health, shield }
 
     [SerializeField] powerBonusType type;
-    [SerializeField] int healingAmount;
-    [SerializeField] int shieldDur;
+    public int healingAmount;
+    public int shieldDur;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

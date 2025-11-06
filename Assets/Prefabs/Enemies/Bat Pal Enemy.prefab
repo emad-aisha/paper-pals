@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2973550056311394136}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.584}
+  m_LocalPosition: {x: -2.5837918e-14, y: 0, z: 0.81127274}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6a1143ee683302f4aa628c052723efc1, type: 2}
+  - {fileID: 2100000, guid: 0f7ac0418a6a02a4f89341769964e104, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   AgentAI: {fileID: 410625447462889529}
-  Model: {fileID: 3078343077917678535}
+  Sprite: {fileID: 478239397356334502}
   HP: 6
   contactDamage: 1
   attackRange: 3

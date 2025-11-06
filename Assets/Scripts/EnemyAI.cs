@@ -8,7 +8,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     [SerializeField] LayerMask IgnoreLayer;
     [SerializeField] NavMeshAgent AgentAI;
-    [SerializeField] Renderer Model;
+    [SerializeField] SpriteRenderer Sprite;
 
     [SerializeField] int HP;
 
@@ -57,7 +57,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        OGColor = Model.material.color;
+        OGColor = Sprite.color;
 
         //copying the stopping distance
         StoppingDistanceOG = AgentAI.stoppingDistance;
@@ -187,7 +187,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         else
         {
             //else if it survives will flash white
-            StartCoroutine(FlashWhite());
+            StartCoroutine(FlashRed());
             Debug.Log("Enemy took damage");
         }
     }
@@ -208,11 +208,11 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
     }
 
-    IEnumerator FlashWhite()
+    IEnumerator FlashRed()
     {
-        Model.material.color = Color.white;
+        Sprite.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        Model.material.color = OGColor;
+        Sprite.color = OGColor;
     }
 
     void Shoot()

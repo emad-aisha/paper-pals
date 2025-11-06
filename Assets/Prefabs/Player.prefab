@@ -45,9 +45,9 @@ Light:
   m_Type: 0
   m_Color: {r: 0.8207547, g: 0.7817062, b: 0.6852527, a: 1}
   m_Intensity: 20
-  m_Range: 20
-  m_SpotAngle: 91.48891
-  m_InnerSpotAngle: 43.174168
+  m_Range: 40
+  m_SpotAngle: 89.71793
+  m_InnerSpotAngle: 61.30467
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -352,6 +352,7 @@ MonoBehaviour:
   ShootDamage: 3
   ShootDistance: 150
   FireRate: 0.5
+  healAmount: 5
 --- !u!33 &6155902657339225895
 MeshFilter:
   m_ObjectHideFlags: 0

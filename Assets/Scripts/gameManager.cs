@@ -16,6 +16,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject menuDialouge;
     [SerializeField] GameObject mainMenu;
 
+    public GameObject flashRed;
+
     [SerializeField] GameObject Interactable;
     [SerializeField] TMP_Text CoinCountText;
     [SerializeField] TMP_Text AmmoCountText;

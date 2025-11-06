@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     [SerializeField] int ShootDistance;
     [SerializeField] float FireRate;
 
+    [SerializeField] int healAmount;
+
 
     // Personal Variables
 
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         // TODO: update heal amount with health amount
         if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
             Debug.Log("rage....");
-            Heal(2);
+            Heal(healAmount);
             HaveTape = false;
             gameManager.instance.TapeImage.SetActive(false);
         }
@@ -167,6 +169,9 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     public void TakeDamage(int amount)
     {
         HP -= amount;
+
+        StartCoroutine(Flash(0.1f));
+
         UpdateHealthBar();
 
         if (HP <= 0)
@@ -216,5 +221,11 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         yield return new WaitForSeconds(duration);
        isInvincible = original;
 
+    }
+
+    public IEnumerator Flash(float duration) {
+        gameManager.instance.flashRed.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        gameManager.instance.flashRed.SetActive(false);
     }
 }
