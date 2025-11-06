@@ -33,6 +33,14 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] GameObject[] Powerbonusprefab;
     [SerializeField] int dropPowerbonus;
 
+    //Field of View (FOV)
+    [SerializeField] Transform HeadPosition;
+    [SerializeField] int FOV;
+    [SerializeField] int FaceTargetSpeed;
+    float AngleToPlayer;
+    Vector3 playerDirection;
+
+
     Color OGColor;
 
     bool PlayerInTrigger;
@@ -72,31 +80,11 @@ public class EnemyAI : MonoBehaviour, IDamage
         ShootTimer += Time.deltaTime;
 
         //if player is in the trigger collider
-        if (PlayerInTrigger)
+        if (PlayerInTrigger && CanSeePlayer())
         {
-            //will look for player position and move towards it
-            AgentAI.SetDestination(gameManager.instance.player.transform.position);
-
-            AgentAI.speed = 15;
-
-            if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged)
-            {
-                Shoot();
-            }
-
-            // Update attack timer
-            attackTimer += Time.deltaTime;
-
-            // Check distance between enemy and player
-            float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
-
-            // If close enough to attack, and cooldown is ready
-            if (distance <= attackRange && attackTimer >= attackCooldown && enemyType == EnemyType.melee)
-            {
-                AttackPlayer();
-            }
+          
         }
-
+        // Bull charge logic
         if (enemyType == EnemyType.bull && PlayerInTrigger && !isCharging)
         {
             chargeTimer += Time.deltaTime;
@@ -106,21 +94,75 @@ public class EnemyAI : MonoBehaviour, IDamage
                 StartCoroutine(BullCharge());
             }
         }
-     }
+
+    }
+
+    bool CanSeePlayer()
+    {
+        //calculate direction vector from the enemy to the player
+        playerDirection = gameManager.instance.player.transform.position - HeadPosition.position;
+
+        //Calculate the angle between the enemy's forward direction and the direction to the player
+        AngleToPlayer = Vector3.Angle(playerDirection, transform.forward);
+
+        Debug.DrawRay(HeadPosition.position, playerDirection, Color.green);
+
+        RaycastHit hit;
+
+        //cast a ray from the enemy to the player to check for obstacles
+        if(Physics.Raycast(HeadPosition.position, playerDirection, out hit))
+        {
+            Debug.Log(hit.collider.name);
+
+            if(AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            {
+
+                //will look for player position and move towards it
+                AgentAI.SetDestination(gameManager.instance.player.transform.position);
+
+                if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged)
+                {
+                    Shoot();
+                }
+
+                // Update attack timer
+                attackTimer += Time.deltaTime;
+
+                // Check distance between enemy and player
+                float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+
+                // If close enough to attack, and cooldown is ready and EnemyType.melee
+                if (distance <= attackRange && attackTimer >= attackCooldown && enemyType == EnemyType.melee || enemyType == EnemyType.bull)
+                {
+                    AttackPlayer();
+                }
+
+                
+
+                return true;
+            }
+
+        }
+
+        return false;
+    }
 
     public void TakeDamage(int amount)
     {
         HP -= amount;
+        
 
         if (HP <= 0)
         {
             //will destroy self 
             Destroy(gameObject);
+            Debug.Log("Enemy Destroyed"); 
         }
         else
         {
             //else if it survives will flash white
             StartCoroutine(FlashWhite());
+            Debug.Log("Enemy took damage");
         }
     }
 
