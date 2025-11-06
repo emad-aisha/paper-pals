@@ -5,18 +5,15 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Resume()
     {
-        if (gameManager.instance.mainMenuActive == true)
-        {
-            gameManager.instance.mainMenuActive = false;
-            Debug.Log(gameManager.instance.mainMenuActive);
-        }
-        gameManager.instance.UnpauseGame();
+        gameManager.instance.EndMainMenu();
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        gameManager.instance.UnpauseGame();
+
+        Debug.Log("yo");
+        gameManager.instance.EndMainMenu();
     }
 
 

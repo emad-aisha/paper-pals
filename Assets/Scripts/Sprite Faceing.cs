@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    [SerializeField] private Camera _mainCamera;
+    Camera mainCamera;
 
     private void LateUpdate()
     {
-        if (_mainCamera == null)
-            return;
+        mainCamera = gameManager.instance.mainCamera;
+
+        if (mainCamera == null) return;
 
         // Get camera position
-        Vector3 cameraPosition = _mainCamera.transform.position;
+        Vector3 cameraPosition = mainCamera.transform.position;
 
         // Only rotate on Y-axis
         cameraPosition.y = transform.position.y;

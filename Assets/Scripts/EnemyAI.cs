@@ -82,6 +82,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     {
         ShootTimer += Time.deltaTime;
 
+        FaceTarget();
         //if player is in the trigger collider
         if (PlayerInTrigger && CanSeePlayer())
         {
@@ -137,12 +138,6 @@ public class EnemyAI : MonoBehaviour, IDamage
                 if (distance <= attackRange && attackTimer >= attackCooldown && enemyType == EnemyType.melee || enemyType == EnemyType.bull)
                 {
                     AttackPlayer();
-                }
-
-                //if close enough to the player will face them
-                if(AgentAI.remainingDistance <= StoppingDistanceOG)
-                {
-                    FaceTarget();
                 }
 
                 return true;

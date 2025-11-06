@@ -38,6 +38,8 @@ public class gameManager : MonoBehaviour
     public GameObject player;
     public PlayerController controller;
 
+    public Camera mainCamera;
+
     // main menu stuff
     public bool mainMenuActive = true;
 
@@ -53,33 +55,30 @@ public class gameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        instance = this;
+        if (instance == null) instance = this;
+
         originalTimeScale = Time.timeScale;
         
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
+
+        mainCamera = player.GetComponent<Camera>();
+
+        StartMainMenu();
     }
 
-    private void Start() // using for main menu
-    {
-        mainMenu.SetActive(true);
-        PauseGame();
-        mainMenuActive = true;
-        menuActive = mainMenu;
-    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (menuActive == null)
-            {
+            if (menuActive == null) {
                 PauseGame();
                 menuActive = menuPause;
                 menuActive.SetActive(true);
             }
-            else
+            else if (menuActive == menuPause)
             {
                 UnpauseGame();
             }
@@ -115,6 +114,19 @@ public class gameManager : MonoBehaviour
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
+    }
+
+    public void StartMainMenu() {
+        isPaused = true;
+        mainMenu.SetActive(true);
+        PauseGame();
+        mainMenuActive = true;
+    }
+
+    public void EndMainMenu() {
+        mainMenuActive = false;
+        mainMenu.SetActive(false);
+        UnpauseGame();
     }
 
     public void Defeat()
