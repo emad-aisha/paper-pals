@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 {
     public enum EnemyType { ranged, melee, bull };
 
-
+    [SerializeField] LayerMask IgnoreLayer;
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] Renderer Model;
 
@@ -128,7 +128,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         RaycastHit hit;
 
         //cast a ray from the enemy to the player to check for obstacles
-        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit))
+        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 100, ~IgnoreLayer))
         {
             Debug.Log(hit.collider.name);
 

@@ -862,16 +862,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1205130155578342452, guid: 1f053f19ff6344a4ea4b12300315e073, type: 3}
-      propertyPath: Bullet
-      value: 
-      objectReference: {fileID: 3241994556281459830, guid: 8d68bcc151513b04584673ad4247f6c1, type: 3}
-    - target: {fileID: 2481477484325036915, guid: 1f053f19ff6344a4ea4b12300315e073, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2481477484325036915, guid: 1f053f19ff6344a4ea4b12300315e073, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.584
+      propertyPath: IgnoreLayer.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 8617006699006970022, guid: 1f053f19ff6344a4ea4b12300315e073, type: 3}
       propertyPath: m_Name

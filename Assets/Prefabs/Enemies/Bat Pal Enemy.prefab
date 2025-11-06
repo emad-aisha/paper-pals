@@ -214,6 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6479b5efe5924f4b91fc7860778e6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IgnoreLayer:
+    serializedVersion: 2
+    m_Bits: 512
   AgentAI: {fileID: 410625447462889529}
   Model: {fileID: 3078343077917678535}
   HP: 6
