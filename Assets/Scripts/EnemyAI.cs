@@ -19,10 +19,10 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] EnemyType enemyType;
 
     //Bull Fields
-    [SerializeField] int chargeMaxSpeed = 30;
-    [SerializeField] int accelerationTime = 2;
-    [SerializeField] int chargeDuration = 3;
-    [SerializeField] int chargeCooldown = 5;
+    [SerializeField] int chargeMaxSpeed;
+    [SerializeField] int accelerationTime;
+    [SerializeField] int chargeDuration;
+    [SerializeField] int chargeCooldown;
 
     //Ranged fields
     [SerializeField] Transform ShootPos;
@@ -54,6 +54,8 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     bool isCharging = false;
 
+    float normalSpeed;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -61,6 +63,8 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         //copying the stopping distance
         StoppingDistanceOG = AgentAI.stoppingDistance;
+
+        normalSpeed = AgentAI.speed;
     }
 
     void AttackPlayer()
@@ -264,6 +268,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         // Stop and resume normal AI
         AgentAI.velocity = Vector3.zero;
         AgentAI.isStopped = false;
+        AgentAI.speed = normalSpeed;
         isCharging = false;
     }
 }
