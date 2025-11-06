@@ -16,7 +16,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] float attackRange;
     [SerializeField] float attackCooldown;
 
-    [SerializeField] EnemyType enemyType = EnemyType.melee;
+    [SerializeField] EnemyType enemyType;
 
     //Bull Fields
     [SerializeField] int chargeMaxSpeed = 30;
@@ -81,6 +81,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     void Update()
     {
         ShootTimer += Time.deltaTime;
+        attackTimer += Time.deltaTime;
 
         FaceTarget();
         //if player is in the trigger collider
@@ -92,8 +93,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         if (PlayerInTrigger && enemyType == EnemyType.melee) {
             AgentAI.SetDestination(gameManager.instance.player.transform.position);
 
-            attackTimer += Time.deltaTime;
-
             // Check distance between enemy and player
             float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
 
@@ -104,9 +103,16 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
         // Bull charge logic
-        if (enemyType == EnemyType.bull && PlayerInTrigger && !isCharging)
+        if (enemyType == EnemyType.bull && PlayerInTrigger)
         {
             chargeTimer += Time.deltaTime;
+
+            float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+
+            if (distance <= attackRange && attackTimer >= attackCooldown)
+            {
+                AttackPlayer();
+            }
 
             if (chargeTimer >= chargeCooldown)
             {
@@ -143,14 +149,13 @@ public class EnemyAI : MonoBehaviour, IDamage
                     Shoot();
                 }
 
-                // Update attack timer
-                attackTimer += Time.deltaTime;
+              
 
                 // Check distance between enemy and player
                 float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
 
                 // If close enough to attack, and cooldown is ready and EnemyType.melee
-                if (distance <= attackRange && attackTimer >= attackCooldown && enemyType == EnemyType.melee || enemyType == EnemyType.bull)
+                if (enemyType == EnemyType.melee && distance <= attackRange && attackTimer >= attackCooldown)
                 {
                     AttackPlayer();
                 }
@@ -197,6 +202,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             PlayerInTrigger = true;
+           
         }
     }
 
