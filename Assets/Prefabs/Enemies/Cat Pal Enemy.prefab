@@ -153,8 +153,8 @@ MonoBehaviour:
   Powerbonusprefab: []
   dropPowerbonus: 0
   HeadPosition: {fileID: 949228130875270768}
-  FOV: 0
-  FaceTargetSpeed: 0
+  FOV: 180
+  FaceTargetSpeed: 100
 --- !u!33 &458197448807722588
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -302,7 +302,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0022859573, y: 0.33099997, z: -0.015021643}
-  m_LocalScale: {x: 0.2666667, y: 0.40000004, z: 0.2666667}
+  m_LocalScale: {x: 0.25, y: 0.40000004, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5899224539548496475}
@@ -353,7 +353,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 250067054e185c845990c88d0e491947, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 6.5, y: 6.5}
@@ -374,4 +374,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4021f21b3a83d224ea6df5356dc7b6b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 0}

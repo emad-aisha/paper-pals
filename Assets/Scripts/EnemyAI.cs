@@ -86,8 +86,23 @@ public class EnemyAI : MonoBehaviour, IDamage
         //if player is in the trigger collider
         if (PlayerInTrigger && CanSeePlayer())
         {
-
+            
         }
+
+        if (PlayerInTrigger && enemyType == EnemyType.melee) {
+            AgentAI.SetDestination(gameManager.instance.player.transform.position);
+
+            attackTimer += Time.deltaTime;
+
+            // Check distance between enemy and player
+            float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+
+            // If close enough to attack, and cooldown is ready and EnemyType.melee
+            if (distance <= attackRange && attackTimer >= attackCooldown) {
+                AttackPlayer();
+            }
+        }
+
         // Bull charge logic
         if (enemyType == EnemyType.bull && PlayerInTrigger && !isCharging)
         {

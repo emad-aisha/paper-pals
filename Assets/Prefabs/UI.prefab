@@ -1747,6 +1747,7 @@ MonoBehaviour:
   gameGoalCountText: {fileID: 0}
   player: {fileID: 0}
   controller: {fileID: 0}
+  mainCamera: {fileID: 0}
   mainMenuActive: 1
 --- !u!1 &1649159405802686921
 GameObject:
@@ -8714,6 +8715,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4433043214536197799}
+    - target: {fileID: 2062846787037493671, guid: 3d1f4ea2d1bfd3a4eaddedaf6e91a828, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062846787037493671, guid: 3d1f4ea2d1bfd3a4eaddedaf6e91a828, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062846787037493671, guid: 3d1f4ea2d1bfd3a4eaddedaf6e91a828, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062846787037493671, guid: 3d1f4ea2d1bfd3a4eaddedaf6e91a828, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5918593534698825440, guid: 3d1f4ea2d1bfd3a4eaddedaf6e91a828, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
