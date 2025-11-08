@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class PowerBonuses : MonoBehaviour
 {
-    enum powerBonusType { health, shield }
+    enum PowerBonusType { health, shield }
 
-    [SerializeField] powerBonusType type;
+    [SerializeField] PowerBonusType type;
     public int healingAmount;
     public int shieldDur;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    void Start()
     {
         
     }
@@ -29,11 +29,11 @@ public class PowerBonuses : MonoBehaviour
         if (player == null)
             return;
 
-        if (type == powerBonusType.health)
+        if (type == PowerBonusType.health)
         {
             player.Heal(healingAmount);
         }
-        else if (type == powerBonusType.shield)
+        else if (type == PowerBonusType.shield)
         {
             player.StartCoroutine(player.Shield(shieldDur));
         }

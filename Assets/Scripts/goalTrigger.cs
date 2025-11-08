@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class goalTrigger : MonoBehaviour
+public class GoalTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            gameManager.instance.winTrophy(1);
+            GameManager.instance.WinTrophy(1);
         }
     }
   

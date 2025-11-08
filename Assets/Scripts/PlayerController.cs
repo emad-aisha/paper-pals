@@ -4,50 +4,53 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, IInteractable, IDamage
 {
     // Unity variables
-    
+    [Header("Player Neccesities")]
     [SerializeField] CharacterController controller;
+    
+	[Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
-
-    [SerializeField] LayerMask DialougeLayer;
+	[SerializeField] LayerMask DialougeLayer;
     [SerializeField] LayerMask TapeLayer;
     [SerializeField] LayerMask AmmoLayer;
     [SerializeField] LayerMask CoinLayer;
+
+	[Header("UI stuffs")]
     [SerializeField] int interactDistance;
+	[SerializeField] int HP;
+    [SerializeField] int healAmount;
 
-    [SerializeField] int HP;
-
-    // movement
-    [SerializeField] int speed;
+	[Header("Movement")]
+	[SerializeField] int speed;
     [SerializeField] int sprintMod;
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
     [SerializeField] float gravity;
 
-    // shooting
-    [SerializeField] int ShootDamage;
+	[Header("Shooting")]
+	[SerializeField] int ShootDamage;
     [SerializeField] int ShootDistance;
     [SerializeField] float FireRate;
 
-    [SerializeField] int healAmount;
-
-
-    // Personal Variables
-
+    
+    // private variables
     // movement
     Vector3 moveDir;
     Vector3 jumpVelocity;
     int OGGravity;
     float maxGravity;
 
+    int jumpCount;
     bool HaveTape;
 
-    int jumpCount;
+    // TODO: change this to shooting based on tapping
     float FireTimer;
 
+    // OG stats before boosts
     int MaxHP;
     int OGSpeed;
 
+    // TODO: maybe get rid of this?
     bool isInvincible;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -65,21 +68,20 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         // interactable icon showing up
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)
-            && gameManager.instance.isPaused == false) {
+            && GameManager.instance.isPaused == false) {
 
-            if (hit.collider.gameObject.layer == 7) gameManager.instance.InteractOn();
-            else if (gameManager.instance.isInteractOn) gameManager.instance.InteractOff();
+            if (hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
+            else if (GameManager.instance.isInteractOn) GameManager.instance.InteractOff();
 
         }
-        else if (hit.collider == null && gameManager.instance.isPaused == false) {
-            gameManager.instance.InteractOff();
+        else if (hit.collider == null && GameManager.instance.isPaused == false) {
+            GameManager.instance.InteractOff();
         }
 
-        // TODO: update heal amount with health amount
         if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
             Heal(healAmount);
             HaveTape = false;
-            gameManager.instance.TapeImage.SetActive(false);
+            GameManager.instance.TapeImage.SetActive(false);
         }
 
         FireTimer += Time.deltaTime;
@@ -96,7 +98,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         }
         else {
             jumpVelocity.y -= (gravity * Time.deltaTime);
-            if (gravity < maxGravity) gravity = gravity * 1.005f;
+            if (gravity < maxGravity) gravity *= 1.005f;
         }
 
         // movement
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
         if (healthBarPosition > 280) healthBarPosition = 280;
 
-        gameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 1000, 0);
+        GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 1000, 0);
     }
 
     public void TakeDamage(int amount)
@@ -171,7 +173,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
         if (HP <= 0)
         {
-            gameManager.instance.Defeat();
+            GameManager.instance.Defeat();
         }
     }
 
@@ -181,22 +183,22 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         // Dialouge
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialougeLayer)) {
             // dialouge
-            gameManager.instance.Dialouge();
+            GameManager.instance.Dialouge();
         }
         // Pickup
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, TapeLayer) && !HaveTape) {
             HaveTape = true;
-            gameManager.instance.TapeImage.SetActive(true);
+            GameManager.instance.TapeImage.SetActive(true);
 
             Destroy(hit.collider.gameObject);
         }
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, CoinLayer)) {
-            gameManager.instance.UpdateCoinCount(1);
+            GameManager.instance.UpdateCoinCount(1);
 
             Destroy(hit.collider.gameObject);
         }
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, AmmoLayer)) {
-            gameManager.instance.UpdateAmmoCount(1);
+            GameManager.instance.UpdateAmmoCount(1);
 
             Destroy(hit.collider.gameObject);
         }
@@ -214,13 +216,13 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         bool original = isInvincible;
         isInvincible = true;
         yield return new WaitForSeconds(duration);
-       isInvincible = original;
+        isInvincible = original;
 
     }
 
     public IEnumerator Flash(float duration) {
-        gameManager.instance.flashRed.SetActive(true);
+        GameManager.instance.flashRed.SetActive(true);
         yield return new WaitForSeconds(duration);
-        gameManager.instance.flashRed.SetActive(false);
+        GameManager.instance.flashRed.SetActive(false);
     }
 }

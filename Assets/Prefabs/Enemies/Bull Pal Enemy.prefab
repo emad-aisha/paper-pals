@@ -51,16 +51,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6479b5efe5924f4b91fc7860778e6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 2
   IgnoreLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   AgentAI: {fileID: 3426986578978938938}
   Sprite: {fileID: 6355838910643190701}
   HP: 11
   contactDamage: 5
   attackRange: 3
   attackCooldown: 5
-  enemyType: 2
   chargeMaxSpeed: 80
   accelerationTime: 3
   chargeDuration: 1

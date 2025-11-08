@@ -1,9 +1,9 @@
 using UnityEngine;
 using TMPro;
 
-public class gameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static gameManager instance;
+    public static GameManager instance;
 
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
@@ -106,7 +106,7 @@ public class gameManager : MonoBehaviour
         menuActive = null;
     }
 
-    public void winTrophy(int amount)
+    public void WinTrophy(int amount)
     {
         gameGoalCount += amount;
 

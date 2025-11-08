@@ -5,13 +5,13 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Resume()
     {
-        gameManager.instance.EndMainMenu();
+        GameManager.instance.EndMainMenu();
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        gameManager.instance.EndMainMenu();
+        GameManager.instance.EndMainMenu();
     }
 
 

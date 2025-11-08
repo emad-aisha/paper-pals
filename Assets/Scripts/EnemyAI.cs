@@ -5,54 +5,54 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour, IDamage
 {
     public enum EnemyType { ranged, melee, bull };
+    [Header("Enemy Type")]
+	[SerializeField] EnemyType enemyType;
 
-    [SerializeField] LayerMask IgnoreLayer;
+	[Header("Neccesities")]
+	[SerializeField] LayerMask IgnoreLayer;
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] SpriteRenderer Sprite;
+    
 
-    [SerializeField] int HP;
+	[Header("Health")]
+	[SerializeField] int HP;
 
-    [SerializeField] int contactDamage;
+	[Header("Melee Type")]
+	[SerializeField] int contactDamage;
     [SerializeField] float attackRange;
     [SerializeField] float attackCooldown;
 
-    [SerializeField] EnemyType enemyType;
-
-    //Bull Fields
-    [SerializeField] int chargeMaxSpeed;
+	[Header("Charge")]
+	[SerializeField] int chargeMaxSpeed;
     [SerializeField] int accelerationTime;
     [SerializeField] int chargeDuration;
     [SerializeField] int chargeCooldown;
 
-    //Ranged fields
-    [SerializeField] Transform ShootPos;
+	[Header("Shooter")]
+	[SerializeField] Transform ShootPos;
     [SerializeField] GameObject Bullet;
     [SerializeField] float ShootRate;
 
-    //power up fields
-    [SerializeField] GameObject[] Powerbonusprefab;
+	[Header("Power Ups")]
+	[SerializeField] GameObject[] Powerbonusprefab;
     [SerializeField] int dropPowerbonus;
 
-    //Field of View (FOV)
-    [SerializeField] Transform HeadPosition;
+	[Header("FOV")]
+	[SerializeField] Transform HeadPosition;
     [SerializeField] int FOV;
     [SerializeField] int FaceTargetSpeed;
     float AngleToPlayer;
     Vector3 playerDirection;
-    float StoppingDistanceOG;
 
+
+    // private variables   
+    bool PlayerInTrigger;
+    float ShootTimer;
     Color OGColor;
 
-    bool PlayerInTrigger;
-
-    float ShootTimer;
-
-    //bull variables
-    float attackTimer = 0f;
-
-    float chargeTimer = 0f;
-
-    bool isCharging = false;
+    // bull variables
+    float attackTimer = 0;
+    float chargeTimer = 0;
 
     float normalSpeed;
 
@@ -60,10 +60,6 @@ public class EnemyAI : MonoBehaviour, IDamage
     void Start()
     {
         OGColor = Sprite.color;
-
-        //copying the stopping distance
-        StoppingDistanceOG = AgentAI.stoppingDistance;
-
         normalSpeed = AgentAI.speed;
     }
 
@@ -72,7 +68,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         attackTimer = 0f; // reset cooldown timer
 
         // Try to get the player's damage interface
-        IDamage dmg = gameManager.instance.player.GetComponent<IDamage>();
+        IDamage dmg = GameManager.instance.player.GetComponent<IDamage>();
 
         if (dmg != null)
         {
@@ -94,10 +90,10 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
         if (PlayerInTrigger && enemyType == EnemyType.melee) {
-            AgentAI.SetDestination(gameManager.instance.player.transform.position);
+            AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
             // Check distance between enemy and player
-            float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+            float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
             // If close enough to attack, and cooldown is ready and EnemyType.melee
             if (distance <= attackRange && attackTimer >= attackCooldown) {
@@ -110,7 +106,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         {
             chargeTimer += Time.deltaTime;
 
-            float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+            float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
             if (distance <= attackRange && attackTimer >= attackCooldown)
             {
@@ -128,7 +124,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     bool CanSeePlayer()
     {
         //calculate direction vector from the enemy to the player
-        playerDirection = gameManager.instance.player.transform.position - HeadPosition.position;
+        playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
 
         //Calculate the angle between the enemy's forward direction and the direction to the player
         AngleToPlayer = Vector3.Angle(playerDirection, transform.forward);
@@ -143,7 +139,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             {
 
                 //will look for player position and move towards it
-                AgentAI.SetDestination(gameManager.instance.player.transform.position);
+                AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
                 if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged)
                 {
@@ -153,7 +149,7 @@ public class EnemyAI : MonoBehaviour, IDamage
               
 
                 // Check distance between enemy and player
-                float distance = Vector3.Distance(transform.position, gameManager.instance.player.transform.position);
+                float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
                 // If close enough to attack, and cooldown is ready and EnemyType.melee
                 if (enemyType == EnemyType.melee && distance <= attackRange && attackTimer >= attackCooldown)
@@ -230,11 +226,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     IEnumerator BullCharge()
     {
-        isCharging = true;
         chargeTimer = 0f;
 
         // Direction toward player at start
-        Vector3 dir = (gameManager.instance.player.transform.position - transform.position).normalized;
+        Vector3 dir = (GameManager.instance.player.transform.position - transform.position).normalized;
         float timer = 0f;
 
         // Temporarily stop pathfinding so we can move manually
@@ -261,6 +256,5 @@ public class EnemyAI : MonoBehaviour, IDamage
         AgentAI.velocity = Vector3.zero;
         AgentAI.isStopped = false;
         AgentAI.speed = normalSpeed;
-        isCharging = false;
     }
 }
