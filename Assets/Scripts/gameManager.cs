@@ -5,41 +5,45 @@ public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
 
+    [Header("Menus")]
     [SerializeField] GameObject menuActive;
+    [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuDialouge;
-    [SerializeField] GameObject mainMenu;
-
-    public GameObject flashRed;
-
+    
+    [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
+    public GameObject HealthBar;
+    public GameObject flashRed;
+    
+
+    [Header("\nInventory")]
+    public GameObject TapeImage;
+
     [SerializeField] TMP_Text CoinCountText;
     [SerializeField] TMP_Text AmmoCountText;
 
-    // interaction
+
+    [Header("\nInteraction")]
     public GameObject interactActive;
     public bool isInteractOn;
-    public GameObject AmmoAmount;
 
-    public GameObject TapeImage;
 
-    // health bar + paused
-    public GameObject HealthBar;
-    public bool isPaused;
+    [Header("\n\nPublic variables")]
 
-    // game goal
-    public TMP_Text gameGoalCountText;
-
-    // player
+    [Header("Player")]
     public GameObject player;
     public PlayerController controller;
 
+    [Header("Camera")]
     public Camera mainCamera;
 
-    // main menu stuff
+    [Header("Misc")]
+    public TMP_Text gameGoalCountText;
     public bool mainMenuActive = true;
+    public bool isPaused;
 
 
     // private variables
