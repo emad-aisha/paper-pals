@@ -54,7 +54,6 @@ public class damage : MonoBehaviour
         }
 
         if (type == damageType.moving || type == damageType.homing) {
-            Debug.Log("Player was shot");
             Destroy(gameObject);
         }
        

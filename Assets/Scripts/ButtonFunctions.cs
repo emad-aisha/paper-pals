@@ -11,8 +11,6 @@ public class ButtonFunctions : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-        Debug.Log("yo");
         gameManager.instance.EndMainMenu();
     }
 

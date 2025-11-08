@@ -77,7 +77,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         if (dmg != null)
         {
             dmg.TakeDamage(contactDamage);
-            Debug.Log("Enemy attacked the player!");
         }
     }
 
@@ -140,8 +139,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         //cast a ray from the enemy to the player to check for obstacles
         if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 100, ~IgnoreLayer))
         {
-            Debug.Log(hit.collider.name);
-
             if (AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
 
@@ -191,13 +188,11 @@ public class EnemyAI : MonoBehaviour, IDamage
         {
             //will destroy self 
             Destroy(gameObject);
-            Debug.Log("Enemy Destroyed");
         }
         else
         {
             //else if it survives will flash white
             StartCoroutine(FlashRed());
-            Debug.Log("Enemy took damage");
         }
     }
 
@@ -231,9 +226,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         //Will created an object at the shoot pos
         Instantiate(Bullet, ShootPos.position, transform.rotation);
-
-        //to see if shoot works
-        Debug.Log("Shoot");
     }
 
     IEnumerator BullCharge()

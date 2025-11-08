@@ -77,7 +77,6 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
         // TODO: update heal amount with health amount
         if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
-            Debug.Log("rage....");
             Heal(healAmount);
             HaveTape = false;
             gameManager.instance.TapeImage.SetActive(false);
@@ -142,9 +141,6 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer))
         {
-
-            Debug.Log(hit.collider.name);
-
             IDamage dmg = hit.collider.GetComponent<IDamage>();
             if (dmg != null)
             {

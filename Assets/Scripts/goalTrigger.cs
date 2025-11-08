@@ -6,7 +6,6 @@ public class goalTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player reached goal!");
             gameManager.instance.winTrophy(1);
         }
     }
