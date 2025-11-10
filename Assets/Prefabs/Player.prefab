@@ -344,6 +344,7 @@ MonoBehaviour:
     m_Bits: 2048
   interactDistance: 10
   HP: 10
+  healAmount: 5
   speed: 8
   sprintMod: 2
   jumpSpeed: 15
@@ -352,7 +353,6 @@ MonoBehaviour:
   ShootDamage: 3
   ShootDistance: 150
   FireRate: 0.5
-  healAmount: 5
 --- !u!33 &6155902657339225895
 MeshFilter:
   m_ObjectHideFlags: 0

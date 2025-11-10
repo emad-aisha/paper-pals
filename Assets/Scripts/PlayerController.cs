@@ -155,12 +155,12 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         float healthDecimal = HP / (float)MaxHP;
         float healthBarPercent = healthDecimal * 500;
 
-        float healthBarPosition = healthBarPercent - 500 + 280;
-        // the 280 it to counter the origin
+        float healthBarPosition = healthBarPercent - 500 + 260;
+        // the 260 it to counter the origin
 
-        if (healthBarPosition > 280) healthBarPosition = 280;
+        if (healthBarPosition > 260) healthBarPosition = 260;
 
-        GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 1000, 0);
+        GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 995, 0);
     }
 
     public void TakeDamage(int amount)

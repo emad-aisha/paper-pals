@@ -5,7 +5,8 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Resume()
     {
-        GameManager.instance.EndMainMenu();
+        if (GameManager.instance.mainMenuActive) GameManager.instance.EndMainMenu();
+        else GameManager.instance.UnpauseGame();
     }
 
     public void Restart()
