@@ -182,4 +182,17 @@ public class GameManager : MonoBehaviour
         if (ammoCount < 999) ammoCount += ammount;
         AmmoCountText.text = ammoCount.ToString("F0");
     }
+
+    public void CreateStickyNote(string title, string body)
+    {
+        GameObject note = Instantiate(stickyNotePrefab, stickyNoteParent);
+        StickyNotesInfo notesInfo = note.GetComponent<StickyNotesInfo>();
+
+        if(notesInfo != null)
+        {
+            notesInfo.SetNoteText(title, body);
+        }
+
+
+    }
 }
