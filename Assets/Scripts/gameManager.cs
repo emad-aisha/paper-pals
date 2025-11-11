@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,6 +46,11 @@ public class GameManager : MonoBehaviour
     public bool mainMenuActive = true;
     public bool isPaused;
 
+    [Header("Sticky Notes")]
+    [SerializeField] GameObject stickyNotePrefab;
+    [SerializeField] Transform stickyNoteParent;
+    [SerializeField] public string defaultNoteTitle = "Note Title";
+    [SerializeField] public string defaultNoteBody = "This is the sticky note body text.";
 
     // private variables
     float originalTimeScale = 1f;
