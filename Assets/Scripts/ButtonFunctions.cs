@@ -5,16 +5,24 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Resume()
     {
-        if (GameManager.instance.mainMenuActive) GameManager.instance.EndMainMenu();
-        else GameManager.instance.UnpauseGame();
+      GameManager.instance.UnpauseGame();
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        GameManager.instance.EndMainMenu();
     }
 
+    public void Play()
+    {
+        SceneManager.LoadScene("The Map");
+    }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene("Main Menu");
+        Time.timeScale = 1.0f;
+    }
 
 
     public void Quit()

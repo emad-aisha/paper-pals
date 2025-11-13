@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Misc")]
     public TMP_Text gameGoalCountText;
-    public bool mainMenuActive = true;
+    public bool mainMenuActive = false;
     public bool isPaused;
 
     [Header("Sticky Notes")]
@@ -71,8 +71,6 @@ public class GameManager : MonoBehaviour
         controller = player.GetComponent<PlayerController>();
 
         mainCamera = player.GetComponent<Camera>();
-
-        StartMainMenu();
     }
 
 
@@ -122,19 +120,6 @@ public class GameManager : MonoBehaviour
             menuActive = menuWin;
             menuActive.SetActive(true);
         }
-    }
-
-    public void StartMainMenu() {
-        isPaused = true;
-        mainMenu.SetActive(true);
-        PauseGame();
-        mainMenuActive = true;
-    }
-
-    public void EndMainMenu() {
-        mainMenuActive = false;
-        mainMenu.SetActive(false);
-        UnpauseGame();
     }
 
     public void Defeat()
