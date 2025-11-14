@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     }
 
     void Jump() {
-        if (Input.GetButtonDown("Jump") && jumpCount <= maxJumps) {
+        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps) {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
         }
