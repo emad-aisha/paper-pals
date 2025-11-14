@@ -15,13 +15,13 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Play()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene("The Map");
     }
 
     public void Exit()
     {
         SceneManager.LoadScene("Main Menu");
-        Time.timeScale = 1.0f;
     }
 
 
