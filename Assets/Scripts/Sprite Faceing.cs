@@ -6,7 +6,7 @@ public class Billboard : MonoBehaviour
 
     private void LateUpdate()
     {
-        mainCamera = GameManager.instance.mainCamera;
+        mainCamera = GameManager.instance.player.GetComponent<Camera>();
 
         if (mainCamera == null) return;
 
