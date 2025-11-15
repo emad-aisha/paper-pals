@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 
 public class GameManager : MonoBehaviour
@@ -12,8 +13,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
-    [SerializeField] GameObject menuDialouge;
-    
+
+    [Header("Dialogue")]
+    [SerializeField] GameObject menuDialogue;
+    public TMP_Text characterName;
+    public TMP_Text characterText;
+    public bool isDialogueActive;
+
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public GameObject HealthBar;
@@ -132,14 +138,18 @@ public class GameManager : MonoBehaviour
     public void Dialouge() {
         if (menuActive == null) {
             Time.timeScale = 0;
-            menuActive = menuDialouge;
+            menuActive = menuDialogue;
             menuActive.SetActive(true);
+            isDialogueActive = true;
         }
-        else {
+    }
+
+    public void EndDialogue() {
+        if (menuActive == menuDialogue) {
             Time.timeScale = originalTimeScale;
             menuActive.SetActive(false);
             menuActive = null;
-        }  
+        }
     }
 
     public void InteractOn() {

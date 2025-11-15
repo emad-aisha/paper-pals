@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     
 	[Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
-	[SerializeField] LayerMask DialougeLayer;
+	[SerializeField] LayerMask DialogueLayer;
     [SerializeField] LayerMask TapeLayer;
     [SerializeField] LayerMask AmmoLayer;
     [SerializeField] LayerMask CoinLayer;
@@ -53,12 +53,16 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     // TODO: maybe get rid of this?
     bool isInvincible;
 
+    [Header("Public")]
+    public bool isDialogueExhausted;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         MaxHP = HP;
         OGGravity = (int)gravity;
         maxGravity = gravity * 1.2f;
         HaveTape = false;
+        isDialogueExhausted = false;
     }
 
     // Update is called once per frame
@@ -114,6 +118,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
             Shoot();
         }
         if (Input.GetButtonDown("Interact")) {
+            // initial interact
             Interact();
         }
     }
@@ -180,10 +185,14 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
     public void Interact() {
         RaycastHit hit;
 
+        Debug.Log("interact?");
         // Dialouge
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialougeLayer)) {
-            // dialouge
-            GameManager.instance.Dialouge();
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer)) {
+            
+            IDialogue dialogue = hit.collider.GetComponent<IDialogue>();
+            dialogue.SetDialogue();
+
+            isDialogueExhausted = dialogue.IsExhausted();
         }
         // Pickup
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, TapeLayer) && !HaveTape) {

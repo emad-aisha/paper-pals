@@ -8453,11 +8453,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::gameManager
   menuActive: {fileID: 0}
-  mainMenu: {fileID: 5250648830410760108}
   menuPause: {fileID: 4777311254061538056}
   menuWin: {fileID: 5722623053850848099}
   menuLose: {fileID: 6071543039367037458}
-  menuDialouge: {fileID: 6959037056341082114}
+  menuDialogue: {fileID: 6959037056341082114}
+  characterName: {fileID: 4527760370654443957}
+  characterText: {fileID: 1476108032439416873}
   Interactable: {fileID: 7168438732853729789}
   HealthBar: {fileID: 4593386633239252190}
   flashRed: {fileID: 7245685241220412806}
@@ -8470,8 +8471,11 @@ MonoBehaviour:
   controller: {fileID: 0}
   mainCamera: {fileID: 0}
   gameGoalCountText: {fileID: 0}
-  mainMenuActive: 1
   isPaused: 0
+  stickyNotePrefab: {fileID: 0}
+  stickyNoteParent: {fileID: 0}
+  defaultNoteTitle: Note Title
+  defaultNoteBody: This is the sticky note body text.
 --- !u!1 &8506626919356080869
 GameObject:
   m_ObjectHideFlags: 0
