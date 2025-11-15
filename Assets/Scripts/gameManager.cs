@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
-    [SerializeField] GameObject mainMenu;
+    //[SerializeField] GameObject mainMenu;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Misc")]
     public TMP_Text gameGoalCountText;
-    public bool mainMenuActive = false;
+    //public bool mainMenuActive = false;
     public bool isPaused;
 
     [Header("Sticky Notes")]

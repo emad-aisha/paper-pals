@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.mainMenuActive) {
+        if (!GameManager.instance.isPaused) {
             // get input
             float mouseX = Input.GetAxis("Mouse X") * Sens * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * Sens * Time.deltaTime;
