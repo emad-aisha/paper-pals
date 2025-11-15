@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
-    //[SerializeField] GameObject mainMenu;
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
@@ -78,7 +77,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
 
-        mainCamera = player.GetComponent<Camera>();
+        mainCamera = Camera.main;
 
         if (isTurnOffLighting) Destroy(Lighting);
     }

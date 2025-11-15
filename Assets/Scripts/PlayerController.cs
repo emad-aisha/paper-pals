@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int ShootDistance;
     [SerializeField] float FireRate;
 
+    // TODO: organize ts
     
     // private variables
     // movement
@@ -41,6 +42,12 @@ public class PlayerController : MonoBehaviour, IDamage
 
     int jumpCount;
     bool HaveTape;
+
+    [Header("Camera Stuff")]
+    [SerializeField] float FOVChange;
+    [SerializeField] int FOVChangeSpeed;
+    bool isSprinting = false;
+    float OGFOV;
 
     // TODO: change this to shooting based on tapping
     float FireTimer;
@@ -54,6 +61,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
+        OGFOV = GameManager.instance.mainCamera.fieldOfView;
         MaxHP = HP;
         OGGravity = (int)gravity;
         maxGravity = gravity * 1.2f;
@@ -75,6 +83,14 @@ public class PlayerController : MonoBehaviour, IDamage
         }
         else if (hit.collider == null && GameManager.instance.isPaused == false) {
             GameManager.instance.InteractOff();
+        }
+
+
+        if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange) {
+            GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV + FOVChange, Time.deltaTime * FOVChangeSpeed);
+        }
+        else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV) {
+            GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV, Time.deltaTime * FOVChangeSpeed);
         }
 
         if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
@@ -120,9 +136,11 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Sprint() {
         if (Input.GetButtonDown("Sprint")) {
+            isSprinting = true;
             speed *= sprintMod;
         }
         else if (Input.GetButtonUp("Sprint")) {
+            isSprinting = false;
             speed /= sprintMod;
         }
     }
