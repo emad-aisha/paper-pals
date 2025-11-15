@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6597543742866615156}
-  - component: {fileID: 1262654697016763899}
+  - component: {fileID: 4917419665225748608}
   - component: {fileID: 8357774176638071701}
   m_Layer: 7
   m_Name: Tape dispenser
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 8510354001824297754}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1262654697016763899
+--- !u!114 &4917419665225748608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,12 +44,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3324244105021374984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8be720633d54634f95e1fabedb70500, type: 3}
+  m_Script: {fileID: 11500000, guid: 80a14ac85bd1eef4a80ac4c2130608cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  healingAmount: 5
-  shieldDur: 0
+  amount: 0
 --- !u!65 &8357774176638071701
 BoxCollider:
   m_ObjectHideFlags: 0

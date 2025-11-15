@@ -330,21 +330,16 @@ MonoBehaviour:
   IgnoreLayer:
     serializedVersion: 2
     m_Bits: 8
-  DialougeLayer:
+  DialogueLayer:
     serializedVersion: 2
     m_Bits: 64
-  TapeLayer:
+  InteractLayer:
     serializedVersion: 2
     m_Bits: 128
-  AmmoLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  CoinLayer:
-    serializedVersion: 2
-    m_Bits: 2048
   interactDistance: 10
-  HP: 10
+  HP: 15
   healAmount: 5
+  offset: 310
   speed: 8
   sprintMod: 2
   jumpSpeed: 15

@@ -7,6 +7,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+
+    [Header("Directional Lighting")]
+    [SerializeField] bool isTurnOffLighting;
+    [SerializeField] GameObject Lighting;
+
     [Header("Menus")]
     [SerializeField] GameObject menuActive;
     //[SerializeField] GameObject mainMenu;
@@ -19,16 +24,14 @@ public class GameManager : MonoBehaviour
     public TMP_Text characterName;
     public TMP_Text characterText;
     public bool isDialogueActive;
-
+    
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public GameObject HealthBar;
     public GameObject flashRed;
-    
 
     [Header("\nInventory")]
     public GameObject TapeImage;
-
     [SerializeField] TMP_Text CoinCountText;
     [SerializeField] TMP_Text AmmoCountText;
 
@@ -49,7 +52,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Misc")]
     public TMP_Text gameGoalCountText;
-    //public bool mainMenuActive = false;
     public bool isPaused;
 
     [Header("Sticky Notes")]
@@ -77,6 +79,8 @@ public class GameManager : MonoBehaviour
         controller = player.GetComponent<PlayerController>();
 
         mainCamera = player.GetComponent<Camera>();
+
+        if (isTurnOffLighting) Destroy(Lighting);
     }
 
 
@@ -146,6 +150,7 @@ public class GameManager : MonoBehaviour
 
     public void EndDialogue() {
         if (menuActive == menuDialogue) {
+            isDialogueActive = false;
             Time.timeScale = originalTimeScale;
             menuActive.SetActive(false);
             menuActive = null;

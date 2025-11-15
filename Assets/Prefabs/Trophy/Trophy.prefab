@@ -372,12 +372,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5842274744891866429}
-  - component: {fileID: 981811546812078672}
+  - component: {fileID: 8680389232273161193}
   - component: {fileID: 2200387721780155450}
   - component: {fileID: 4784156271828847532}
   - component: {fileID: 5209000449545596152}
   - component: {fileID: 848546459524319673}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trophy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ Transform:
   - {fileID: 145410068971459569}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &981811546812078672
+--- !u!114 &8680389232273161193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -413,9 +413,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8328730264420958928}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cba9cd2e5ba78e0458c89a3a09089464, type: 3}
+  m_Script: {fileID: 11500000, guid: 80a14ac85bd1eef4a80ac4c2130608cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  m_EditorClassIdentifier: 
+  type: 3
+  amount: 2
 --- !u!33 &2200387721780155450
 MeshFilter:
   m_ObjectHideFlags: 0

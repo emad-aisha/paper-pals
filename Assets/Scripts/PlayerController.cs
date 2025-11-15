@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IInteractable, IDamage
+public class PlayerController : MonoBehaviour, IDamage
 {
     // Unity variables
     [Header("Player Neccesities")]
@@ -10,14 +10,13 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
 	[Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
 	[SerializeField] LayerMask DialogueLayer;
-    [SerializeField] LayerMask TapeLayer;
-    [SerializeField] LayerMask AmmoLayer;
-    [SerializeField] LayerMask CoinLayer;
+    [SerializeField] LayerMask InteractLayer;
 
 	[Header("UI stuffs")]
     [SerializeField] int interactDistance;
 	[SerializeField] int HP;
     [SerializeField] int healAmount;
+    [SerializeField] int offset;
 
 	[Header("Movement")]
 	[SerializeField] int speed;
@@ -70,7 +69,7 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)
             && GameManager.instance.isPaused == false) {
 
-            if (hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
+            if (hit.collider.gameObject.layer == 6 || hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
             else if (GameManager.instance.isInteractOn) GameManager.instance.InteractOff();
 
         }
@@ -156,10 +155,10 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
         float healthDecimal = HP / (float)MaxHP;
         float healthBarPercent = healthDecimal * 500;
 
-        float healthBarPosition = healthBarPercent - 500 + 260;
+        float healthBarPosition = healthBarPercent - 500 + offset;
         // the 260 it to counter the origin
 
-        if (healthBarPosition > 260) healthBarPosition = 260;
+        if (healthBarPosition > offset) healthBarPosition = offset;
 
         GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 995, 0);
     }
@@ -186,22 +185,11 @@ public class PlayerController : MonoBehaviour, IInteractable, IDamage
             IDialogue dialogue = hit.collider.GetComponent<IDialogue>();
             dialogue.SetDialogue();
         }
-        // Pickup
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, TapeLayer) && !HaveTape) {
-            HaveTape = true;
-            GameManager.instance.TapeImage.SetActive(true);
-
-            Destroy(hit.collider.gameObject);
-        }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, CoinLayer)) {
-            GameManager.instance.UpdateCoinCount(1);
-
-            Destroy(hit.collider.gameObject);
-        }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, AmmoLayer)) {
-            GameManager.instance.UpdateAmmoCount(1);
-
-            Destroy(hit.collider.gameObject);
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
+            Debug.Log("Interactable");
+            IInteractable interact = hit.collider.GetComponent<IInteractable>();
+            interact.Interact();
+            HaveTape = interact.SetTape();
         }
     }
 

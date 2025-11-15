@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6479b5efe5924f4b91fc7860778e6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 0
   IgnoreLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -223,7 +224,6 @@ MonoBehaviour:
   contactDamage: 1
   attackRange: 3
   attackCooldown: 0.5
-  enemyType: 0
   chargeMaxSpeed: 0
   accelerationTime: 0
   chargeDuration: 0
