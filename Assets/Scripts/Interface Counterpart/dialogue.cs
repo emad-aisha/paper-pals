@@ -33,6 +33,8 @@ public class dialogue : MonoBehaviour, IDialogue
         if (textIndex == textIndexMax) isExhausted = true;
         if (isExhausted) { 
             GameManager.instance.EndDialogue();
+            textIndex--;
+            isExhausted = false;
             return;
         }
 
