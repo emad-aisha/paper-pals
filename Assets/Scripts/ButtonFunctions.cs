@@ -10,6 +10,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Restart()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
