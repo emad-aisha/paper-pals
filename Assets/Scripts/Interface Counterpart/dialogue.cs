@@ -38,7 +38,7 @@ public class dialogue : MonoBehaviour, IDialogue
             return;
         }
 
-        GameManager.instance.characterName.SetText(name);
+        GameManager.instance.characterName.SetText(name.ToUpper());
         GameManager.instance.characterText.SetText(text[textIndex]);
         GameManager.instance.Dialouge();
 

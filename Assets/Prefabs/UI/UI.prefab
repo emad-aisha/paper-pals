@@ -2421,8 +2421,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -240, y: 45}
-  m_SizeDelta: {x: 200, y: 20}
+  m_AnchoredPosition: {x: -15, y: 45}
+  m_SizeDelta: {x: 650, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &576908450157434868
 CanvasRenderer:
@@ -2452,7 +2452,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CHARACTER NAME
+  m_text: 'CHARACTER NAME '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 153afd27406352b4cbec6dafab9f8829, type: 2}
   m_sharedMaterial: {fileID: -2640138672974821728, guid: 153afd27406352b4cbec6dafab9f8829, type: 2}
@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -8459,6 +8459,7 @@ MonoBehaviour:
   menuDialogue: {fileID: 6959037056341082114}
   characterName: {fileID: 4527760370654443957}
   characterText: {fileID: 1476108032439416873}
+  isDialogueActive: 0
   Interactable: {fileID: 7168438732853729789}
   HealthBar: {fileID: 4593386633239252190}
   flashRed: {fileID: 7245685241220412806}
