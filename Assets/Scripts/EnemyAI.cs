@@ -71,6 +71,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         StoppingDistanceOG = AgentAI.stoppingDistance;
         StartPosition = transform.position;
+
+        //calculate direction vector from the enemy to the player
+        playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
+
     }
 
     void AttackPlayer()
@@ -99,12 +103,13 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
         FaceTarget();
+
         //if player is in the trigger collider
-        if (PlayerInTrigger && !CanSeePlayer())
+        if (PlayerInTrigger && !CanSeePlayer() && enemyType == EnemyType.ranged)
         {
             CheckRoam();
         }
-        else if(!PlayerInTrigger)
+        else if(!PlayerInTrigger && enemyType == EnemyType.ranged)
         {
             CheckRoam();
         }
@@ -161,12 +166,10 @@ public class EnemyAI : MonoBehaviour, IDamage
         //Find a random position within a sphere of radius RoamDistance
         Vector3 RandomPosition = Random.insideUnitSphere * RoamDistance;
         RandomPosition += StartPosition;
-        Debug.Log("RandomPosition position: " + RandomPosition.ToString());
 
         //Check if the Roam Position is within the NavMesh
         NavMeshHit Hit;
         NavMesh.SamplePosition(RandomPosition, out Hit, RoamDistance, 1);
-        Debug.Log("Hit position: " + Hit.position.ToString());
 
         AgentAI.SetDestination(Hit.position);
     }
@@ -219,7 +222,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     {
         //calculate the rotation needed to look at the player
         Quaternion Rotate =
-            Quaternion.LookRotation(new Vector3(playerDirection.x, transform.position.y, playerDirection.z));
+            Quaternion.LookRotation(new Vector3(playerDirection.x, 0, playerDirection.z));
 
         //smoothly rotate towards the player
         transform.rotation = Quaternion.Lerp(transform.rotation, Rotate, FaceTargetSpeed * Time.deltaTime);

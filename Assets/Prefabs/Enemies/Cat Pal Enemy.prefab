@@ -158,6 +158,8 @@ MonoBehaviour:
   HeadPosition: {fileID: 949228130875270768}
   FOV: 180
   FaceTargetSpeed: 100
+  RoamDistance: 0
+  RoamPauseTime: 0
 --- !u!33 &458197448807722588
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -372,7 +374,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6359787184237760573}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4021f21b3a83d224ea6df5356dc7b6b2, type: 3}
   m_Name: 
