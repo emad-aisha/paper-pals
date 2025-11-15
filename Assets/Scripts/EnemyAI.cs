@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class EnemyAI : MonoBehaviour, IDamage
 {
     public enum EnemyType { ranged, melee, bull };
@@ -44,6 +45,12 @@ public class EnemyAI : MonoBehaviour, IDamage
     float AngleToPlayer;
     Vector3 playerDirection;
 
+    [Header("Roam")]
+    [SerializeField] int RoamDistance;
+    [SerializeField] int RoamPauseTime;
+    float RoamTimer;
+    float StoppingDistanceOG;
+    Vector3 StartPosition;
 
     // private variables   
     bool PlayerInTrigger;
@@ -61,6 +68,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     {
         OGColor = Sprite.color;
         normalSpeed = AgentAI.speed;
+
+        StoppingDistanceOG = AgentAI.stoppingDistance;
+        StartPosition = transform.position;
     }
 
     void AttackPlayer()
@@ -82,21 +92,34 @@ public class EnemyAI : MonoBehaviour, IDamage
         ShootTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
 
-        FaceTarget();
-        //if player is in the trigger collider
-        if (PlayerInTrigger && CanSeePlayer())
+        if (AgentAI.remainingDistance < 0.01f)
         {
-            
+            //increment the Roam timer
+            RoamTimer += Time.deltaTime;
         }
 
-        if (PlayerInTrigger && enemyType == EnemyType.melee) {
+        FaceTarget();
+        //if player is in the trigger collider
+        if (PlayerInTrigger && !CanSeePlayer())
+        {
+            CheckRoam();
+        }
+        else if(!PlayerInTrigger)
+        {
+            CheckRoam();
+        }
+
+
+        if (PlayerInTrigger && enemyType == EnemyType.melee)
+        {
             AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
             // Check distance between enemy and player
             float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
             // If close enough to attack, and cooldown is ready and EnemyType.melee
-            if (distance <= attackRange && attackTimer >= attackCooldown) {
+            if (distance <= attackRange && attackTimer >= attackCooldown)
+            {
                 AttackPlayer();
             }
         }
@@ -120,7 +143,34 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
     }
+    
+    void CheckRoam()
+    {
+        if (AgentAI.remainingDistance < 0.01f && RoamTimer >= RoamPauseTime)
+        {
+            Roam();
+        }
+    }
+    
+    void Roam() 
+    {
+        //setting the Timer to 0
+        RoamTimer = 0;
+        AgentAI.stoppingDistance = 0;
 
+        //Find a random position within a sphere of radius RoamDistance
+        Vector3 RandomPosition = Random.insideUnitSphere * RoamDistance;
+        RandomPosition += StartPosition;
+        Debug.Log("RandomPosition position: " + RandomPosition.ToString());
+
+        //Check if the Roam Position is within the NavMesh
+        NavMeshHit Hit;
+        NavMesh.SamplePosition(RandomPosition, out Hit, RoamDistance, 1);
+        Debug.Log("Hit position: " + Hit.position.ToString());
+
+        AgentAI.SetDestination(Hit.position);
+    }
+        
     bool CanSeePlayer()
     {
         //calculate direction vector from the enemy to the player
@@ -156,12 +206,12 @@ public class EnemyAI : MonoBehaviour, IDamage
                 {
                     AttackPlayer();
                 }
-
+                AgentAI.stoppingDistance = StoppingDistanceOG;
                 return true;
             }
 
         }
-
+        AgentAI.stoppingDistance = 0;
         return false;
     }
 
