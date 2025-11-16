@@ -59,6 +59,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] public string defaultNoteTitle = "Note Title";
     [SerializeField] public string defaultNoteBody = "This is the sticky note body text.";
 
+    public GameObject playerSpawnPos;
+    public GameObject checkpointPopup;
+
     // private variables
     float originalTimeScale = 1f;
     int gameGoalCount = 0;
@@ -76,6 +79,8 @@ public class GameManager : MonoBehaviour
         
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
+
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
 
         mainCamera = Camera.main;
 
