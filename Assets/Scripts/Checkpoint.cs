@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class checkpoint : MonoBehaviour
+public class Checkpoint : MonoBehaviour
 {
 
     [SerializeField] Renderer model;
@@ -19,11 +19,11 @@ public class checkpoint : MonoBehaviour
         if (other.CompareTag("Player") && GameManager.instance.playerSpawnPos.transform.position != transform.position)
         {
             GameManager.instance.playerSpawnPos.transform.position = transform.position;
-            StartCoroutine(feedback());
+            StartCoroutine(Feedback());
         }
     }
 
-    IEnumerator feedback()
+    IEnumerator Feedback()
     {
         model.material.color = Color.red;
         GameManager.instance.checkpointPopup.SetActive(true);

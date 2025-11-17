@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
 
-        mainCamera = Camera.main;
+        mainCamera = GameManager.instance.player.GetComponent<Camera>(); ;
 
         if (isTurnOffLighting) Destroy(Lighting);
     }

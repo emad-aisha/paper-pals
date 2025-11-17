@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class spawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject objectToSpawn;
     [SerializeField] int spawnAmount;
@@ -29,7 +29,7 @@ public class spawner : MonoBehaviour
 
             if (spawnCount < spawnAmount && spawnTimer >= spawnRate)
             {
-                spawn();
+                Spawn();
             }
         }
 
@@ -42,7 +42,7 @@ public class spawner : MonoBehaviour
         }
 
     }
-    void spawn()
+    void Spawn()
     {
         Instantiate(objectToSpawn, spawnPos[Random.Range(0, spawnPos.Length)].transform.position, Quaternion.identity);
         spawnCount++;
