@@ -198,7 +198,7 @@ public class PlayerController : MonoBehaviour, IDamage
     public void Interact() {
         RaycastHit hit;
 
-        // Dialouge
+        // Dialogue
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer)) {
             IDialogue dialogue = hit.collider.GetComponent<IDialogue>();
             dialogue.SetDialogue();

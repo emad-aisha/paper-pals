@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class interactable : MonoBehaviour, IInteractable {
+public class Interactable : MonoBehaviour, IInteractable {
     enum InterfaceType {
         HealingTape,
         Ammo,

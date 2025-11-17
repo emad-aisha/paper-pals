@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
     [Header("Sticky Notes")]
     [SerializeField] GameObject stickyNotePrefab;
     [SerializeField] Transform stickyNoteParent;
-    [SerializeField] public string defaultNoteTitle = "Note Title";
-    [SerializeField] public string defaultNoteBody = "This is the sticky note body text.";
+    public string defaultNoteTitle = "Note Title";
+    public string defaultNoteBody = "This is the sticky note body text.";
 
     public GameObject playerSpawnPos;
     public GameObject checkpointPopup;
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
-    public void Dialouge() {
+    public void Dialogue() {
         if (menuActive == null) {
             Time.timeScale = 0;
             menuActive = menuDialogue;
@@ -196,7 +196,5 @@ public class GameManager : MonoBehaviour
         {
             notesInfo.SetNoteText(title, body);
         }
-
-
     }
 }

@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class dialogue : MonoBehaviour, IDialogue
+public class Dialogue : MonoBehaviour, IDialogue
 {
     [Header("Menus")]
-    [SerializeField] string name;
+    [SerializeField] string characterName;
     [SerializeField] List<string> text = new List<string>();
 
     int textIndexMax;
@@ -17,12 +17,6 @@ public class dialogue : MonoBehaviour, IDialogue
     void Start()
     {
         textIndexMax = text.Count;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public bool IsExhausted() {
@@ -38,9 +32,9 @@ public class dialogue : MonoBehaviour, IDialogue
             return;
         }
 
-        GameManager.instance.characterName.SetText(name.ToUpper());
+        GameManager.instance.characterName.SetText(characterName.ToUpper());
         GameManager.instance.characterText.SetText(text[textIndex]);
-        GameManager.instance.Dialouge();
+        GameManager.instance.Dialogue();
 
         if (textIndex < textIndexMax) textIndex++;
     }
