@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamage
@@ -6,42 +8,53 @@ public class PlayerController : MonoBehaviour, IDamage
     // Unity variables
     [Header("Player Neccesities")]
     [SerializeField] CharacterController controller;
-    
-	[Header("Layers")]
+    [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
+    [SerializeField] GameObject WeaponModel;
+
+
+    [Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
-	[SerializeField] LayerMask DialogueLayer;
+    [SerializeField] LayerMask DialogueLayer;
     [SerializeField] LayerMask InteractLayer;
 
-	[Header("UI stuffs")]
+    [Header("UI stuffs")]
     [SerializeField] int interactDistance;
-	[SerializeField] int HP;
+    [SerializeField] int HP;
     [SerializeField] int healAmount;
     [SerializeField] int offset;
 
-	[Header("Movement")]
-	[SerializeField] int speed;
+    [Header("Movement")]
+    [SerializeField] int speed;
     [SerializeField] int sprintMod;
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
     [SerializeField] float gravity;
 
-	[Header("Shooting")]
-	[SerializeField] int ShootDamage;
+    [Header("Combat")]
+    [SerializeField] int Damage;
     [SerializeField] int ShootDistance;
     [SerializeField] float FireRate;
+    [SerializeField] float MeleeSpeed;
+    [SerializeField] int TickDamage;
+
+    public bool DamageOverTime;
 
     // TODO: organize ts
-    
+
     // private variables
     // movement
     Vector3 moveDir;
     Vector3 jumpVelocity;
     int OGGravity;
     float maxGravity;
+    GameObject EquippedWeapon;
 
     int jumpCount;
     bool HaveTape;
+
+    int WeaponListPos;
+
 
     [Header("Camera Stuff")]
     [SerializeField] float FOVChange;
@@ -60,7 +73,8 @@ public class PlayerController : MonoBehaviour, IDamage
     bool isInvincible;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() {
+    void Start()
+    {
         OGFOV = GameManager.instance.mainCamera.fieldOfView;
         MaxHP = HP;
         OGGravity = (int)gravity;
@@ -69,31 +83,37 @@ public class PlayerController : MonoBehaviour, IDamage
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
 
         // interactable icon showing up
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)
-            && GameManager.instance.isPaused == false) {
+            && GameManager.instance.isPaused == false)
+        {
 
             if (hit.collider.gameObject.layer == 6 || hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
             else if (GameManager.instance.isInteractOn) GameManager.instance.InteractOff();
 
         }
-        else if (hit.collider == null && GameManager.instance.isPaused == false) {
+        else if (hit.collider == null && GameManager.instance.isPaused == false)
+        {
             GameManager.instance.InteractOff();
         }
 
 
-        if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange) {
+        if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange)
+        {
             GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV + FOVChange, Time.deltaTime * FOVChangeSpeed);
         }
-        else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV) {
+        else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV)
+        {
             GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV, Time.deltaTime * FOVChangeSpeed);
         }
 
-        if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
+        if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP)
+        {
             Heal(healAmount);
             HaveTape = false;
             GameManager.instance.TapeImage.SetActive(false);
@@ -104,14 +124,17 @@ public class PlayerController : MonoBehaviour, IDamage
         Sprint();
     }
 
-    void Movement() {
+    void Movement()
+    {
         // jump physics
-        if (controller.isGrounded) {
+        if (controller.isGrounded)
+        {
             jumpVelocity = Vector3.zero;
             jumpCount = 0;
             gravity = OGGravity;
         }
-        else {
+        else
+        {
             jumpVelocity.y -= (gravity * Time.deltaTime);
             if (gravity < maxGravity) gravity *= 1.005f;
         }
@@ -128,25 +151,31 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             Shoot();
         }
-        if (Input.GetButtonDown("Interact")) {
+        if (Input.GetButtonDown("Interact"))
+        {
             // initial interact
             Interact();
         }
     }
 
-    void Sprint() {
-        if (Input.GetButtonDown("Sprint")) {
+    void Sprint()
+    {
+        if (Input.GetButtonDown("Sprint"))
+        {
             isSprinting = true;
             speed *= sprintMod;
         }
-        else if (Input.GetButtonUp("Sprint")) {
+        else if (Input.GetButtonUp("Sprint"))
+        {
             isSprinting = false;
             speed /= sprintMod;
         }
     }
 
-    void Jump() {
-        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps) {
+    void Jump()
+    {
+        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
+        {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
         }
@@ -164,12 +193,13 @@ public class PlayerController : MonoBehaviour, IDamage
             IDamage dmg = hit.collider.GetComponent<IDamage>();
             if (dmg != null)
             {
-                dmg.TakeDamage(ShootDamage);
+                dmg.TakeDamage(Damage);
             }
         }
     }
 
-    void UpdateHealthBar() {
+    void UpdateHealthBar()
+    {
         float healthDecimal = HP / (float)MaxHP;
         float healthBarPercent = healthDecimal * 500;
 
@@ -195,15 +225,18 @@ public class PlayerController : MonoBehaviour, IDamage
         }
     }
 
-    public void Interact() {
+    public void Interact()
+    {
         RaycastHit hit;
 
         // Dialogue
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer)) {
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer))
+        {
             IDialogue dialogue = hit.collider.GetComponent<IDialogue>();
             dialogue.SetDialogue();
         }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer))
+        {
             Debug.Log("Interactable");
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
@@ -227,9 +260,58 @@ public class PlayerController : MonoBehaviour, IDamage
 
     }
 
-    public IEnumerator Flash(float duration) {
+    public IEnumerator Flash(float duration)
+    {
         GameManager.instance.flashRed.SetActive(true);
         yield return new WaitForSeconds(duration);
         GameManager.instance.flashRed.SetActive(false);
+    }
+
+    public void GetWeaponStats(WeaponStats Weapon)
+    {
+
+        Weapons.Add(Weapon);
+        WeaponListPos = Weapons.Count - 1;
+        ChangeItem();
+    }
+
+    void ChangeItem()
+    {
+
+        WeaponStats Weapon = Weapons[WeaponListPos];
+        Damage = Weapon.GetDamage();
+
+        if (Weapon.type == WeaponType.Gun)
+        {
+            GunStats Gun = (GunStats)Weapon;
+
+            ShootDistance = Gun.ShootDistance;
+            FireRate = Gun.ShootRate;
+        }
+
+        else if (Weapon.type == WeaponType.Melee)
+        {
+            MeleeStats Melee = (MeleeStats)Weapon;
+
+            MeleeSpeed = Melee.SwingSpeed;
+            DamageOverTime = Melee.DamageOverTime;
+            TickDamage = Melee.TickDamage;
+        }
+        WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
+        WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+    }
+
+    void SelectWeapon()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && WeaponListPos < Weapons.Count - 1)
+        {
+            WeaponListPos++;
+            ChangeItem();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && WeaponListPos > 0)
+        {
+            WeaponListPos--;
+            ChangeItem();
+        }
     }
 }

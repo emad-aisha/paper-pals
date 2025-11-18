@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5428be8e8bafe8141a16c12633b62e6c, type: 3}
+  m_Name: Pencil
+  m_EditorClassIdentifier: 
+  type: 0
+  Model: {fileID: 1655137212806262, guid: 680cc712cb55643a38fb5bec71bcc683, type: 3}
+  HitFX: {fileID: 0}
+  Volume: 0
+  Anim: {fileID: 0}
+  Damage: 3
+  SwingSpeed: 0.216
+  TickDamage: 0
+  DamageOverTime: 0
