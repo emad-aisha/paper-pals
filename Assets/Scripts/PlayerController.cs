@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,10 @@ public class PlayerController : MonoBehaviour, IDamage
     [Header("Movement")]
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
+    [SerializeField] int sprintTimer;
+    [SerializeField] float sprintDrainRate;
+    [SerializeField] float sprintRegenRate;
+   
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
@@ -50,6 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage
     float maxGravity;
     GameObject EquippedWeapon;
 
+
     int jumpCount;
     bool HaveTape;
 
@@ -60,6 +66,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float FOVChange;
     [SerializeField] int FOVChangeSpeed;
     bool isSprinting = false;
+    float sprintCurr;
     float OGFOV;
 
     // TODO: change this to shooting based on tapping
@@ -71,6 +78,10 @@ public class PlayerController : MonoBehaviour, IDamage
 
     // TODO: maybe get rid of this?
     bool isInvincible;
+
+    [Header("\nFlashlight")]
+    public GameObject flashlightSwitch;
+    private bool flashlightOn = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -160,16 +171,38 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Sprint()
     {
-        if (Input.GetButtonDown("Sprint"))
+        if (Input.GetButton("Sprint") && sprintCurr > 0)
         {
-            isSprinting = true;
-            speed *= sprintMod;
+           if (!isSprinting)
+            {
+                isSprinting = true;
+                speed += sprintMod;
+            }
+
+           //Drain Stamina
+           sprintCurr -= sprintDrainRate * Time.deltaTime;
+            if (sprintCurr < 0)
+              {
+                sprintCurr = 0;
+                isSprinting = false;
+                speed -= sprintMod;
+            }
         }
-        else if (Input.GetButtonUp("Sprint"))
+        else
         {
-            isSprinting = false;
-            speed /= sprintMod;
+            if (isSprinting)
+            {
+                isSprinting = false;
+                speed -= sprintMod;
+            }
+            //Regen Stamina
+            sprintCurr += sprintRegenRate * Time.deltaTime;
+            if (sprintCurr > sprintTimer)
+            {
+                sprintCurr = sprintTimer;
+            }
         }
+      
     }
 
     void Jump()
@@ -313,5 +346,11 @@ public class PlayerController : MonoBehaviour, IDamage
             WeaponListPos--;
             ChangeItem();
         }
+    }
+
+    internal void FlashlightToggle()
+    {
+        flashlightOn = !flashlightOn;
+        flashlightSwitch.SetActive(flashlightOn);
     }
 }

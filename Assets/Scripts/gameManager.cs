@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject Interactable;
     public GameObject HealthBar;
     public GameObject flashRed;
+    public GameObject SprintBar;
 
     [Header("\nInventory")]
     public GameObject TapeImage;
@@ -102,6 +103,11 @@ public class GameManager : MonoBehaviour
             {
                 UnpauseGame();
             }
+        }
+
+        if (Input.GetButtonDown("Flashlight"))
+        {
+            controller.FlashlightToggle();
         }
     }
 
