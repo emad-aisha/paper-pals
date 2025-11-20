@@ -272,6 +272,7 @@ public class GameManager : MonoBehaviour
 
     public void Defeat()
     {
+        Debug.Log("Defeat called! HP reached zero");
         PauseGame();
         menuActive = menuLose;
         menuActive.SetActive(true);

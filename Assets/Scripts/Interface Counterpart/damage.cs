@@ -45,21 +45,14 @@ public class Damage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger)
-            return;
-        
-
-        IDamage dmg = other.GetComponent<IDamage>();
-
-        if (dmg != null && type != DamageType.DOT)
+        if (other.CompareTag("Player"))
         {
-           dmg.TakeDamage(damageAmount);
+            IDamage playerDamage = other.GetComponent<IDamage>();
+            if (playerDamage != null)
+            {
+                playerDamage.TakeDamage(damageAmount); 
+            }
         }
-
-        if (type == DamageType.moving || type == DamageType.homing) {
-            Destroy(gameObject);
-        }
-       
     }
 
     private void OnTriggerStay(Collider other)

@@ -133,12 +133,14 @@ public class EnemyAI : MonoBehaviour, IDamage
         // Bull charge logic
         if (enemyType == EnemyType.bull && PlayerInTrigger)
         {
+            
             chargeTimer += Time.deltaTime;
 
             float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-
+            Debug.Log(distance.ToString());
             if (distance <= attackRange && attackTimer >= attackCooldown)
             {
+              
                 AttackPlayer();
             }
 
