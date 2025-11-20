@@ -33,4 +33,5 @@ public class Checkpoint : MonoBehaviour
         model.material.color = colorOrig;
     }
 
+
 }

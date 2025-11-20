@@ -99,6 +99,8 @@ public class PlayerController : MonoBehaviour, IDamage
         HaveTape = false;
         sprintCurr = sprintTimer;
         OGSpeed = speed;
+
+        RespawnPlayer();
     }
 
     // Update is called once per frame
@@ -425,4 +427,16 @@ public class PlayerController : MonoBehaviour, IDamage
         flashlightOn = !flashlightOn;
         flashlightSwitch.SetActive(flashlightOn);
     }
+
+    public void RespawnPlayer()
+    {
+        // reset player position to last checkpoint
+        controller.transform.position = GameManager.instance.playerSpawnPos.transform.position;
+
+        // resetting and updating player health
+        HP = MaxHP;
+        UpdateHealthBar();
+    }
+
+
 }
