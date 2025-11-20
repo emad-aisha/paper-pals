@@ -66,7 +66,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        OGColor = Sprite.color;
+        OGColor = Sprite.material.color;
         normalSpeed = AgentAI.speed;
 
         StoppingDistanceOG = AgentAI.stoppingDistance;
@@ -241,7 +241,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
         else
         {
-            //else if it survives will flash white
+            //else if it survives will flash red
             StartCoroutine(FlashRed());
         }
     }
@@ -265,9 +265,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     IEnumerator FlashRed()
     {
-        Sprite.color = Color.red;
+        Debug.Log("yes ium having fun");
+        Sprite.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        Sprite.color = OGColor;
+        Sprite.material.color = OGColor;
     }
 
     void Shoot()

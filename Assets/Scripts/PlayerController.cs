@@ -23,12 +23,13 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int SOffset;
 
     [Header("Movement")]
-    [SerializeField] int speed;
+    [SerializeField] float speed;
     [SerializeField] int sprintMod;
     [SerializeField] float sprintDrainRate;
     [SerializeField] float sprintRegenRate;
     [SerializeField] int sprintTimer;
     [SerializeField] float sprintCurrBoost;
+
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
@@ -40,7 +41,11 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float FireRate;
     [SerializeField] float MeleeSpeed;
     [SerializeField] int TickDamage;
+    [SerializeField] GameObject MeleeHitbox;
+
+    float MeleeRange;
     public bool DamageOverTime;
+    [SerializeField] List<IDamage> Enemies = new List<IDamage>();
 
     [Header("Camera Stuff")]
     [SerializeField] float FOVChange;
@@ -67,14 +72,16 @@ public class PlayerController : MonoBehaviour, IDamage
     GameObject EquippedWeapon;
     int WeaponListPos;
     float FireTimer;
+    float MeleeTimer;
 
     // inventory
     bool HaveTape;   
 
     // OG stats before boosts
     int MaxHP;
-    int OGSpeed;
+    float OGSpeed;
     bool isInvincible; // TODO: maybe get rid of this?
+    float finalSpeed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -85,6 +92,7 @@ public class PlayerController : MonoBehaviour, IDamage
         maxGravity = gravity * 1.3f;
         HaveTape = false;
         sprintCurr = sprintTimer;
+        OGSpeed = speed;
     }
 
     // Update is called once per frame
@@ -94,7 +102,8 @@ public class PlayerController : MonoBehaviour, IDamage
             // clean up variables
             RaycastHit hit;
 
-            Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
+           // Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
+            Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * MeleeRange, Color.red);
 
             // interact icon
             if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)) {
@@ -120,6 +129,7 @@ public class PlayerController : MonoBehaviour, IDamage
             }
 
             FireTimer += Time.deltaTime;
+            MeleeTimer += Time.deltaTime;
             Movement();
         }
         
@@ -142,20 +152,37 @@ public class PlayerController : MonoBehaviour, IDamage
 
         // movement
         moveDir = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
-        float finalSpeed = speed + sprintCurrBoost;
-        controller.Move(moveDir * finalSpeed * Time.deltaTime);
+        if (isSprinting)
+        {
+            speed = finalSpeed;
+        }
+        else
+        {
+            speed = OGSpeed;
+        }
+            controller.Move(moveDir * speed * Time.deltaTime);
 
         // jump movement
         Jump();
         controller.Move(jumpVelocity * Time.deltaTime);
+        if (Weapons.Count > 0) {
+            if (Input.GetButton("Fire1")) {
+                if (Weapons[WeaponListPos].type == WeaponType.Gun && FireTimer >= FireRate)
+                {
+                    Shoot();
+                }
+                else if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed)
+                {
+                    Swing();
+                }
+             }
+         }
 
-        if (Input.GetButton("Fire1") && FireTimer >= FireRate) {
-            Shoot();
-        }
         if (Input.GetButtonDown("Interact")) {
             // initial interact
             Interact();
         }
+        SelectWeapon();
     }
 
     void Sprint()
@@ -180,6 +207,8 @@ public class PlayerController : MonoBehaviour, IDamage
             sprintCurr = 0f;
 
         sprintCurrBoost = sprintMod * (sprintCurr / sprintTimer);
+        finalSpeed = OGSpeed + sprintCurrBoost;
+     
         UpdateSprintBar();
     }
 
@@ -212,6 +241,63 @@ public class PlayerController : MonoBehaviour, IDamage
             }
         }
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy")) 
+        {
+            
+            IDamage Enemy = other.GetComponent<IDamage>();
+
+            if (!Enemies.Contains(Enemy))
+            {
+                Debug.Log(Enemy);
+                Debug.Log(Enemies);
+                Enemies.Add(Enemy);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+     
+            IDamage Enemy = other.GetComponent<IDamage>();
+
+            if (Enemies.Contains(Enemy))
+            {
+                Enemies.Remove(Enemy);
+            }
+        }
+    }
+
+    void Swing()
+    {
+        MeleeTimer = 0;
+        //Debug.Log("called");
+        if (Enemies.Count > 0)
+        {
+
+            Debug.Log("swinging");
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange , ~IgnoreLayer))
+            {
+                IDamage dmg = hit.collider.GetComponent<IDamage>();
+
+                if (dmg != null && Enemies.Contains(dmg))
+                {
+                    dmg.TakeDamage(Weapons[WeaponListPos].GetDamage());
+                    return;
+                }
+            }
+        }
+    }
+
+
 
     void UpdateHealthBar()
     {
@@ -305,6 +391,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         if (Weapon.type == WeaponType.Gun)
         {
+            Debug.Log("hi king");
             GunStats Gun = (GunStats)Weapon;
 
             ShootDistance = Gun.ShootDistance;
@@ -318,6 +405,9 @@ public class PlayerController : MonoBehaviour, IDamage
             MeleeSpeed = Melee.SwingSpeed;
             DamageOverTime = Melee.DamageOverTime;
             TickDamage = Melee.TickDamage;
+            MeleeRange = Melee.MeleeRange;
+            Debug.Log(MeleeRange);
+
         }
         WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
         WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
