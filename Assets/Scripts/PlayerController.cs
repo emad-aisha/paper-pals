@@ -212,6 +212,7 @@ public class PlayerController : MonoBehaviour, IDamage
     IEnumerator playStep()
     {
         isPlayingStep = true;
+        aud.pitch = Random.Range(0.9f, 1.1f);
         aud.PlayOneShot(audStep[Random.Range(0, audStep.Length)], audStepVol);
 
         if (isSprinting)
@@ -358,6 +359,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         StartCoroutine(Flash(0.1f));
         UpdateHealthBar();
+        aud.pitch = Random.Range(0.9f, 1.1f);
         aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
 
         if (HP <= 0)

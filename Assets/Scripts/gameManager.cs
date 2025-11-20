@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
     [Header("Level specific")]
     public GunStats gun;
     public MeleeStats pencil;
+
+    public GameObject gunObject;
+    public GameObject pencilObject;
+
     public GameObject stickyNoteFinal;
 
     [Header("\n\nPublic variables")]
@@ -108,6 +112,9 @@ public class GameManager : MonoBehaviour
 
         exit = GameObject.FindWithTag("Exit");
         exitCover = GameObject.FindWithTag("Exit Cover");
+
+        if (gunObject != null) gunObject.layer = 7;
+        if (pencilObject != null) pencilObject.layer = 7;
 
         SetAbilities();
         UpdateKeysLeft();
