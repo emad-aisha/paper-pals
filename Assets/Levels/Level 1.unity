@@ -604,6 +604,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149492514}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &184274389 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7060418261676598432, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
+  m_PrefabInstance: {fileID: 1005091641}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &192158810 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6979635137042022473, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
@@ -3268,6 +3273,10 @@ PrefabInstance:
       value: 0.339656
       objectReference: {fileID: 0}
     - target: {fileID: 6194971248250408480, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
+      propertyPath: pencilObject
+      value: 
+      objectReference: {fileID: 960214173}
+    - target: {fileID: 6194971248250408480, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
       propertyPath: FlashlightMessage
       value: 
       objectReference: {fileID: 192158810}
@@ -3540,6 +3549,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 604dbd63e6cca7a41a6ab1beab9e032a, type: 3}
+--- !u!1 &960214173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8700265514799679983, guid: e4347b0f9a7b1c748915e23f35727dfc, type: 3}
+  m_PrefabInstance: {fileID: 1944243129}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &962805435 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 666556688346170774, guid: 4ca5358125df6da4e9c41ec9adea0bbd, type: 3}
@@ -3694,7 +3708,7 @@ PrefabInstance:
     - target: {fileID: 5853185099538493071, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
       propertyPath: WeaponModel
       value: 
-      objectReference: {fileID: 8700265514799679983, guid: e4347b0f9a7b1c748915e23f35727dfc, type: 3}
+      objectReference: {fileID: 184274389}
     - target: {fileID: 5853185099538493071, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
       propertyPath: audHurt.Array.size
       value: 3
@@ -7078,18 +7092,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6048314548641396958, guid: e4347b0f9a7b1c748915e23f35727dfc, type: 3}
-      propertyPath: m_Size.x
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 6048314548641396958, guid: e4347b0f9a7b1c748915e23f35727dfc, type: 3}
-      propertyPath: m_Size.y
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 6048314548641396958, guid: e4347b0f9a7b1c748915e23f35727dfc, type: 3}
-      propertyPath: m_Size.z
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 8698228192022216487, guid: e4347b0f9a7b1c748915e23f35727dfc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.994591
