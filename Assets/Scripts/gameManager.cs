@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,8 +28,8 @@ public class GameManager : MonoBehaviour
 
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
-    public GameObject HealthBar;
-    public GameObject SprintBar;
+    public Image HealthBar;
+    public Image SprintBar;
     public GameObject flashRed;
     public GameObject FlashlightMessage;
 
@@ -161,6 +162,8 @@ public class GameManager : MonoBehaviour
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
+        // TODO: set guns
+
         if (currLevelName == levelOne)
         {
             hasFlashlight = false;
@@ -178,7 +181,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // set btoth to true
+            hasFlashlight = true;
+            hasDoubleJump = true;
         }
     }
 
@@ -188,6 +192,8 @@ public class GameManager : MonoBehaviour
 
         if (keysLeft != 0)
             reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
+        else if (keysLeft == 1 && SceneManager.GetActiveScene().name == "Level 3")
+            reminderText.text = "Defeat the enemies!";
         else
             reminderText.text = "You can escape now!";
     }
