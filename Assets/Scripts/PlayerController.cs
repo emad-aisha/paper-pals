@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour, IDamage
 {
     // Unity variables
@@ -27,10 +27,12 @@ public class PlayerController : MonoBehaviour, IDamage
     [Header("Movement")]
     [SerializeField] int speed;
     [SerializeField] int sprintMod;
-    [SerializeField] int sprintTimer;
     [SerializeField] float sprintDrainRate;
     [SerializeField] float sprintRegenRate;
-   
+    [SerializeField] int sprintTimer;
+    [SerializeField] float sprintCurrBoost;
+
+
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
@@ -91,6 +93,7 @@ public class PlayerController : MonoBehaviour, IDamage
         OGGravity = (int)gravity;
         maxGravity = gravity * 1.2f;
         HaveTape = false;
+        sprintCurr = sprintTimer;
     }
 
     // Update is called once per frame
@@ -131,8 +134,9 @@ public class PlayerController : MonoBehaviour, IDamage
         }
 
         FireTimer += Time.deltaTime;
-        Movement();
         Sprint();
+        Movement();
+        
     }
 
     void Movement()
@@ -152,7 +156,8 @@ public class PlayerController : MonoBehaviour, IDamage
 
         // movement
         moveDir = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
-        controller.Move(moveDir * speed * Time.deltaTime);
+        float finalSpeed = speed + sprintCurrBoost;
+        controller.Move(moveDir * finalSpeed * Time.deltaTime);
 
         // jump movement
         Jump();
@@ -171,38 +176,27 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Sprint()
     {
-        if (Input.GetButton("Sprint") && sprintCurr > 0)
-        {
-           if (!isSprinting)
-            {
-                isSprinting = true;
-                speed += sprintMod;
-            }
+        bool wantsToSprint = Input.GetButton("Sprint") && sprintCurr > 0;
 
-           //Drain Stamina
-           sprintCurr -= sprintDrainRate * Time.deltaTime;
-            if (sprintCurr < 0)
-              {
-                sprintCurr = 0;
-                isSprinting = false;
-                speed -= sprintMod;
-            }
+        if (wantsToSprint)
+        {
+            isSprinting = true;
+            sprintCurr -= sprintDrainRate * Time.deltaTime;
+           
         }
         else
         {
-            if (isSprinting)
-            {
-                isSprinting = false;
-                speed -= sprintMod;
-            }
-            //Regen Stamina
+            isSprinting = false;
             sprintCurr += sprintRegenRate * Time.deltaTime;
-            if (sprintCurr > sprintTimer)
-            {
-                sprintCurr = sprintTimer;
-            }
+         
         }
-      
+
+        if (sprintCurr > sprintTimer) 
+            sprintCurr = sprintTimer;
+
+        sprintCurrBoost = sprintMod * (sprintCurr / sprintTimer);
+
+        UpdateSprintBar();
     }
 
     void Jump()
@@ -243,6 +237,21 @@ public class PlayerController : MonoBehaviour, IDamage
 
         GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 995, 0);
     }
+
+    void UpdateSprintBar()
+    {
+        if (GameManager.instance.SprintBar == null)
+            return;
+
+        float staminaPercent = sprintCurr / sprintTimer;
+        float barScaleX = staminaPercent * (sprintCurrBoost / sprintMod);
+        barScaleX = Mathf.Clamp(barScaleX, 0f, 1.5f);
+        Vector3 scale = GameManager.instance.SprintBar.transform.localScale;
+        scale.x = barScaleX;
+        GameManager.instance.SprintBar.transform.localScale = scale;
+    }
+
+
 
     public void TakeDamage(int amount)
     {
