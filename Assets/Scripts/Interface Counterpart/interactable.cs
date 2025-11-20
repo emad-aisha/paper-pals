@@ -7,7 +7,8 @@ public class Interactable : MonoBehaviour, IInteractable {
         Currency,
         Trophy,
         Weapon,
-        Flashlight
+        Flashlight,
+        Keys
     };
 
     PlayerController Player;
@@ -21,7 +22,7 @@ public class Interactable : MonoBehaviour, IInteractable {
     public WeaponStats weaponStats;
 
     public void Interact() {
-        Debug.Log("Interact");
+        // TODO: change into a switch
         if (type == InterfaceType.HealingTape && !SetTape()) {
             GameManager.instance.TapeImage.SetActive(true);
             SetTape();
@@ -33,7 +34,7 @@ public class Interactable : MonoBehaviour, IInteractable {
             GameManager.instance.UpdateCoinCount(amount);
         }
         else if (type == InterfaceType.Trophy) {
-            GameManager.instance.WinTrophy(amount);
+            GameManager.instance.WinTrophy(0);
         }
         else if (type == InterfaceType.Weapon) {
             Player.GetWeaponStats(weaponStats);
@@ -41,6 +42,11 @@ public class Interactable : MonoBehaviour, IInteractable {
         }
         else if (type == InterfaceType.Flashlight) {
             GameManager.instance.hasFlashlight = true;
+        }
+        else if (type == InterfaceType.Keys) {
+            GameManager.instance.ownedKeys += 1;
+            GameManager.instance.KeyCheck();
+            GameManager.instance.WinTrophy(0);
         }
 
         if (type != InterfaceType.Trophy) Destroy(this.gameObject);

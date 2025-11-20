@@ -1,6 +1,7 @@
-using UnityEngine;
+using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -40,17 +41,28 @@ public class GameManager : MonoBehaviour
     public GameObject interactActive;
     public bool isInteractOn;
 
+    [Header("Trophey Stuff")]
+    public GameObject exit;
+    public GameObject exitCover;
+    public GameObject reminderMenu;
+    public TMP_Text reminderText;
 
     [Header("\n\nPublic variables")]
 
     [Header("Player")]
     public GameObject player;
     public PlayerController controller;
+    public bool hasFlashlight;
+    public int ownedKeys = 0;
 
     [Header("Camera")]
     public Camera mainCamera;
 
-    [Header("Misc")]
+    [Header("Checkpoints")]
+    public GameObject playerSpawnPos;
+    public GameObject checkpointPopup;
+
+    [Header("\nMisc")]
     public TMP_Text gameGoalCountText;
     public bool isPaused;
 
@@ -60,10 +72,7 @@ public class GameManager : MonoBehaviour
     public string defaultNoteTitle = "Note Title";
     public string defaultNoteBody = "This is the sticky note body text.";
 
-    public GameObject playerSpawnPos;
-    public GameObject checkpointPopup;
 
-    public bool hasFlashlight;
 
     // private variables
     float originalTimeScale = 1f;
@@ -71,6 +80,10 @@ public class GameManager : MonoBehaviour
 
     int coinCount;
     int ammoCount;
+
+    // key shit
+    int totalKeys = 3;
+    
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -87,6 +100,8 @@ public class GameManager : MonoBehaviour
 
         mainCamera = Camera.main;
         hasFlashlight = false;
+
+        UpdateKeysLeft();
 
         if (isTurnOffLighting) Destroy(Lighting);
     }
@@ -133,12 +148,55 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
+
+    public void UpdateKeysLeft() {
+        int keysLeft = totalKeys - ownedKeys;
+
+        if (keysLeft != 0) 
+            reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
+        else 
+            reminderText.text = "You can escape now!";
+    }
+
+    public void KeyCheck() {
+        UpdateKeysLeft();
+        StartCoroutine(ReminderText());
+
+        if (ownedKeys == totalKeys) {
+            Destroy(exitCover);
+        }
+            
+    }
+
+    public IEnumerator ReminderText() {
+        reminderMenu.SetActive(true);
+        yield return new WaitForSeconds(1);
+        reminderMenu.SetActive(false);
+    }
+
+    public void LoadNextLevel() {
+        string currLevelName = SceneManager.GetActiveScene().name;
+
+        string levelOne   = "Level 1";
+        string levelTwo   = "Level 2";
+        string levelThree = "Level 3";
+
+        if (currLevelName == levelOne) {
+            SceneManager.LoadScene(levelTwo);
+        }
+        else if (currLevelName == levelTwo) {
+            SceneManager.LoadScene(levelThree);
+        }
+        else {
+            SceneManager.LoadScene(levelOne);
+        }
+    }
+
     public void WinTrophy(int amount)
     {
         gameGoalCount += amount;
 
-        if (gameGoalCount >= 1)
-        {
+        if (gameGoalCount == 1) {
             PauseGame();
             menuActive = menuWin;
             menuActive.SetActive(true);

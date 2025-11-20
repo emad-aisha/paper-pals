@@ -1,12 +1,19 @@
+using System.Collections;
 using UnityEngine;
 
 public class GoalTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            GameManager.instance.WinTrophy(1);
+    enum Type {exit, exitCover};
+    [SerializeField] Type type;
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Player")) {
+            if (type == Type.exitCover) {
+                GameManager.instance.KeyCheck();
+            }
+            else if (type == Type.exit) {
+                GameManager.instance.LoadNextLevel();
+            }
         }
     }
   
