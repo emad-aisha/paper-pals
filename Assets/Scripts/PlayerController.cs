@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] CharacterController controller;
     [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
     [SerializeField] GameObject WeaponModel;
-    [SerializeField] GameObject GunModel;
 
     [Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
@@ -262,7 +261,6 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
-            aud.pitch = Random.Range(0.9f, 1.1f);
             aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
         }
         else if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && GameManager.instance.hasDoubleJump) {
@@ -440,22 +438,12 @@ public class PlayerController : MonoBehaviour, IDamage
             DamageOverTime = Melee.DamageOverTime;
             TickDamage = Melee.TickDamage;
             MeleeRange = Melee.MeleeRange;
-        }
+            Debug.Log(MeleeRange);
 
-        if (Weapons[WeaponListPos].type == WeaponType.Melee) {
-            WeaponModel.SetActive(true);
-            GunModel.SetActive(false);
-            WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
-            WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
-            WeaponModel.layer = 10; 
         }
-        else if (Weapons[WeaponListPos].type == WeaponType.Gun) {
-            GunModel.SetActive(true);
-            WeaponModel.SetActive(false);
-            GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
-            GunModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
-            GunModel.layer = 10;
-        }
+        WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
+        WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+        WeaponModel.layer = 10;
     }
 
     void SelectWeapon()
