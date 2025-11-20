@@ -41,8 +41,9 @@ public class Interactable : MonoBehaviour, IInteractable {
             Player.GetWeaponStats(weaponStats);
             Destroy(gameObject);
         }
-        else if (type == InterfaceType.Flashlight) {
+        else if (type == InterfaceType.Flashlight){
             GameManager.instance.hasFlashlight = true;
+            GameManager.instance.ShowFlashlightHint();
         }
         else if (type == InterfaceType.Keys) {
             GameManager.instance.ownedKeys += 1;

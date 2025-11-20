@@ -24,12 +24,13 @@ public class GameManager : MonoBehaviour
     public TMP_Text characterName;
     public TMP_Text characterText;
     public bool isDialogueActive;
-    
+
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public GameObject HealthBar;
     public GameObject SprintBar;
     public GameObject flashRed;
+    public GameObject FlashlightMessage;
 
     [Header("\nInventory")]
     public GameObject TapeImage;
@@ -84,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     // key shit
     int totalKeys = 3;
-    
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -93,7 +94,7 @@ public class GameManager : MonoBehaviour
         if (instance == null) instance = this;
 
         originalTimeScale = Time.timeScale;
-        
+
         player = GameObject.FindWithTag("Player");
         controller = player.GetComponent<PlayerController>();
 
@@ -116,7 +117,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (menuActive == null) {
+            if (menuActive == null)
+            {
                 PauseGame();
                 menuActive = menuPause;
                 menuActive.SetActive(true);
@@ -152,68 +154,81 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
-    public void SetAbilities() {
+    public void SetAbilities()
+    {
         string currLevelName = SceneManager.GetActiveScene().name;
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
-        if (currLevelName == levelOne) {
+        if (currLevelName == levelOne)
+        {
             hasFlashlight = false;
             hasDoubleJump = false;
         }
-        else if (currLevelName == levelTwo) {
+        else if (currLevelName == levelTwo)
+        {
             hasFlashlight = true;
             hasDoubleJump = false;
         }
-        else if (currLevelName == levelThree) {
+        else if (currLevelName == levelThree)
+        {
             hasFlashlight = true;
             hasDoubleJump = true;
         }
-        else {
+        else
+        {
             // set btoth to true
         }
     }
 
-    public void UpdateKeysLeft() {
+    public void UpdateKeysLeft()
+    {
         int keysLeft = totalKeys - ownedKeys;
 
-        if (keysLeft != 0) 
+        if (keysLeft != 0)
             reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
-        else 
+        else
             reminderText.text = "You can escape now!";
     }
 
-    public void KeyCheck() {
+    public void KeyCheck()
+    {
         UpdateKeysLeft();
         StartCoroutine(ReminderText());
 
-        if (ownedKeys == totalKeys) {
+        if (ownedKeys == totalKeys)
+        {
             Destroy(exitCover);
         }
-            
+
     }
 
-    public IEnumerator ReminderText() {
+    public IEnumerator ReminderText()
+    {
         reminderMenu.SetActive(true);
         yield return new WaitForSeconds(1);
         reminderMenu.SetActive(false);
     }
 
-    public void LoadNextLevel() {
+    public void LoadNextLevel()
+    {
         string currLevelName = SceneManager.GetActiveScene().name;
 
-        string levelOne   = "Level 1";
-        string levelTwo   = "Level 2";
+        string levelOne = "Level 1";
+        string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
-        if (currLevelName == levelOne) {
+        if (currLevelName == levelOne)
+        {
             SceneManager.LoadScene(levelTwo);
         }
-        else if (currLevelName == levelTwo) {
+        else if (currLevelName == levelTwo)
+        {
             SceneManager.LoadScene(levelThree);
         }
-        else {
+        else
+        {
             SceneManager.LoadScene(levelOne);
         }
     }
@@ -222,7 +237,8 @@ public class GameManager : MonoBehaviour
     {
         gameGoalCount += amount;
 
-        if (gameGoalCount == 1) {
+        if (gameGoalCount == 1)
+        {
             PauseGame();
             menuActive = menuWin;
             menuActive.SetActive(true);
@@ -236,8 +252,10 @@ public class GameManager : MonoBehaviour
         menuActive.SetActive(true);
     }
 
-    public void Dialogue() {
-        if (menuActive == null) {
+    public void Dialogue()
+    {
+        if (menuActive == null)
+        {
             Time.timeScale = 0;
             menuActive = menuDialogue;
             menuActive.SetActive(true);
@@ -245,8 +263,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndDialogue() {
-        if (menuActive == menuDialogue) {
+    public void EndDialogue()
+    {
+        if (menuActive == menuDialogue)
+        {
             isDialogueActive = false;
             Time.timeScale = originalTimeScale;
             menuActive.SetActive(false);
@@ -254,28 +274,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void InteractOn() {
-        if (interactActive == null) {
+    public void InteractOn()
+    {
+        if (interactActive == null)
+        {
             isInteractOn = true;
             interactActive = Interactable;
             interactActive.SetActive(true);
         }
     }
 
-    public void InteractOff() {
-        if (interactActive != null) {
+    public void InteractOff()
+    {
+        if (interactActive != null)
+        {
             isInteractOn = false;
             interactActive.SetActive(false);
             interactActive = null;
-        } 
+        }
     }
 
-    public void UpdateCoinCount(int ammount) {
+    public void UpdateCoinCount(int ammount)
+    {
         if (coinCount < 999) coinCount += ammount;
         CoinCountText.text = coinCount.ToString("F0");
     }
 
-    public void UpdateAmmoCount(int ammount) {
+    public void UpdateAmmoCount(int ammount)
+    {
         if (ammoCount < 999) ammoCount += ammount;
         AmmoCountText.text = ammoCount.ToString("F0");
     }
@@ -285,9 +311,21 @@ public class GameManager : MonoBehaviour
         GameObject note = Instantiate(stickyNotePrefab, stickyNoteParent);
         StickyNotesInfo notesInfo = note.GetComponent<StickyNotesInfo>();
 
-        if(notesInfo != null)
+        if (notesInfo != null)
         {
             notesInfo.SetNoteText(title, body);
         }
+    }
+
+    public void ShowFlashlightHint()
+    {
+        FlashlightMessage.SetActive(true);
+        StartCoroutine(HideFlashlightHintAfterDelay());
+    }
+
+    IEnumerator HideFlashlightHintAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        FlashlightMessage.SetActive(false);
     }
 }
