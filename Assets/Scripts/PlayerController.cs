@@ -1,9 +1,7 @@
-using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 public class PlayerController : MonoBehaviour, IDamage
 {
     // Unity variables
@@ -11,7 +9,6 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] CharacterController controller;
     [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
     [SerializeField] GameObject WeaponModel;
-
 
     [Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
@@ -22,7 +19,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int interactDistance;
     [SerializeField] int HP;
     [SerializeField] int healAmount;
-    [SerializeField] int offset;
+    [SerializeField] int HPOffset;
+    [SerializeField] int SOffset;
 
     [Header("Movement")]
     [SerializeField] int speed;
@@ -31,8 +29,6 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float sprintRegenRate;
     [SerializeField] int sprintTimer;
     [SerializeField] float sprintCurrBoost;
-
-
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
@@ -44,25 +40,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float FireRate;
     [SerializeField] float MeleeSpeed;
     [SerializeField] int TickDamage;
-
     public bool DamageOverTime;
-
-    // TODO: organize ts
-
-    // private variables
-    // movement
-    Vector3 moveDir;
-    Vector3 jumpVelocity;
-    int OGGravity;
-    float maxGravity;
-    GameObject EquippedWeapon;
-
-
-    int jumpCount;
-    bool HaveTape;
-
-    int WeaponListPos;
-
 
     [Header("Camera Stuff")]
     [SerializeField] float FOVChange;
@@ -71,19 +49,32 @@ public class PlayerController : MonoBehaviour, IDamage
     float sprintCurr;
     float OGFOV;
 
+    [Header("Flashlight")]
+    public GameObject flashlightSwitch;
+    private bool flashlightOn = true;
+
+    // private variables
+    // movement
+    Vector3 moveDir;
+    Vector3 jumpVelocity;
+    int OGGravity;
+    float maxGravity;
+    int jumpCount;
+
+
     // TODO: change this to shooting based on tapping
+    // weapon
+    GameObject EquippedWeapon;
+    int WeaponListPos;
     float FireTimer;
+
+    // inventory
+    bool HaveTape;   
 
     // OG stats before boosts
     int MaxHP;
     int OGSpeed;
-
-    // TODO: maybe get rid of this?
-    bool isInvincible;
-
-    [Header("\nFlashlight")]
-    public GameObject flashlightSwitch;
-    private bool flashlightOn = true;
+    bool isInvincible; // TODO: maybe get rid of this?
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -91,7 +82,7 @@ public class PlayerController : MonoBehaviour, IDamage
         OGFOV = GameManager.instance.mainCamera.fieldOfView;
         MaxHP = HP;
         OGGravity = (int)gravity;
-        maxGravity = gravity * 1.2f;
+        maxGravity = gravity * 1.3f;
         HaveTape = false;
         sprintCurr = sprintTimer;
     }
@@ -99,57 +90,52 @@ public class PlayerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
+        if (!GameManager.instance.isPaused) {
+            // clean up variables
+            RaycastHit hit;
 
-        // interactable icon showing up
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)
-            && GameManager.instance.isPaused == false)
-        {
+            Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
 
-            if (hit.collider.gameObject.layer == 6 || hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
-            else if (GameManager.instance.isInteractOn) GameManager.instance.InteractOff();
+            // interact icon
+            if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)) {
+                if (hit.collider.gameObject.layer == 6 || hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
+                else if (GameManager.instance.isInteractOn) GameManager.instance.InteractOff();
+            }
+            else if (hit.collider == null) {
+                GameManager.instance.InteractOff();
+            }
 
+            // fov change
+            if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange) {
+                GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV + FOVChange, Time.deltaTime * FOVChangeSpeed);
+            }
+            else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV) {
+                GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV, Time.deltaTime * FOVChangeSpeed);
+            }
+
+            if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
+                Heal(healAmount);
+                HaveTape = false;
+                GameManager.instance.TapeImage.SetActive(false);
+            }
+
+            FireTimer += Time.deltaTime;
+            Movement();
         }
-        else if (hit.collider == null && GameManager.instance.isPaused == false)
-        {
-            GameManager.instance.InteractOff();
-        }
-
-
-        if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange)
-        {
-            GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV + FOVChange, Time.deltaTime * FOVChangeSpeed);
-        }
-        else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV)
-        {
-            GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV, Time.deltaTime * FOVChangeSpeed);
-        }
-
-        if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP)
-        {
-            Heal(healAmount);
-            HaveTape = false;
-            GameManager.instance.TapeImage.SetActive(false);
-        }
-
-        FireTimer += Time.deltaTime;
+        
         Sprint();
-        Movement();
         
     }
 
     void Movement()
     {
         // jump physics
-        if (controller.isGrounded)
-        {
+        if (controller.isGrounded) {
             jumpVelocity = Vector3.zero;
             jumpCount = 0;
             gravity = OGGravity;
         }
-        else
-        {
+        else {
             jumpVelocity.y -= (gravity * Time.deltaTime);
             if (gravity < maxGravity) gravity *= 1.005f;
         }
@@ -163,12 +149,10 @@ public class PlayerController : MonoBehaviour, IDamage
         Jump();
         controller.Move(jumpVelocity * Time.deltaTime);
 
-        if (Input.GetButton("Fire1") && FireTimer >= FireRate)
-        {
+        if (Input.GetButton("Fire1") && FireTimer >= FireRate) {
             Shoot();
         }
-        if (Input.GetButtonDown("Interact"))
-        {
+        if (Input.GetButtonDown("Interact")) {
             // initial interact
             Interact();
         }
@@ -178,24 +162,19 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         bool wantsToSprint = Input.GetButton("Sprint") && sprintCurr > 0;
 
-        if (wantsToSprint)
-        {
+        if (wantsToSprint) {
             isSprinting = true;
             sprintCurr -= sprintDrainRate * Time.deltaTime;
-           
         }
-        else
-        {
+        else {
             isSprinting = false;
             sprintCurr += sprintRegenRate * Time.deltaTime;
-         
         }
 
         if (sprintCurr > sprintTimer) 
             sprintCurr = sprintTimer;
 
         sprintCurrBoost = sprintMod * (sprintCurr / sprintTimer);
-
         UpdateSprintBar();
     }
 
@@ -215,7 +194,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         RaycastHit hit;
 
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer))
+        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer))
         {
             IDamage dmg = hit.collider.GetComponent<IDamage>();
             if (dmg != null)
@@ -230,27 +209,28 @@ public class PlayerController : MonoBehaviour, IDamage
         float healthDecimal = HP / (float)MaxHP;
         float healthBarPercent = healthDecimal * 500;
 
-        float healthBarPosition = healthBarPercent - 500 + offset;
-        // the 260 it to counter the origin
-
-        if (healthBarPosition > offset) healthBarPosition = offset;
+        float healthBarPosition = healthBarPercent - 500 + HPOffset;
+        if (healthBarPosition > HPOffset) healthBarPosition = HPOffset;
 
         GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 995, 0);
     }
 
     void UpdateSprintBar()
     {
-        if (GameManager.instance.SprintBar == null)
-            return;
+        float staminaDecimal = sprintCurr / sprintTimer;
+        float staminaPercent = staminaDecimal * 500;
 
-        float staminaPercent = sprintCurr / sprintTimer;
-        float barScaleX = staminaPercent * (sprintCurrBoost / sprintMod);
-        barScaleX = Mathf.Clamp(barScaleX, 0f, 1.5f);
-        Vector3 scale = GameManager.instance.SprintBar.transform.localScale;
-        scale.x = barScaleX;
-        GameManager.instance.SprintBar.transform.localScale = scale;
+        float staminaBarPosition = staminaPercent - 500 + SOffset;
+        if (staminaBarPosition > SOffset) staminaBarPosition = SOffset;
+
+        GameManager.instance.SprintBar.transform.position = new Vector3(staminaBarPosition, 915, 0);
+        
+        // float barScaleX = staminaPercent * (sprintCurrBoost / sprintMod);
+        // barScaleX = Mathf.Clamp(barScaleX, 0f, 1.5f);
+        // Vector3 scale = GameManager.instance.SprintBar.transform.localScale;
+        // scale.x = barScaleX;
+        // GameManager.instance.SprintBar.transform.localScale = scale;
     }
-
 
 
     public void TakeDamage(int amount)
@@ -258,7 +238,6 @@ public class PlayerController : MonoBehaviour, IDamage
         HP -= amount;
 
         StartCoroutine(Flash(0.1f));
-
         UpdateHealthBar();
 
         if (HP <= 0)
@@ -272,14 +251,11 @@ public class PlayerController : MonoBehaviour, IDamage
         RaycastHit hit;
 
         // Dialogue
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer))
-        {
+        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer)) {
             IDialogue dialogue = hit.collider.GetComponent<IDialogue>();
             dialogue.SetDialogue();
         }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer))
-        {
-            Debug.Log("Interactable");
+        else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
             HaveTape = interact.SetTape();
@@ -345,13 +321,11 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void SelectWeapon()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 && WeaponListPos < Weapons.Count - 1)
-        {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && WeaponListPos < Weapons.Count - 1) {
             WeaponListPos++;
             ChangeItem();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && WeaponListPos > 0)
-        {
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && WeaponListPos > 0) {
             WeaponListPos--;
             ChangeItem();
         }

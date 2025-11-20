@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public GameObject HealthBar;
-    public GameObject flashRed;
     public GameObject SprintBar;
+    public GameObject flashRed;
 
     [Header("\nInventory")]
     public GameObject TapeImage;
@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawnPos;
     public GameObject checkpointPopup;
 
+    public bool hasFlashlight;
+
     // private variables
     float originalTimeScale = 1f;
     int gameGoalCount = 0;
@@ -84,6 +86,7 @@ public class GameManager : MonoBehaviour
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
 
         mainCamera = Camera.main;
+        hasFlashlight = false;
 
         if (isTurnOffLighting) Destroy(Lighting);
     }
@@ -105,7 +108,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Flashlight"))
+        if (Input.GetButtonDown("Flashlight") && hasFlashlight)
         {
             controller.FlashlightToggle();
         }

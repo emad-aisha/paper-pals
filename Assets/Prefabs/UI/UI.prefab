@@ -7486,8 +7486,8 @@ MonoBehaviour:
   isDialogueActive: 0
   Interactable: {fileID: 7168438732853729789}
   HealthBar: {fileID: 4593386633239252190}
+  SprintBar: {fileID: 8776371553170584800}
   flashRed: {fileID: 7245685241220412806}
-  SprintBar: {fileID: 0}
   TapeImage: {fileID: 362578125816763030}
   CoinCountText: {fileID: 6153630085326652750}
   AmmoCountText: {fileID: 278027110930629381}
@@ -7504,6 +7504,7 @@ MonoBehaviour:
   defaultNoteBody: This is the sticky note body text.
   playerSpawnPos: {fileID: 0}
   checkpointPopup: {fileID: 0}
+  hasFlashlight: 0
 --- !u!1 &8506626919356080869
 GameObject:
   m_ObjectHideFlags: 0
@@ -7912,7 +7913,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 5, y: 38}
+  m_AnchoredPosition: {x: -270, y: 380}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8697674892858123345
@@ -8306,7 +8307,7 @@ RectTransform:
   m_GameObject: {fileID: 8776371553170584800}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7183047082443934745}

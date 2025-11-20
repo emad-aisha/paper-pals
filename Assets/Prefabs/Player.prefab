@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4937968734093113804
 Transform:
   m_ObjectHideFlags: 0
@@ -327,6 +327,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   controller: {fileID: 8233517489819528183}
+  Weapons: []
+  WeaponModel: {fileID: 0}
   IgnoreLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -339,16 +341,26 @@ MonoBehaviour:
   interactDistance: 10
   HP: 15
   healAmount: 5
-  offset: 310
+  HPOffset: 260
+  SOffset: 310
   speed: 8
   sprintMod: 2
+  sprintDrainRate: 1
+  sprintRegenRate: 1
+  sprintTimer: 10
+  sprintCurrBoost: 0
   jumpSpeed: 15
   maxJumps: 2
   gravity: 35
-  ShootDamage: 3
+  Damage: 0
   ShootDistance: 150
   FireRate: 0.5
+  MeleeSpeed: 0
+  TickDamage: 0
+  DamageOverTime: 0
   FOVChange: 10
+  FOVChangeSpeed: 2
+  flashlightSwitch: {fileID: 1909753147299722356}
 --- !u!33 &6155902657339225895
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4917419665225748608}
   - component: {fileID: 8357774176638071701}
   m_Layer: 7
-  m_Name: Tape dispenser
+  m_Name: Healing Tape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   amount: 0
+  weaponStats: {fileID: 0}
 --- !u!65 &8357774176638071701
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68,7 +69,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25, y: 0.25, z: 0.25}
+  m_Size: {x: 0.3, y: 0.25, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3496315495242499581
 GameObject:

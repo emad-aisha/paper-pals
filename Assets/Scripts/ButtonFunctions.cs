@@ -2,6 +2,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class ButtonFunctions : MonoBehaviour
 {
+    // TODO: add a button for, next level
+    // loads the next level and sets the appropriate variables for each level
+    // lvl1 - all = false
+    // lvl2 - flashlight = true
+    // lvl3 all = true
 
     public void Resume()
     {

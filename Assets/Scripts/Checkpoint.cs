@@ -23,6 +23,7 @@ public class Checkpoint : MonoBehaviour
         }
     }
 
+    //TODO: get rid of ts
     IEnumerator Feedback()
     {
         model.material.color = Color.red;
