@@ -10,7 +10,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Resume()
     {
-      GameManager.instance.UnpauseGame();
+        GameManager.instance.UnpauseGame();
     }
 
     public void Restart()
@@ -28,6 +28,12 @@ public class ButtonFunctions : MonoBehaviour
     public void Exit()
     {
         SceneManager.LoadScene("Main Menu");
+    }
+
+    public void Respawn()
+    {
+        GameManager.instance.controller.RespawnPlayer();
+        GameManager.instance.UnpauseGame();
     }
 
 
