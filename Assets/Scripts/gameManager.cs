@@ -101,6 +101,9 @@ public class GameManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
+        exit = GameObject.FindWithTag("Exit");
+        exitCover = GameObject.FindWithTag("Exit Cover");
+
         SetAbilities();
         UpdateKeysLeft();
 
