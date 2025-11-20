@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] CharacterController controller;
     [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
     [SerializeField] GameObject WeaponModel;
+    [SerializeField] GameObject GunModel;
 
     [Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
@@ -441,9 +442,20 @@ public class PlayerController : MonoBehaviour, IDamage
             Debug.Log(MeleeRange);
 
         }
-        WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
-        WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
-        WeaponModel.layer = 10;
+        if (Weapons[WeaponListPos].type == WeaponType.Melee) {
+            WeaponModel.SetActive(true);
+            GunModel.SetActive(false);
+            WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
+            WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+            WeaponModel.layer = 10;
+        }
+        else if (Weapons[WeaponListPos].type == WeaponType.Gun) {
+            GunModel.SetActive(true);
+            WeaponModel.SetActive(false);
+            GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
+            GunModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+            GunModel.layer = 10;
+        }
     }
 
     void SelectWeapon()
