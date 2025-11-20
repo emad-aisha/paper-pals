@@ -15,11 +15,12 @@ MonoBehaviour:
   type: 1
   Model: {fileID: 1102889181992154, guid: 4f79713dbf78d4b868f908ddef942c1a, type: 3}
   HitFX: {fileID: 3323735894242698497, guid: 1d9d3102383961d4699d55599793fc30, type: 3}
-  Volume: 0
+  Volume: 1
   Damage: 2
   ShootDistance: 146
   ShootRate: 0.3
   AmmoCur: 0
   AmmoMax: 5
-  ShootSound: []
-  ShootSoundVol: 0
+  ShootSound:
+  - {fileID: 8300000, guid: 19f6f2cae8064e940948aae82bdbdc1c, type: 3}
+  ShootSoundVol: 1
