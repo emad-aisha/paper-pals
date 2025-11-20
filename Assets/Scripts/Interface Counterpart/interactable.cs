@@ -8,7 +8,8 @@ public class Interactable : MonoBehaviour, IInteractable {
         Trophy,
         Weapon,
         Flashlight,
-        Keys
+        Keys,
+        DoubleJump
     };
 
     PlayerController Player;
@@ -47,6 +48,9 @@ public class Interactable : MonoBehaviour, IInteractable {
             GameManager.instance.ownedKeys += 1;
             GameManager.instance.KeyCheck();
             GameManager.instance.WinTrophy(0);
+        }
+        else if (type == InterfaceType.DoubleJump) {
+            GameManager.instance.hasDoubleJump = true;
         }
 
         if (type != InterfaceType.Trophy) Destroy(this.gameObject);

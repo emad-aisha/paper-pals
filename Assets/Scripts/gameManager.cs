@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public PlayerController controller;
     public bool hasFlashlight;
+    public bool hasDoubleJump;
     public int ownedKeys = 0;
 
     [Header("Camera")]
@@ -99,8 +100,8 @@ public class GameManager : MonoBehaviour
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
 
         mainCamera = Camera.main;
-        hasFlashlight = false;
 
+        SetAbilities();
         UpdateKeysLeft();
 
         if (isTurnOffLighting) Destroy(Lighting);
@@ -148,6 +149,28 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
+    public void SetAbilities() {
+        string currLevelName = SceneManager.GetActiveScene().name;
+        string levelOne = "Level 1";
+        string levelTwo = "Level 2";
+        string levelThree = "Level 3";
+
+        if (currLevelName == levelOne) {
+            hasFlashlight = false;
+            hasDoubleJump = false;
+        }
+        else if (currLevelName == levelTwo) {
+            hasFlashlight = true;
+            hasDoubleJump = false;
+        }
+        else if (currLevelName == levelThree) {
+            hasFlashlight = true;
+            hasDoubleJump = true;
+        }
+        else {
+            // set btoth to true
+        }
+    }
 
     public void UpdateKeysLeft() {
         int keysLeft = totalKeys - ownedKeys;

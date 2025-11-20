@@ -185,8 +185,12 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
+        if (Input.GetButtonDown("Jump") && jumpCount == 0)
         {
+            jumpVelocity.y = jumpSpeed;
+            jumpCount++;
+        }
+        else if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && GameManager.instance.hasDoubleJump) {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
         }
