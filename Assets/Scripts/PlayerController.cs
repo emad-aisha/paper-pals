@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour, IDamage
     // Unity variables
     [Header("Player Neccesities")]
     [SerializeField] CharacterController controller;
-    [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
+    public List<WeaponStats> Weapons = new List<WeaponStats>();
     [SerializeField] GameObject WeaponModel;
 
     [Header("Layers")]
@@ -302,25 +302,12 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void UpdateHealthBar()
     {
-        float healthDecimal = HP / (float)MaxHP;
-        float healthBarPercent = healthDecimal * 500;
-
-        float healthBarPosition = healthBarPercent - 500 + HPOffset;
-        if (healthBarPosition > HPOffset) healthBarPosition = HPOffset;
-
-        GameManager.instance.HealthBar.transform.position = new Vector3(healthBarPosition, 995, 0);
+        GameManager.instance.HealthBar.fillAmount = HP / (float)MaxHP;
     }
 
     void UpdateSprintBar()
     {
-        float staminaDecimal = sprintCurr / sprintTimer;
-        float staminaPercent = staminaDecimal * 500;
-
-        float staminaBarPosition = staminaPercent - 500 + SOffset;
-        if (staminaBarPosition > SOffset) staminaBarPosition = SOffset;
-
-        GameManager.instance.SprintBar.transform.position = new Vector3(staminaBarPosition, 915, 0);
-      
+        GameManager.instance.SprintBar.fillAmount = sprintCurr / (float)sprintTimer;
     }
 
 
