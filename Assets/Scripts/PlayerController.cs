@@ -237,6 +237,7 @@ public class PlayerController : MonoBehaviour, IDamage
             IDamage dmg = hit.collider.GetComponent<IDamage>();
             if (dmg != null)
             {
+                Instantiate(Weapons[WeaponListPos].HitFX, hit.point, Quaternion.identity);
                 dmg.TakeDamage(Damage);
             }
         }
@@ -411,6 +412,7 @@ public class PlayerController : MonoBehaviour, IDamage
         }
         WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
         WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+        WeaponModel.layer = 10;
     }
 
     void SelectWeapon()
