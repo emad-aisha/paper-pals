@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour, IDamage
 
     [Header("Audio")]
     [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audStep;
+    [SerializeField] float audStepVol;
     [SerializeField] AudioClip[] audJump;
     [SerializeField] float audJumpVol;
     [SerializeField] AudioClip[] audHurt;
@@ -88,6 +90,9 @@ public class PlayerController : MonoBehaviour, IDamage
     float OGSpeed;
     bool isInvincible; // TODO: maybe get rid of this?
     float finalSpeed;
+
+    bool isPlayingStep;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -142,18 +147,26 @@ public class PlayerController : MonoBehaviour, IDamage
         }
         
         Sprint();
-        
+
     }
 
     void Movement()
     {
         // jump physics
-        if (controller.isGrounded) {
+        if (controller.isGrounded)
+        {
+            if( moveDir.normalized.magnitude > 0.3f && !isPlayingStep)
+            {
+                StartCoroutine(playStep());
+            }
+;
+
             jumpVelocity = Vector3.zero;
             jumpCount = 0;
             gravity = OGGravity;
         }
-        else {
+        else
+        {
             jumpVelocity.y -= (gravity * Time.deltaTime);
             if (gravity < maxGravity) gravity *= 1.005f;
         }
@@ -168,13 +181,15 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             speed = OGSpeed;
         }
-            controller.Move(moveDir * speed * Time.deltaTime);
+        controller.Move(moveDir * speed * Time.deltaTime);
 
         // jump movement
         Jump();
         controller.Move(jumpVelocity * Time.deltaTime);
-        if (Weapons.Count > 0) {
-            if (Input.GetButton("Fire1")) {
+        if (Weapons.Count > 0)
+        {
+            if (Input.GetButton("Fire1"))
+            {
                 if (Weapons[WeaponListPos].type == WeaponType.Gun && FireTimer >= FireRate)
                 {
                     Shoot();
@@ -183,14 +198,32 @@ public class PlayerController : MonoBehaviour, IDamage
                 {
                     Swing();
                 }
-             }
-         }
+            }
+        }
 
-        if (Input.GetButtonDown("Interact")) {
+        if (Input.GetButtonDown("Interact"))
+        {
             // initial interact
             Interact();
         }
         SelectWeapon();
+    }
+
+    IEnumerator playStep()
+    {
+        isPlayingStep = true;
+        aud.PlayOneShot(audStep[Random.Range(0, audStep.Length)], audStepVol);
+
+        if (isSprinting)
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        isPlayingStep = false;
     }
 
     void Sprint()
@@ -201,6 +234,7 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             isSprinting = true;
             sprintCurr -= sprintDrainRate * Time.deltaTime;
+
         }
         else
         {
