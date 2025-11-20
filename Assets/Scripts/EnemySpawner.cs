@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject ObjectToSpawn;
     [SerializeField] Transform[] SpawnPositions;
     [SerializeField] int SpawnAmount;
-    [SerializeField] int SpawnRate;
+    [SerializeField] float SpawnRate;
 
     int SpawnCount;
     float SpawnTimer;
@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
         if (StartSpawning)
         {
             //starts the timer
-            SpawnTimer = Time.deltaTime;
+            SpawnTimer += Time.deltaTime;
 
             if (SpawnCount < SpawnAmount && SpawnTimer >= SpawnRate)
             {
