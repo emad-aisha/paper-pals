@@ -58,6 +58,13 @@ public class PlayerController : MonoBehaviour, IDamage
     public GameObject flashlightSwitch;
     private bool flashlightOn = true;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audJump;
+    [SerializeField] float audJumpVol;
+
+
+
     // private variables
     // movement
     Vector3 moveDir;
@@ -218,6 +225,7 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
+            aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
         }
         else if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && GameManager.instance.hasDoubleJump) {
             jumpVelocity.y = jumpSpeed;
