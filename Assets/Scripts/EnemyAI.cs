@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 
 public class EnemyAI : MonoBehaviour, IDamage
@@ -234,14 +235,13 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-        if (HP <= 0)
-        {
-            //will destroy self 
+        if (HP <= 0) {
             Destroy(gameObject);
+            GameManager.instance.gameGoalCounter++;
+
+            GameManager.instance.UpdateKeysLeft();
         }
-        else
-        {
-            //else if it survives will flash red
+        else {
             StartCoroutine(FlashRed());
         }
     }
@@ -265,7 +265,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     IEnumerator FlashRed()
     {
-        Debug.Log("yes ium having fun");
         Sprite.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         Sprite.material.color = OGColor;

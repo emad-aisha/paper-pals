@@ -43,11 +43,16 @@ public class GameManager : MonoBehaviour
     public GameObject interactActive;
     public bool isInteractOn;
 
-    [Header("Trophey Stuff")]
+    [Header("Trophy Stuff")]
     public GameObject exit;
     public GameObject exitCover;
     public GameObject reminderMenu;
     public TMP_Text reminderText;
+
+    [Header("Level specific")]
+    public GunStats gun;
+    public MeleeStats pencil;
+    public GameObject stickyNoteFinal;
 
     [Header("\n\nPublic variables")]
 
@@ -56,6 +61,7 @@ public class GameManager : MonoBehaviour
     public PlayerController controller;
     public bool hasFlashlight;
     public bool hasDoubleJump;
+    public int totalKeys = 3;
     public int ownedKeys = 0;
 
     [Header("Camera")]
@@ -79,14 +85,11 @@ public class GameManager : MonoBehaviour
 
     // private variables
     float originalTimeScale = 1f;
-    int gameGoalCount = 0;
+    public int gameGoalCount = 0;
+    public int gameGoalCounter;
 
     int coinCount;
     int ammoCount;
-
-    // key shit
-    int totalKeys = 3;
-
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -162,27 +165,26 @@ public class GameManager : MonoBehaviour
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
-        // TODO: set guns
-
-        if (currLevelName == levelOne)
-        {
+        if (currLevelName == levelOne) {
             hasFlashlight = false;
             hasDoubleJump = false;
         }
-        else if (currLevelName == levelTwo)
-        {
+        else if (currLevelName == levelTwo) {
             hasFlashlight = true;
             hasDoubleJump = false;
+            controller.GetWeaponStats(pencil);
         }
-        else if (currLevelName == levelThree)
-        {
+        else if (currLevelName == levelThree) {
             hasFlashlight = true;
             hasDoubleJump = true;
+            controller.GetWeaponStats(pencil);
+            controller.GetWeaponStats(gun);
         }
-        else
-        {
+        else {
             hasFlashlight = true;
             hasDoubleJump = true;
+            controller.GetWeaponStats(pencil);
+            controller.GetWeaponStats(gun);
         }
     }
 
@@ -190,10 +192,12 @@ public class GameManager : MonoBehaviour
     {
         int keysLeft = totalKeys - ownedKeys;
 
-        if (keysLeft != 0)
-            reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
+        if (keysLeft == 2 && SceneManager.GetActiveScene().name == "Level 3" && gameGoalCounter == gameGoalCount)
+            stickyNoteFinal.SetActive(true);
         else if (keysLeft == 1 && SceneManager.GetActiveScene().name == "Level 3")
             reminderText.text = "Defeat the enemies!";
+        else if (keysLeft != 0)
+            reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
         else
             reminderText.text = "You can escape now!";
     }

@@ -19,6 +19,9 @@ public class EnemySpawner : MonoBehaviour
     {
         //Code here, if we wanted to count how many enemies there are...
         //SpawnCount
+
+        // thank you so much for these comments mat ily
+        GameManager.instance.gameGoalCount = SpawnAmount;
     }
 
     // Update is called once per frame

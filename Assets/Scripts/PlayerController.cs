@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour, IDamage
     // Unity variables
     [Header("Player Neccesities")]
     [SerializeField] CharacterController controller;
-    public List<WeaponStats> Weapons = new List<WeaponStats>();
+    [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
     [SerializeField] GameObject WeaponModel;
 
     [Header("Layers")]
@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int interactDistance;
     [SerializeField] int HP;
     [SerializeField] int healAmount;
-    [SerializeField] int HPOffset;
-    [SerializeField] int SOffset;
 
     [Header("Movement")]
     [SerializeField] float speed;
@@ -29,7 +27,6 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float sprintRegenRate;
     [SerializeField] int sprintTimer;
     [SerializeField] float sprintCurrBoost;
-
 
     [SerializeField] int jumpSpeed;
     [SerializeField] int maxJumps;
@@ -261,8 +258,6 @@ public class PlayerController : MonoBehaviour, IDamage
 
             if (!Enemies.Contains(Enemy))
             {
-                Debug.Log(Enemy);
-                Debug.Log(Enemies);
                 Enemies.Add(Enemy);
             }
         }

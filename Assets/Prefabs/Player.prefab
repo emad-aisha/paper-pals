@@ -467,14 +467,12 @@ MonoBehaviour:
   interactDistance: 10
   HP: 15
   healAmount: 5
-  HPOffset: 260
-  SOffset: 310
   speed: 10
-  sprintMod: 10
+  sprintMod: 15
   sprintDrainRate: 3
-  sprintRegenRate: 3
+  sprintRegenRate: 2
   sprintTimer: 10
-  sprintCurrBoost: 10
+  sprintCurrBoost: 2
   jumpSpeed: 15
   maxJumps: 2
   gravity: 35
@@ -488,6 +486,9 @@ MonoBehaviour:
   FOVChange: 10
   FOVChangeSpeed: 2
   flashlightSwitch: {fileID: 5685672187087634713}
+  aud: {fileID: 0}
+  audJump: []
+  audJumpVol: 0
 --- !u!33 &6155902657339225895
 MeshFilter:
   m_ObjectHideFlags: 0
