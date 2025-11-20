@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
     {
         int keysLeft = totalKeys - ownedKeys;
 
-        if (keysLeft == 2 && SceneManager.GetActiveScene().name == "Level 3" && gameGoalCounter == gameGoalCount)
+        if (keysLeft == 1 && SceneManager.GetActiveScene().name == "Level 3" && gameGoalCounter == gameGoalCount)
             stickyNoteFinal.SetActive(true);
         else if (keysLeft == 1 && SceneManager.GetActiveScene().name == "Level 3")
             reminderText.text = "Defeat the enemies!";
@@ -237,10 +237,18 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(levelThree);
         }
-        else
-        {
+        else if (currLevelName == levelThree) {
+            Win();
+        }
+        else {
             SceneManager.LoadScene(levelOne);
         }
+    }
+
+    public void Win() {
+        PauseGame();
+        menuActive = menuWin;
+        menuActive.SetActive(true);
     }
 
     public void WinTrophy(int amount)
