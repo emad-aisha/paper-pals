@@ -20,4 +20,10 @@ public class MeleeStats : WeaponStats
     {
         return Damage;
     }
+
+    public override AudioClip GetAudio()
+    {
+        return SwingSound[Random.Range(0, SwingSound.Length)];
+    }
+
 }

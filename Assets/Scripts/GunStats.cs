@@ -17,4 +17,10 @@ public class GunStats : WeaponStats
     {
         return Damage;
     }
+
+    public override AudioClip GetAudio()
+    {
+        return ShootSound[Random.Range(0, ShootSound.Length)];
+    }
+
 }

@@ -277,6 +277,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         RaycastHit hit;
 
+        aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
         if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer))
         {
             IDamage dmg = hit.collider.GetComponent<IDamage>();
@@ -327,7 +328,7 @@ public class PlayerController : MonoBehaviour, IDamage
             Debug.Log("swinging");
 
             RaycastHit hit;
-
+            aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange , ~IgnoreLayer))
             {
                 IDamage dmg = hit.collider.GetComponent<IDamage>();

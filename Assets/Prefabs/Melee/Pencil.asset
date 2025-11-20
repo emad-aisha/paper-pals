@@ -15,12 +15,13 @@ MonoBehaviour:
   type: 0
   Model: {fileID: 1655137212806262, guid: 680cc712cb55643a38fb5bec71bcc683, type: 3}
   HitFX: {fileID: 3323735894242698497, guid: 1d9d3102383961d4699d55599793fc30, type: 3}
-  Volume: 0
+  Volume: 1
   Anim: {fileID: 0}
   Damage: 5
   SwingSpeed: 0.5
   MeleeRange: 5
   TickDamage: 0
-  SwingSound: []
-  ShootSoundVol: 0
+  SwingSound:
+  - {fileID: 8300000, guid: 142b3acd8fba01e45a357683f523af9c, type: 3}
+  ShootSoundVol: 1
   DamageOverTime: 0

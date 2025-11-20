@@ -10,6 +10,7 @@ public enum WeaponType
 public abstract class WeaponStats : ScriptableObject
 {
     public abstract int GetDamage();
+    public abstract AudioClip GetAudio();
 
     public WeaponType type;
     public GameObject Model;
