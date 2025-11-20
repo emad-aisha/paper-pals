@@ -48,7 +48,6 @@ public class Interactable : MonoBehaviour, IInteractable {
         else if (type == InterfaceType.Keys) {
             GameManager.instance.ownedKeys += 1;
             GameManager.instance.KeyCheck();
-            GameManager.instance.WinTrophy(0);
         }
         else if (type == InterfaceType.DoubleJump) {
             GameManager.instance.hasDoubleJump = true;
