@@ -162,17 +162,22 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         bool wantsToSprint = Input.GetButton("Sprint") && sprintCurr > 0;
 
-        if (wantsToSprint) {
+        if (wantsToSprint)
+        {
             isSprinting = true;
             sprintCurr -= sprintDrainRate * Time.deltaTime;
         }
-        else {
+        else
+        {
             isSprinting = false;
             sprintCurr += sprintRegenRate * Time.deltaTime;
         }
 
         if (sprintCurr > sprintTimer) 
             sprintCurr = sprintTimer;
+
+        if (sprintCurr < 0f) 
+            sprintCurr = 0f;
 
         sprintCurrBoost = sprintMod * (sprintCurr / sprintTimer);
         UpdateSprintBar();
@@ -224,12 +229,7 @@ public class PlayerController : MonoBehaviour, IDamage
         if (staminaBarPosition > SOffset) staminaBarPosition = SOffset;
 
         GameManager.instance.SprintBar.transform.position = new Vector3(staminaBarPosition, 915, 0);
-        
-        // float barScaleX = staminaPercent * (sprintCurrBoost / sprintMod);
-        // barScaleX = Mathf.Clamp(barScaleX, 0f, 1.5f);
-        // Vector3 scale = GameManager.instance.SprintBar.transform.localScale;
-        // scale.x = barScaleX;
-        // GameManager.instance.SprintBar.transform.localScale = scale;
+      
     }
 
 
