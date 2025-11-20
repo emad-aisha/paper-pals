@@ -312,5 +312,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         AgentAI.velocity = Vector3.zero;
         AgentAI.isStopped = false;
         AgentAI.speed = normalSpeed;
+        AgentAI.ResetPath();
+        AgentAI.SetDestination(GameManager.instance.player.transform.position);
     }
 }
