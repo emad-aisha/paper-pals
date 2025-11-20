@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] AudioSource aud;
     [SerializeField] AudioClip[] audJump;
     [SerializeField] float audJumpVol;
+    [SerializeField] AudioClip[] audHurt;
+    [SerializeField] float audHurtVol;
 
 
 
@@ -338,6 +340,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         StartCoroutine(Flash(0.1f));
         UpdateHealthBar();
+        aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
 
         if (HP <= 0)
         {
