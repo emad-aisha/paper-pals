@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, IDamage
 {
@@ -91,6 +92,10 @@ public class PlayerController : MonoBehaviour, IDamage
     float OGSpeed;
     bool isInvincible; // TODO: maybe get rid of this?
     float finalSpeed;
+
+    // UI
+    public Sprite[] heartStates;
+    public Image heartDisplay;
 
     bool isPlayingStep;
 
@@ -346,6 +351,9 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void UpdateHealthHearts()
     {
+        int clampedHP = Mathf.Clamp(HP, 0, heartStates.Length - 1);
+        heartDisplay.sprite = heartStates[clampedHP];
+
         GameManager.instance.HealthBar.fillAmount = HP / (float)MaxHP;
     }
 
