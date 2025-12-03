@@ -224,7 +224,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator ReminderText()
     {
         reminderMenu.SetActive(true);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(5);
         reminderMenu.SetActive(false);
     }
 
