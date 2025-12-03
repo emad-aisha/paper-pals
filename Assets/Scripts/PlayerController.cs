@@ -344,7 +344,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
 
 
-    void UpdateHealthBar()
+    void UpdateHealthHearts()
     {
         GameManager.instance.HealthBar.fillAmount = HP / (float)MaxHP;
     }
@@ -360,7 +360,7 @@ public class PlayerController : MonoBehaviour, IDamage
         HP -= amount;
 
         StartCoroutine(Flash(0.1f));
-        UpdateHealthBar();
+        UpdateHealthHearts();
         aud.pitch = Random.Range(0.9f, 1.1f);
         aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
 
@@ -391,7 +391,7 @@ public class PlayerController : MonoBehaviour, IDamage
         HP += amount;
         if (HP > MaxHP) HP = MaxHP;
 
-        UpdateHealthBar();
+        UpdateHealthHearts();
     }
     public IEnumerator Shield(int duration)
     {
@@ -484,7 +484,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         // resetting and updating player health
         HP = MaxHP;
-        UpdateHealthBar();
+        UpdateHealthHearts();
     }
 
 
