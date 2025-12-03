@@ -371,7 +371,6 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         int clampedHP = Mathf.Clamp(HP, 0, heartStates.Length - 1);
         heartDisplay.sprite = heartStates[clampedHP];
-
         GameManager.instance.HealthBar.fillAmount = HP / (float)MaxHP;
     }
 
