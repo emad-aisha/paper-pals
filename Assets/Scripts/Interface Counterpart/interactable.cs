@@ -40,6 +40,11 @@ public class Interactable : MonoBehaviour, IInteractable {
         else if (type == InterfaceType.Weapon) {
             Player.GetWeaponStats(weaponStats);
             Destroy(gameObject);
+            if (weaponStats.type == WeaponType.Gun)
+            {
+                GunStats Gun = (GunStats)weaponStats;
+                Gun.AmmoCur = Gun.AmmoMax;
+            }
         }
         else if (type == InterfaceType.Flashlight){
             GameManager.instance.hasFlashlight = true;

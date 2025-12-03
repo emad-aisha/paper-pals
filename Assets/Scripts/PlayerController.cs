@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -278,19 +280,35 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Shoot()
     {
-        FireTimer = 0;
 
-        RaycastHit hit;
-
-        aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
-        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer))
+        if (Weapons[WeaponListPos].type == WeaponType.Gun)
         {
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null)
+            GunStats Gun = (GunStats)Weapons[WeaponListPos];
+
+            if (Gun.AmmoCur <= 0)
             {
-                Instantiate(Weapons[WeaponListPos].HitFX, hit.point, Quaternion.identity);
-                dmg.TakeDamage(Damage);
+                Debug.Log("out of ammo");
+                return;
             }
+            else
+            {
+                Gun.AmmoCur -= 1;
+                Debug.Log(Gun.AmmoCur);
+                FireTimer = 0;
+
+                RaycastHit hit;
+
+                aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
+                if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer))
+                {
+                    IDamage dmg = hit.collider.GetComponent<IDamage>();
+                    if (dmg != null)
+                    {
+                        Instantiate(Weapons[WeaponListPos].HitFX, hit.point, Quaternion.identity);
+                        dmg.TakeDamage(Damage);
+                    }
+                }
+             }
         }
     }
 
@@ -417,12 +435,14 @@ public class PlayerController : MonoBehaviour, IDamage
         GameManager.instance.flashRed.SetActive(false);
     }
 
-    public void GetWeaponStats(WeaponStats Weapon)
+    public WeaponStats GetWeaponStats(WeaponStats Weapon)
     {
 
         Weapons.Add(Weapon);
         WeaponListPos = Weapons.Count - 1;
         ChangeItem();
+
+        return Weapon;
     }
 
     void ChangeItem()
@@ -458,7 +478,7 @@ public class PlayerController : MonoBehaviour, IDamage
             WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
             WeaponModel.layer = 10;
         }
-        else if (Weapons[WeaponListPos].type == WeaponType.Gun) {
+        else if (Weapons[WeaponListPos].type == WeaponType.Gun) { 
             GunModel.SetActive(true);
             WeaponModel.SetActive(false);
             GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;

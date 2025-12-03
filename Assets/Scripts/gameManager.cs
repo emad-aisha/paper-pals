@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
         string currLevelName = SceneManager.GetActiveScene().name;
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
-        string levelThree = "Level 3";
+        string levelThree = "Level 3";  
 
         if (currLevelName == levelOne) {
             hasFlashlight = false;
@@ -190,8 +190,8 @@ public class GameManager : MonoBehaviour
         else {
             hasFlashlight = true;
             hasDoubleJump = true;
-            controller.GetWeaponStats(pencil);
-            controller.GetWeaponStats(gun);
+          //  controller.GetWeaponStats(pencil);
+            // controller.GetWeaponStats(gun);
         }
     }
 
