@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour, IDamage
     public Image heartDisplay;
 
     bool isPlayingStep;
+    bool isReloading;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -147,6 +148,11 @@ public class PlayerController : MonoBehaviour, IDamage
                 Heal(healAmount);
                 HaveTape = false;
                 GameManager.instance.TapeImage.SetActive(false);
+            }
+
+            if (Input.GetButtonUp("Reload"))
+            {
+                Reload();
             }
 
             FireTimer += Time.deltaTime;
@@ -311,6 +317,21 @@ public class PlayerController : MonoBehaviour, IDamage
              }
         }
     }
+
+    void Reload()
+    {
+        if (Weapons[WeaponListPos].type == WeaponType.Gun)
+        {
+            GunStats Gun = (GunStats)(Weapons[WeaponListPos]);
+            
+            if (Gun.AmmoCur != Gun.AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
+            {
+                Gun.AmmoCur = 0;
+                Gun.AmmoCur = Gun.AmmoMax;
+            }
+        }
+    }
+
 
 
     private void OnTriggerEnter(Collider other)
