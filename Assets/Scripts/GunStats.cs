@@ -7,7 +7,7 @@ public class GunStats : WeaponStats
     [Range(1, 10)] public int Damage;
     [Range(15, 1000)] public int ShootDistance;
     [Range(0.1f, 2)] public float ShootRate;
-    public int AmmoCur;
+    public int AmmoCurr;
     [Range(5, 50)] public int AmmoMax;
 
     public AudioClip[] ShootSound;

@@ -40,10 +40,14 @@ public class Interactable : MonoBehaviour, IInteractable {
         else if (type == InterfaceType.Weapon) {
             Player.GetWeaponStats(weaponStats);
             Destroy(gameObject);
+
             if (weaponStats.type == WeaponType.Gun)
             {
                 GunStats Gun = (GunStats)weaponStats;
-                Gun.AmmoCur = Gun.AmmoMax;
+                Gun.AmmoCurr = Gun.AmmoMax;
+                GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
+                GameManager.instance.TotalAmmo.text = Gun.AmmoMax.ToString();
+
             }
         }
         else if (type == InterfaceType.Flashlight){
