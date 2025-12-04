@@ -91,6 +91,18 @@ public class GameManager : MonoBehaviour
     public GameObject checkpointPopup;
 
     [Header("\nMisc")]
+    //music volume slider and value display
+    public Slider MusicSliderObj;
+    public TMP_Text MusicNumberDisplay;
+
+    //sfx volume slider and value display
+    public Slider SFXSliderObj;
+    public TMP_Text SFXNumberDisplay;
+
+    //Mouse sensitivity slider and value display
+    public Slider MouseSensSliderObj;
+    public TMP_Text MouseSensNumberDisplay;
+    
     public TMP_Text gameGoalCountText;
     public bool isPaused;
 
