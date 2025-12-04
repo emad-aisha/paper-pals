@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public Image SprintBar;
     public GameObject flashRed;
     public GameObject FlashlightMessage;
+    public GameObject crosshair;
 
     [Header("\nInventory")]
     public GameObject TapeImage;
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
     public bool hasDoubleJump;
     public int totalKeys = 3;
     public int ownedKeys = 0;
+    
 
     [Header("Camera")]
     public Camera mainCamera;
@@ -143,6 +145,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("Flashlight") && hasFlashlight)
         {
             controller.FlashlightToggle();
+        }
+
+        if (Input.GetButtonDown("Map"))
+        {
+            controller.MapToggle();
         }
     }
 

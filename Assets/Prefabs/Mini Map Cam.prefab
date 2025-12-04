@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4356501723693850481}
   - component: {fileID: 8908527994731994008}
-  - component: {fileID: 1316265573906188350}
   - component: {fileID: 4217694779568442524}
+  - component: {fileID: 8426131529258246427}
   m_Layer: 0
   m_Name: Mini Map Cam
   m_TagString: Untagged
@@ -43,7 +43,7 @@ Camera:
   m_GameObject: {fileID: 6122904843150092104}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -69,7 +69,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 100
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -85,14 +85,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1316265573906188350
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6122904843150092104}
-  m_Enabled: 1
 --- !u!114 &4217694779568442524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,3 +129,16 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &8426131529258246427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6122904843150092104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a114650d6f7dd140b81634a36fba1c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}

@@ -59,6 +59,10 @@ public class PlayerController : MonoBehaviour, IDamage
     public GameObject flashlightSwitch;
     private bool flashlightOn = true;
 
+    [Header("Map")]
+    public GameObject mapSwitch;
+    private bool mapOn = false;
+
     [Header("Audio")]
     [SerializeField] AudioSource aud;
     [SerializeField] AudioClip[] audStep;
@@ -87,7 +91,7 @@ public class PlayerController : MonoBehaviour, IDamage
     float MeleeTimer;
 
     // inventory
-    bool HaveTape;   
+    bool HaveTape;
 
     // OG stats before boosts
     int MaxHP;
@@ -120,56 +124,72 @@ public class PlayerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.isPaused) {
+        if (!GameManager.instance.isPaused)
+        {
             // clean up variables
             RaycastHit hit;
 
-           // Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
+            // Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
             Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * MeleeRange, Color.red);
 
             // interact icon
-            if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)) {
+            if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer))
+            {
                 if (hit.collider.gameObject.layer == 6 || hit.collider.gameObject.layer == 7) GameManager.instance.InteractOn();
                 else if (GameManager.instance.isInteractOn) GameManager.instance.InteractOff();
             }
-            else if (hit.collider == null) {
+            else if (hit.collider == null)
+            {
                 GameManager.instance.InteractOff();
             }
 
             // fov change
-            if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange) {
+            if (isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV + FOVChange)
+            {
                 GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV + FOVChange, Time.deltaTime * FOVChangeSpeed);
             }
-            else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV) {
+            else if (!isSprinting && GameManager.instance.mainCamera.fieldOfView != OGFOV)
+            {
                 GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV, Time.deltaTime * FOVChangeSpeed);
             }
 
-            if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
+            if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP)
+            {
                 Heal(healAmount);
                 HaveTape = false;
                 GameManager.instance.TapeImage.SetActive(false);
             }
+
+
 
             if (Input.GetButtonUp("Reload"))
             {
                 Reload();
             }
 
-            FireTimer += Time.deltaTime;
-            MeleeTimer += Time.deltaTime;
-            Movement();
+            if (mapOn)
+            {
+                GameManager.instance.crosshair.SetActive(false); // Hide crosshair when map is open
+            }
+            else
+            {
+                GameManager.instance.crosshair.SetActive(true); // Show crosshair when map is closed
+                FireTimer += Time.deltaTime;
+                MeleeTimer += Time.deltaTime;
+                Movement();
+                Sprint();
+            }
+
         }
-        
-        Sprint();
 
     }
 
-    void Movement()
+        void Movement()
     {
         // jump physics
         if (controller.isGrounded)
         {
-            if( moveDir.normalized.magnitude > 0.3f && !isPlayingStep)
+            if (moveDir.normalized.magnitude > 0.3f && !isPlayingStep)
             {
                 StartCoroutine(playStep());
             }
@@ -257,15 +277,15 @@ public class PlayerController : MonoBehaviour, IDamage
             sprintCurr += sprintRegenRate * Time.deltaTime;
         }
 
-        if (sprintCurr > sprintTimer) 
+        if (sprintCurr > sprintTimer)
             sprintCurr = sprintTimer;
 
-        if (sprintCurr < 0f) 
+        if (sprintCurr < 0f)
             sprintCurr = 0f;
 
         sprintCurrBoost = sprintMod * (sprintCurr / sprintTimer);
         finalSpeed = OGSpeed + sprintCurrBoost;
-     
+
         UpdateSprintBar();
     }
 
@@ -277,7 +297,8 @@ public class PlayerController : MonoBehaviour, IDamage
             jumpCount++;
             aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
         }
-        else if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && GameManager.instance.hasDoubleJump) {
+        else if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && GameManager.instance.hasDoubleJump)
+        {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
         }
@@ -314,7 +335,7 @@ public class PlayerController : MonoBehaviour, IDamage
                         dmg.TakeDamage(Damage);
                     }
                 }
-             }
+            }
         }
     }
 
@@ -323,7 +344,7 @@ public class PlayerController : MonoBehaviour, IDamage
         if (Weapons[WeaponListPos].type == WeaponType.Gun)
         {
             GunStats Gun = (GunStats)(Weapons[WeaponListPos]);
-            
+
             if (Gun.AmmoCur != Gun.AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
             {
                 Gun.AmmoCur = 0;
@@ -336,9 +357,9 @@ public class PlayerController : MonoBehaviour, IDamage
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy")) 
+        if (other.CompareTag("Enemy"))
         {
-            
+
             IDamage Enemy = other.GetComponent<IDamage>();
 
             if (!Enemies.Contains(Enemy))
@@ -352,7 +373,7 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         if (other.CompareTag("Enemy"))
         {
-     
+
             IDamage Enemy = other.GetComponent<IDamage>();
 
             if (Enemies.Contains(Enemy))
@@ -373,7 +394,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
             RaycastHit hit;
             aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange , ~IgnoreLayer))
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange, ~IgnoreLayer))
             {
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
 
@@ -421,11 +442,13 @@ public class PlayerController : MonoBehaviour, IDamage
         RaycastHit hit;
 
         // Dialogue
-        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer)) {
+        if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, DialogueLayer))
+        {
             IDialogue dialogue = hit.collider.GetComponent<IDialogue>();
             dialogue.SetDialogue();
         }
-        else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
+        else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer))
+        {
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
             HaveTape = interact.SetTape();
@@ -491,14 +514,16 @@ public class PlayerController : MonoBehaviour, IDamage
             Debug.Log(MeleeRange);
 
         }
-        if (Weapons[WeaponListPos].type == WeaponType.Melee) {
+        if (Weapons[WeaponListPos].type == WeaponType.Melee)
+        {
             WeaponModel.SetActive(true);
             GunModel.SetActive(false);
             WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
             WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
             WeaponModel.layer = 10;
         }
-        else if (Weapons[WeaponListPos].type == WeaponType.Gun) { 
+        else if (Weapons[WeaponListPos].type == WeaponType.Gun)
+        {
             GunModel.SetActive(true);
             WeaponModel.SetActive(false);
             GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
@@ -509,11 +534,13 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void SelectWeapon()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 && WeaponListPos < Weapons.Count - 1) {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && WeaponListPos < Weapons.Count - 1)
+        {
             WeaponListPos++;
             ChangeItem();
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && WeaponListPos > 0) {
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && WeaponListPos > 0)
+        {
             WeaponListPos--;
             ChangeItem();
         }
@@ -533,6 +560,12 @@ public class PlayerController : MonoBehaviour, IDamage
         // resetting and updating player health
         HP = MaxHP;
         UpdateHealthHearts();
+    }
+
+    public void MapToggle()
+    {
+        mapOn = !mapOn;
+        mapSwitch.SetActive(mapOn);
     }
 
 
