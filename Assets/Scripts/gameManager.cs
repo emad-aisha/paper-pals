@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject Interactable;
     public List<GameObject> Hearts;
     public Image SprintBar;
-    public GameObject flashRed;
+    public GameObject flashRed; 
+    public GameObject FlashFrames;
     public GameObject FlashlightMessage;
     public GameObject crosshair;
 
@@ -124,11 +125,9 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < temp.Count; i++) {
             for (int j = 0; j < temp.Count; j++) {
                 string name = temp[j].name;
-                Debug.Log(temp[j].name);
                 int heartOrder = int.Parse(name.Substring(5, 1));
 
                 if (heartOrder == i + 1) {
-                    Debug.Log(temp[j].name);
                     Hearts.Add(temp[j]);
                     break;
                 }

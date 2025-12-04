@@ -97,12 +97,16 @@ public class PlayerController : MonoBehaviour, IDamage {
     // OG stats before boosts
     int MaxHP;
     float OGSpeed;
-    bool isInvincible;
+
     float finalSpeed;
 
 
     bool isPlayingStep;
     bool isReloading;
+
+    bool isInvincible;
+    public float IFrames;
+    float IFramesTimer;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -121,6 +125,15 @@ public class PlayerController : MonoBehaviour, IDamage {
     // Update is called once per frame
     void Update() {
         if (!GameManager.instance.isPaused) {
+            if (isInvincible) {
+                IFramesTimer += Time.deltaTime;
+            }
+            if (IFramesTimer >= IFrames) {
+                IFramesTimer = 0;
+                isInvincible = false;
+                GameManager.instance.FlashFrames.SetActive(false);
+            }
+
             // clean up variables
             RaycastHit hit;
 
@@ -372,17 +385,22 @@ public class PlayerController : MonoBehaviour, IDamage {
 
 
     public void TakeDamage(int amount) {
-        HP -= amount;
+        if (!isInvincible) {
+            HP -= amount;
 
-        StartCoroutine(Flash(0.1f));
+            StartCoroutine(Flash(0.1f));
 
-        UpdateHealthHearts();
-        aud.pitch = Random.Range(0.9f, 1.1f);
-        aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
+            UpdateHealthHearts();
+            aud.pitch = Random.Range(0.9f, 1.1f);
+            aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
 
-        if (HP <= 0) {
-            GameManager.instance.Defeat();
+            if (HP <= 0) {
+                GameManager.instance.Defeat();
+            }
+            isInvincible = true;
+            GameManager.instance.FlashFrames.SetActive(true);
         }
+
     }
 
     public void Interact() {

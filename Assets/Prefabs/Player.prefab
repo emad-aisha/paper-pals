@@ -469,8 +469,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   interactDistance: 10
-  HP: 15
-  healAmount: 5
+  HP: 4
+  healAmount: 2
   speed: 10
   sprintMod: 15
   sprintDrainRate: 3
@@ -508,8 +508,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e93cfd3c742db0145821e1d800109f22, type: 3}
   - {fileID: 8300000, guid: 14266bda9014eaf4b9f1f86bc6576a48, type: 3}
   audHurtVol: 0.5
-  heartStates: []
-  heartDisplay: {fileID: 0}
 --- !u!33 &6155902657339225895
 MeshFilter:
   m_ObjectHideFlags: 0
