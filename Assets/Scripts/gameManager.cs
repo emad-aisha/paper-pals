@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public List<GameObject> Hearts;
+    public List<GameObject> Weapons;
     public Image SprintBar;
     public GameObject flashRed; 
     public GameObject FlashFrames;
@@ -39,9 +40,14 @@ public class GameManager : MonoBehaviour
 
     [Header("\nInventory")]
     public GameObject TapeImage;
+    public GameObject MapImage;
     [SerializeField] TMP_Text CoinCountText;
     [SerializeField] TMP_Text AmmoCountText;
 
+    [Header("Weapons")]
+    public GameObject AmmoMenu;
+    public TMP_Text CurrAmmo;
+    public TMP_Text TotalAmmo;
 
     [Header("\nInteraction")]
     public GameObject interactActive;
@@ -63,6 +69,10 @@ public class GameManager : MonoBehaviour
     public GameObject stickyNoteFinal;
 
     [Header("\n\nPublic variables")]
+
+    [Header("Collectables")]
+    public int TotalAmmoOwned;
+    public int TotalCoinsOwned;
 
     [Header("Player")]
     public GameObject player;
@@ -132,6 +142,11 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
+        }
+
+        Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
+        for (int i = 0; i < Weapons.Count; i++) {
+            Weapons[i].SetActive(false);
         }
 
         if (isTurnOffLighting) Destroy(Lighting);
@@ -342,13 +357,19 @@ public class GameManager : MonoBehaviour
 
     public void UpdateCoinCount(int ammount)
     {
-        if (coinCount < 999) coinCount += ammount;
+        if (coinCount < 999) { 
+            coinCount += ammount;
+            TotalCoinsOwned += ammount;
+        }
         CoinCountText.text = coinCount.ToString("F0");
     }
 
     public void UpdateAmmoCount(int ammount)
     {
-        if (ammoCount < 999) ammoCount += ammount;
+        if (ammoCount < 999) { 
+            ammoCount += ammount;
+            TotalAmmoOwned += ammount;
+        }
         AmmoCountText.text = ammoCount.ToString("F0");
     }
 

@@ -56,11 +56,12 @@ public class PlayerController : MonoBehaviour, IDamage {
 
     [Header("Flashlight")]
     public GameObject flashlightSwitch;
-    private bool flashlightOn = true;
+    bool flashlightOn = true;
 
     [Header("Map")]
     public GameObject mapSwitch;
-    private bool mapOn = false;
+    bool mapOn = false;
+    [SerializeField] bool hasMap = false;
 
     [Header("Audio")]
     [SerializeField] AudioSource aud;
@@ -100,9 +101,7 @@ public class PlayerController : MonoBehaviour, IDamage {
 
     float finalSpeed;
 
-
     bool isPlayingStep;
-    bool isReloading;
 
     bool isInvincible;
     public float IFrames;
@@ -125,6 +124,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     // Update is called once per frame
     void Update() {
         if (!GameManager.instance.isPaused) {
+            // TODO: turn these into functions
             if (isInvincible) {
                 IFramesTimer += Time.deltaTime;
             }
@@ -134,10 +134,13 @@ public class PlayerController : MonoBehaviour, IDamage {
                 GameManager.instance.FlashFrames.SetActive(false);
             }
 
+            if (hasMap && !GameManager.instance.MapImage.activeSelf) {
+                GameManager.instance.MapImage.SetActive(true);
+            }
+
             // clean up variables
             RaycastHit hit;
 
-            // Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * ShootDistance, Color.blue);
             Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * MeleeRange, Color.red);
 
             // interact icon
@@ -291,13 +294,14 @@ public class PlayerController : MonoBehaviour, IDamage {
         if (Weapons[WeaponListPos].type == WeaponType.Gun) {
             GunStats Gun = (GunStats)Weapons[WeaponListPos];
 
-            if (Gun.AmmoCur <= 0) {
+            if (Gun.AmmoCurr <= 0) {
                 Debug.Log("out of ammo");
+                // TODO: add a disappointing sound here idk
                 return;
             }
             else {
-                Gun.AmmoCur -= 1;
-                Debug.Log(Gun.AmmoCur);
+                Gun.AmmoCurr -= 1;
+                GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
                 FireTimer = 0;
 
                 RaycastHit hit;
@@ -314,14 +318,30 @@ public class PlayerController : MonoBehaviour, IDamage {
         }
     }
 
+    // TODO: ammo reloading shizz
     void Reload() {
         if (Weapons[WeaponListPos].type == WeaponType.Gun) {
             GunStats Gun = (GunStats)(Weapons[WeaponListPos]);
 
-            if (Gun.AmmoCur != Gun.AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
+            if (Gun.AmmoCurr != Gun.AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
             {
-                Gun.AmmoCur = 0;
-                Gun.AmmoCur = Gun.AmmoMax;
+                int totalAmmo = GameManager.instance.TotalAmmoOwned;
+
+                if (totalAmmo - Gun.AmmoMax >= 0 && Gun.AmmoCurr + totalAmmo > Gun.AmmoMax && Gun.AmmoCurr == 0) {
+                    Gun.AmmoCurr = Gun.AmmoMax;
+                    GameManager.instance.UpdateAmmoCount(-Gun.AmmoMax);
+                }
+                else if (totalAmmo - Gun.AmmoMax >= 0 && Gun.AmmoCurr + totalAmmo > Gun.AmmoMax) {
+                    int deleteAmmount = Gun.AmmoMax - Gun.AmmoCurr;
+                    Gun.AmmoCurr = Gun.AmmoMax;
+                    GameManager.instance.UpdateAmmoCount(-deleteAmmount);
+                }
+                else {
+                    Gun.AmmoCurr += totalAmmo;
+                    GameManager.instance.UpdateAmmoCount(-totalAmmo);
+                }
+
+                GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
             }
         }
     }
@@ -355,8 +375,6 @@ public class PlayerController : MonoBehaviour, IDamage {
         MeleeTimer = 0;
         //Debug.Log("called");
         if (Enemies.Count > 0) {
-
-            Debug.Log("swinging");
 
             RaycastHit hit;
             aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
@@ -442,6 +460,7 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         Weapons.Add(Weapon);
         WeaponListPos = Weapons.Count - 1;
+
         ChangeItem();
 
         return Weapon;
@@ -453,37 +472,59 @@ public class PlayerController : MonoBehaviour, IDamage {
         Damage = Weapon.GetDamage();
 
         if (Weapon.type == WeaponType.Gun) {
-            Debug.Log("hi king");
             GunStats Gun = (GunStats)Weapon;
 
             ShootDistance = Gun.ShootDistance;
             FireRate = Gun.ShootRate;
+
+            // model stuff
+            GunModel.SetActive(true);
+            WeaponModel.SetActive(false);
+            GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
+            GunModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+            GunModel.layer = 10;
+
+            GunStats CurrGun = (GunStats)Weapons[WeaponListPos];
+            GameManager.instance.CurrAmmo.text = CurrGun.AmmoCurr.ToString();
+            GameManager.instance.TotalAmmo.text = CurrGun.AmmoMax.ToString();
+            GameManager.instance.AmmoMenu.SetActive(true);
         }
 
         else if (Weapon.type == WeaponType.Melee) {
+            GameManager.instance.AmmoMenu.SetActive(false);
             MeleeStats Melee = (MeleeStats)Weapon;
 
             MeleeSpeed = Melee.SwingSpeed;
             DamageOverTime = Melee.DamageOverTime;
             TickDamage = Melee.TickDamage;
             MeleeRange = Melee.MeleeRange;
-            Debug.Log(MeleeRange);
 
-        }
-        if (Weapons[WeaponListPos].type == WeaponType.Melee) {
+            // model stuff
             WeaponModel.SetActive(true);
             GunModel.SetActive(false);
             WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
             WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
             WeaponModel.layer = 10;
         }
-        else if (Weapons[WeaponListPos].type == WeaponType.Gun) {
-            GunModel.SetActive(true);
-            WeaponModel.SetActive(false);
-            GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
-            GunModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
-            GunModel.layer = 10;
+
+        // sets inventory image
+        for (int i = 0; i < GameManager.instance.Weapons.Count; i++) {
+            string name = GameManager.instance.Weapons[i].name;
+            
+            int index = WeaponListPos;
+            if (Weapons.Count == 2) {
+                if (index + 1 > 1) index = 0;
+                else index = 1;
+            }
+
+            if (name.ToUpper() == Weapons[index].name.ToUpper()) {
+                GameManager.instance.Weapons[i].SetActive(true);
+            }
+            else {
+                GameManager.instance.Weapons[i].SetActive(false);
+            }
         }
+
     }
 
     void SelectWeapon() {
@@ -512,12 +553,9 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     public void MapToggle() {
-        mapOn = !mapOn;
-        GameManager.instance.mapMenu.SetActive(mapOn);
-
-        if (mapOn) GameManager.instance.PauseGame();
-        else GameManager.instance.UnpauseGame();
+        if (hasMap) {
+            mapOn = !mapOn;
+            GameManager.instance.mapMenu.SetActive(mapOn);
+        }
     }
-
-
 }
