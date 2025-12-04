@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    public GameObject mapMenu;
 
     [Header("Dialogue")]
     [SerializeField] GameObject menuDialogue;
@@ -28,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
-    public Image HealthBar;
+    public List<GameObject> Hearts;
     public Image SprintBar;
     public GameObject flashRed;
     public GameObject FlashlightMessage;
@@ -81,13 +83,6 @@ public class GameManager : MonoBehaviour
     public TMP_Text gameGoalCountText;
     public bool isPaused;
 
-    [Header("Sticky Notes")]
-    [SerializeField] GameObject stickyNotePrefab;
-    [SerializeField] Transform stickyNoteParent;
-    public string defaultNoteTitle = "Note Title";
-    public string defaultNoteBody = "This is the sticky note body text.";
-
-
 
     // private variables
     float originalTimeScale = 1f;
@@ -120,6 +115,25 @@ public class GameManager : MonoBehaviour
 
         SetAbilities();
         UpdateKeysLeft();
+
+        List<GameObject> temp = new List<GameObject>();
+        temp.AddRange(GameObject.FindGameObjectsWithTag("Alive"));
+
+
+        // ily mat
+        for (int i = 0; i < temp.Count; i++) {
+            for (int j = 0; j < temp.Count; j++) {
+                string name = temp[j].name;
+                Debug.Log(temp[j].name);
+                int heartOrder = int.Parse(name.Substring(5, 1));
+
+                if (heartOrder == i + 1) {
+                    Debug.Log(temp[j].name);
+                    Hearts.Add(temp[j]);
+                    break;
+                }
+            }
+        }
 
         if (isTurnOffLighting) Destroy(Lighting);
     }
@@ -337,17 +351,6 @@ public class GameManager : MonoBehaviour
     {
         if (ammoCount < 999) ammoCount += ammount;
         AmmoCountText.text = ammoCount.ToString("F0");
-    }
-
-    public void CreateStickyNote(string title, string body)
-    {
-        GameObject note = Instantiate(stickyNotePrefab, stickyNoteParent);
-        StickyNotesInfo notesInfo = note.GetComponent<StickyNotesInfo>();
-
-        if (notesInfo != null)
-        {
-            notesInfo.SetNoteText(title, body);
-        }
     }
 
     public void ShowFlashlightHint()
