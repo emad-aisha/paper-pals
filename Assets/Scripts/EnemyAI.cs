@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,39 +9,44 @@ public class EnemyAI : MonoBehaviour, IDamage
 {
     public enum EnemyType { ranged, melee, bull };
     [Header("Enemy Type")]
-	[SerializeField] EnemyType enemyType;
+    [SerializeField] EnemyType enemyType;
 
-	[Header("Neccesities")]
-	[SerializeField] LayerMask IgnoreLayer;
+    [Header("Neccesities")]
+    [SerializeField] LayerMask IgnoreLayer;
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] SpriteRenderer Sprite;
-    
 
-	[Header("Health")]
-	[SerializeField] int HP;
+    [Header("Bat Stats")]
+    [SerializeField] float flyHeight;
+    [SerializeField] float flySpeed;
+    [SerializeField] float flyAmplitude;
+    [SerializeField] float flyFrequency;
 
-	[Header("Melee Type")]
-	[SerializeField] int contactDamage;
+    [Header("Health")]
+    [SerializeField] int HP;
+
+    [Header("Melee Type")]
+    [SerializeField] int contactDamage;
     [SerializeField] float attackRange;
     [SerializeField] float attackCooldown;
 
-	[Header("Charge")]
-	[SerializeField] int chargeMaxSpeed;
+    [Header("Charge")]
+    [SerializeField] int chargeMaxSpeed;
     [SerializeField] int accelerationTime;
     [SerializeField] int chargeDuration;
     [SerializeField] int chargeCooldown;
 
-	[Header("Shooter")]
-	[SerializeField] Transform ShootPos;
+    [Header("Shooter")]
+    [SerializeField] Transform ShootPos;
     [SerializeField] GameObject Bullet;
     [SerializeField] float ShootRate;
 
-	[Header("Power Ups")]
-	[SerializeField] GameObject[] Powerbonusprefab;
+    [Header("Power Ups")]
+    [SerializeField] GameObject[] Powerbonusprefab;
     [SerializeField] int dropPowerbonus;
 
-	[Header("FOV")]
-	[SerializeField] Transform HeadPosition;
+    [Header("FOV")]
+    [SerializeField] Transform HeadPosition;
     [SerializeField] int FOV;
     [SerializeField] int FaceTargetSpeed;
     float AngleToPlayer;
@@ -76,6 +82,11 @@ public class EnemyAI : MonoBehaviour, IDamage
         //calculate direction vector from the enemy to the player
         playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
 
+        if (enemyType == EnemyType.ranged)
+        {
+            AgentAI.enabled = false;
+        }
+
     }
 
     void AttackPlayer()
@@ -105,12 +116,18 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         FaceTarget();
 
+        if (enemyType == EnemyType.ranged)
+        {
+            FlyingBehavior();
+            return;
+        }
+
         //if player is in the trigger collider
         if (PlayerInTrigger && !CanSeePlayer() && enemyType == EnemyType.ranged)
         {
             CheckRoam();
         }
-        else if(!PlayerInTrigger && enemyType == EnemyType.ranged)
+        else if (!PlayerInTrigger && enemyType == EnemyType.ranged)
         {
             CheckRoam();
         }
@@ -133,14 +150,14 @@ public class EnemyAI : MonoBehaviour, IDamage
         // Bull charge logic
         if (enemyType == EnemyType.bull && PlayerInTrigger)
         {
-            
+
             chargeTimer += Time.deltaTime;
 
             float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
             Debug.Log(distance.ToString());
             if (distance <= attackRange && attackTimer >= attackCooldown)
             {
-              
+
                 AttackPlayer();
             }
 
@@ -151,7 +168,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
     }
-    
+
     void CheckRoam()
     {
         if (AgentAI.remainingDistance < 0.01f && RoamTimer >= RoamPauseTime)
@@ -159,8 +176,8 @@ public class EnemyAI : MonoBehaviour, IDamage
             Roam();
         }
     }
-    
-    void Roam() 
+
+    void Roam()
     {
         //setting the Timer to 0
         RoamTimer = 0;
@@ -176,7 +193,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         AgentAI.SetDestination(Hit.position);
     }
-        
+
     bool CanSeePlayer()
     {
         //calculate direction vector from the enemy to the player
@@ -202,7 +219,7 @@ public class EnemyAI : MonoBehaviour, IDamage
                     Shoot();
                 }
 
-              
+
 
                 // Check distance between enemy and player
                 float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
@@ -237,13 +254,15 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-        if (HP <= 0) {
+        if (HP <= 0)
+        {
             Destroy(gameObject);
             GameManager.instance.gameGoalCounter++;
 
             GameManager.instance.UpdateKeysLeft();
         }
-        else {
+        else
+        {
             StartCoroutine(FlashRed());
         }
     }
@@ -253,7 +272,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             PlayerInTrigger = true;
-           
+
         }
     }
 
@@ -314,5 +333,26 @@ public class EnemyAI : MonoBehaviour, IDamage
         AgentAI.speed = normalSpeed;
         AgentAI.ResetPath();
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
+    }
+
+    void FlyingBehavior()
+    {
+        Transform player = GameManager.instance.player.transform;
+        Vector3 target = player.position;
+        target.y = player.position.y + flyHeight;
+
+        //Hover 
+        float hover = Mathf.Sin(Time.time * flyFrequency) * flyAmplitude;
+        target.y += hover;
+
+        //Move towards player
+        transform.position = Vector3.MoveTowards(transform.position, target, flySpeed * Time.deltaTime);
+        FaceTarget();
+
+        if (ShootTimer >= ShootRate)
+        {
+            Shoot();
+        }
+
     }
 }
