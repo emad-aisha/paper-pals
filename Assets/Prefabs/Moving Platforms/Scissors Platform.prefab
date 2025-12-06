@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1491125800525128, guid: 07f9048ddafe046b893ea5846d9de1f4, type: 3}
       propertyPath: m_Name
-      value: Scissors black Variant
+      value: Scissors Platform
       objectReference: {fileID: 0}
     - target: {fileID: 4555470025005476, guid: 07f9048ddafe046b893ea5846d9de1f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4698741945106030, guid: 07f9048ddafe046b893ea5846d9de1f4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.7009041
+      value: 2.9509041
       objectReference: {fileID: 0}
     - target: {fileID: 4698741945106030, guid: 07f9048ddafe046b893ea5846d9de1f4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f08807768766d44295857355a691da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
-  maxAngle: 45
+  speed: 40
+  maxAngle: 70
   invert: 1
 --- !u!1 &743207533457169078 stripped
 GameObject:
@@ -158,7 +158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0efe80be36921e47b47029fc5740fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hinge: {fileID: 8204562436867182659}
   damageAmount: 10
+  damageCoooldown: 0.5
 --- !u!65 &6335034379403212378
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -178,7 +180,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25, y: 0.25, z: 0.25}
+  m_Size: {x: 0.3, y: 0.01, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &745050180999169958 stripped
 GameObject:
@@ -197,6 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f08807768766d44295857355a691da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
-  maxAngle: 45
+  speed: 40
+  maxAngle: 70
   invert: 0
