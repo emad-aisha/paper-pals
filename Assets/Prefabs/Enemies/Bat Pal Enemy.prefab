@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 8392528749149557451}
   - component: {fileID: 478239397356334502}
   - component: {fileID: 272520932223007904}
+  - component: {fileID: 7873822821711131411}
   m_Layer: 9
   m_Name: Bat Sprite
   m_TagString: Untagged
@@ -322,6 +323,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4021f21b3a83d224ea6df5356dc7b6b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &7873822821711131411
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209663244350309540}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c4019d2d29c77064b8caa01433da93f4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8617006699006970022
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
+  LootDrops: {fileID: 0}
   IgnoreLayer:
     serializedVersion: 2
     m_Bits: 512
