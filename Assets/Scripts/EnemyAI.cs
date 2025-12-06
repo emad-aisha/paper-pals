@@ -16,11 +16,16 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] SpriteRenderer Sprite;
 
-    [Header("Bat Stats")]
+    [Header("Bat")]
     [SerializeField] float flyHeight;
     [SerializeField] float flySpeed;
     [SerializeField] float flyAmplitude;
     [SerializeField] float flyFrequency;
+    [SerializeField] float flyDistance;
+    [SerializeField] private GameObject swoopTrigger;
+    private bool PlayerInSwoopZone;
+    [SerializeField] private float swoopSpeed;
+    public bool isSwooping = false;
 
     [Header("Health")]
     [SerializeField] int HP;
@@ -82,10 +87,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         //calculate direction vector from the enemy to the player
         playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
 
-        if (enemyType == EnemyType.ranged)
-        {
-            AgentAI.enabled = false;
-        }
+        AgentAI.updateRotation = false;
 
     }
 
@@ -105,6 +107,8 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+      
+
         ShootTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
 
@@ -154,7 +158,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             chargeTimer += Time.deltaTime;
 
             float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-            Debug.Log(distance.ToString());
+           
             if (distance <= attackRange && attackTimer >= attackCooldown)
             {
 
@@ -240,12 +244,18 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void FaceTarget()
     {
-        //calculate the rotation needed to look at the player
-        Quaternion Rotate =
-            Quaternion.LookRotation(new Vector3(playerDirection.x, 0, playerDirection.z));
+        // Update direction EVERY frame
+        Vector3 targetPos = GameManager.instance.player.transform.position;
+        playerDirection = targetPos - HeadPosition.position;
 
-        //smoothly rotate towards the player
-        transform.rotation = Quaternion.Lerp(transform.rotation, Rotate, FaceTargetSpeed * Time.deltaTime);
+        if (playerDirection.sqrMagnitude < 0.001f)
+            return;
+
+        Vector3 flatDir = new Vector3(playerDirection.x, 0, playerDirection.z);
+
+        Quaternion targetRot = Quaternion.LookRotation(flatDir);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot,FaceTargetSpeed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
@@ -293,10 +303,27 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void Shoot()
     {
-        ShootTimer = 0f;
+        ShootTimer = 0;
 
-        //Will created an object at the shoot pos
-        Instantiate(Bullet, ShootPos.position, transform.rotation);
+        RaycastHit hit;
+        float shootDistance = 100f; // or whatever range you want
+
+        // Raycast from the shoot position forward
+        if (Physics.Raycast(ShootPos.position, transform.forward, out hit, shootDistance, ~IgnoreLayer))
+        {
+            // Damage player if hit
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
+            if (dmg != null)
+            {
+                dmg.TakeDamage(contactDamage);
+            }
+
+            // Optional: spawn hit effect at hit point
+            if (Bullet != null)
+            {
+                Instantiate(Bullet, hit.point, Quaternion.identity);
+            }
+        }
     }
 
     IEnumerator BullCharge()
@@ -339,20 +366,56 @@ public class EnemyAI : MonoBehaviour, IDamage
     {
         Transform player = GameManager.instance.player.transform;
         Vector3 target = player.position;
-        target.y = player.position.y + flyHeight;
 
-        //Hover 
+        // Hover offset
+        target.y = player.position.y + flyHeight;
         float hover = Mathf.Sin(Time.time * flyFrequency) * flyAmplitude;
         target.y += hover;
+        Vector3 flatDirection = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
+        float flatDistance = flatDirection.magnitude;
 
-        //Move towards player
-        transform.position = Vector3.MoveTowards(transform.position, target, flySpeed * Time.deltaTime);
-        FaceTarget();
+        //Move with NavMeshAgent if farther than flyDistance
+        if (flatDistance > flyDistance)
+        {
+            AgentAI.SetDestination(new Vector3(player.position.x, transform.position.y, player.position.z));
+        }
+        else
+        {
+            //Stop agent near the player
+            AgentAI.ResetPath();
+        }
+
+        // Adjust Y manually for hovering
+        Vector3 pos = transform.position;
+        pos.y = target.y;
+        transform.position = pos;
+
+      
 
         if (ShootTimer >= ShootRate)
         {
             Shoot();
         }
+    }
 
+
+
+    public IEnumerator SwoopAttack()
+    {
+        isSwooping = true;
+
+        Transform player = GameManager.instance.player.transform;
+
+        float originalShootTimer = ShootTimer;
+        ShootTimer = 0; // Reset shoot timer to prevent shooting during swoop
+
+        Vector3 startPosition = transform.position;
+        Vector3 direction = (player.position - transform.position).normalized;
+
+        AttackPlayer();
+        yield return new WaitForSeconds(1); // Pause briefly after attack
+
+        isSwooping = false;
+        ShootTimer = originalShootTimer; 
     }
 }
