@@ -5,7 +5,7 @@ public class ExplosiveStats : WeaponStats
     [Header("Explosive")]
     // public GameObject GunModel;
     [Range(1, 10)] public int Damage;
-    [Range(5, 1000)] public int BlastRadius;
+    [Range(1, 1000)] public int BlastRadius;
     [Range(0, 1)] public float SoundVol;
     [Range(1, 10)] public int Timer;
     public AudioClip[] WeaponSound;

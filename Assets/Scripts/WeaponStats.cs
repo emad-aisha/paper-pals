@@ -26,8 +26,6 @@ public abstract class WeaponStats : ScriptableObject
     [Header("Behavior")]
     public bool AOE;
     public bool Throwable;
-    public bool Thrown;
-
 
     // THROW SETTINGS
     [Header("Throw Settings")]

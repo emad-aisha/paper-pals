@@ -1,9 +1,11 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IDamage {
     // Unity variables
@@ -397,17 +399,30 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Throw()
-    {
+    { 
         Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, ThrowDistance, ~IgnoreLayer);
 
         Vector3 Force = Camera.main.transform.forward * Weapons[WeaponListPos].ThrowForce + transform.up * Weapons[WeaponListPos].ThrowUpwardForce;
 
         GameObject ThrownObject = Instantiate(EquippedWeapon, ThrowPoint.transform.position, Camera.main.transform.rotation);
+
+        ThrownObject.layer = 0;
+
         Rigidbody rb = ThrownObject.GetComponent<Rigidbody>();
 
         rb.AddForce(Force, ForceMode.Impulse);
 
         ThrowTimer = 0;
+
+        if (ThrownObject.GetComponent<C4>())
+        {
+            ExplosiveStats Info = (ExplosiveStats)Weapons[WeaponListPos];
+            C4 c4 = ThrownObject.GetComponent<C4>();
+            if (c4 != null)
+            {
+                c4.OnThrow(Info);
+            }
+        }
     }
 
 
@@ -490,6 +505,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     void ChangeItem() {
 
         WeaponStats Weapon = Weapons[WeaponListPos];
+        EquippedWeapon = Weapon.Model;
         Damage = Weapon.GetDamage();
         ThrowDistance = Weapon.ThrowDistance;
 
@@ -500,6 +516,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             FireRate = Gun.ShootRate;
 
             // model stuff
+
             GunModel.SetActive(true);
             WeaponModel.SetActive(false);
             GunModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
@@ -531,7 +548,6 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         else if (Weapon.type == WeaponType.Explosive)
         {
-            EquippedWeapon = Weapon.Model;
             ThrowDistance = Weapon.ThrowDistance;
             Weapon.Throwable = true;
             WeaponModel.SetActive(true);
