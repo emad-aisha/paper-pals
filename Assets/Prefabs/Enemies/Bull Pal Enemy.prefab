@@ -55,11 +55,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 2
+  LootDrops: {fileID: 4246376263991153931, guid: 63b532d0d9746af47881a49c344d1e0b, type: 3}
   IgnoreLayer:
     serializedVersion: 2
     m_Bits: 512
   AgentAI: {fileID: 3426986578978938938}
   Sprite: {fileID: 6355838910643190701}
+  flyHeight: 0
+  flySpeed: 0
+  flyAmplitude: 0
+  flyFrequency: 0
   HP: 11
   contactDamage: 5
   attackRange: 3

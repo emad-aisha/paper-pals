@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject Interactable;
     public List<GameObject> Hearts;
     public List<GameObject> Weapons;
+    public List<GameObject> EyedropPhases;
     public Image SprintBar;
     public GameObject flashRed; 
     public GameObject FlashFrames;
@@ -73,6 +74,8 @@ public class GameManager : MonoBehaviour
     [Header("Collectables")]
     public int TotalAmmoOwned;
     public int TotalCoinsOwned;
+    int CoinsMax = 15;
+    public int CoinsCounter;
 
     [Header("Player")]
     public GameObject player;
@@ -112,9 +115,6 @@ public class GameManager : MonoBehaviour
     public int gameGoalCount = 0;
     public int gameGoalCounter;
 
-    int coinCount;
-    int ammoCount;
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -139,27 +139,12 @@ public class GameManager : MonoBehaviour
         SetAbilities();
         UpdateKeysLeft();
 
-        List<GameObject> temp = new List<GameObject>();
-        temp.AddRange(GameObject.FindGameObjectsWithTag("Alive"));
 
+        SetHearts();
+        SetEydrops();
+        SetWepons();
 
-        // ily mat
-        for (int i = 0; i < temp.Count; i++) {
-            for (int j = 0; j < temp.Count; j++) {
-                string name = temp[j].name;
-                int heartOrder = int.Parse(name.Substring(5, 1));
-
-                if (heartOrder == i + 1) {
-                    Hearts.Add(temp[j]);
-                    break;
-                }
-            }
-        }
-
-        Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
-        for (int i = 0; i < Weapons.Count; i++) {
-            Weapons[i].SetActive(false);
-        }
+        SetEyedrop();
 
         if (isTurnOffLighting) Destroy(Lighting);
     }
@@ -190,6 +175,46 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("Map"))
         {
             controller.MapToggle();
+        }
+    }
+
+    void SetHearts() {
+        List<GameObject> temp = new List<GameObject>();
+        temp.AddRange(GameObject.FindGameObjectsWithTag("Alive"));
+
+        for (int i = 0; i < temp.Count; i++) {
+            for (int j = 0; j < temp.Count; j++) {
+                string name = temp[j].name;
+                int heartOrder = int.Parse(name.Substring(5, 1));
+
+                if (heartOrder == i + 1) {
+                    Hearts.Add(temp[j]);
+                    break;
+                }
+            }
+        }
+    }
+    void SetEydrops() {
+        List<GameObject> temp = new List<GameObject>();
+        temp.AddRange(GameObject.FindGameObjectsWithTag("Eyedrop"));
+
+        for (int i = 0; i < temp.Count; i++) {
+            for (int j = 0; j < temp.Count; j++) {
+                string name = temp[j].name;
+                int eyedropOrder = int.Parse(name.Substring(7, 1));
+
+                if (eyedropOrder == i + 1) {
+                    EyedropPhases.Add(temp[j]);
+                    break;
+                }
+            }
+        }
+
+    }
+    void SetWepons() {
+        Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
+        for (int i = 0; i < Weapons.Count; i++) {
+            Weapons[i].SetActive(false);
         }
     }
 
@@ -319,7 +344,6 @@ public class GameManager : MonoBehaviour
 
     public void Defeat()
     {
-        Debug.Log("Defeat called! HP reached zero");
         PauseGame();
         menuActive = menuLose;
         menuActive.SetActive(true);
@@ -367,22 +391,59 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void SetEyedrop() {
+        float percent = ((float)CoinsCounter / CoinsMax);
+        int phase = 0;
+
+        if (percent < 0.25) {
+            phase = 1;
+        }
+        else if (percent < 0.5) {
+            phase = 2;
+        }
+        else if (percent < 0.75) {
+            phase = 3;
+        }
+        else if (percent < 1) {
+            phase = 4;
+        }
+
+        for (int i = 0; i < EyedropPhases.Count; i++) {
+
+            if (phase == i + 1) {
+                EyedropPhases[i].SetActive(true);
+            }
+            else {
+                EyedropPhases[i].SetActive(false);
+            }
+        }
+    }
+
     public void UpdateCoinCount(int ammount)
     {
-        if (coinCount < 999) { 
-            coinCount += ammount;
-            TotalCoinsOwned += ammount;
+        if (CoinsCounter < CoinsMax) {
+            CoinsCounter += ammount;
         }
-        CoinCountText.text = coinCount.ToString("F0");
+
+        if (CoinsCounter >= CoinsMax) {
+            CoinsCounter -= CoinsMax;
+
+            if (TotalCoinsOwned < 999) {
+                TotalCoinsOwned += 1;
+            }
+        }
+
+
+        SetEyedrop();
+        CoinCountText.text = TotalCoinsOwned.ToString("F0");
     }
 
     public void UpdateAmmoCount(int ammount)
     {
-        if (ammoCount < 999) { 
-            ammoCount += ammount;
+        if (TotalAmmoOwned < 999) { 
             TotalAmmoOwned += ammount;
         }
-        AmmoCountText.text = ammoCount.ToString("F0");
+        AmmoCountText.text = TotalAmmoOwned.ToString("F0");
     }
 
     public void ShowFlashlightHint()

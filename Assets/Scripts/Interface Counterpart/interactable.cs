@@ -65,6 +65,13 @@ public class Interactable : MonoBehaviour, IInteractable {
         if (type != InterfaceType.Trophy) Destroy(this.gameObject);
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if (other.name == "Player" && type == InterfaceType.Currency) {
+            GameManager.instance.UpdateCoinCount(amount);
+            Destroy(this.gameObject);
+        }
+    }
+
     public bool SetTape() {
         return GameManager.instance.TapeImage.activeSelf;
     }

@@ -1,8 +1,6 @@
-using Mono.Cecil;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 
 public class EnemyAI : MonoBehaviour, IDamage
@@ -11,8 +9,11 @@ public class EnemyAI : MonoBehaviour, IDamage
     [Header("Enemy Type")]
     [SerializeField] EnemyType enemyType;
 
-    [Header("Neccesities")]
-    [SerializeField] LayerMask IgnoreLayer;
+    [Header("Loot Drops")]
+    [SerializeField] GameObject LootDrops;
+
+	[Header("Neccesities")]
+	[SerializeField] LayerMask IgnoreLayer;
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] SpriteRenderer Sprite;
 
@@ -264,11 +265,11 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-        if (HP <= 0)
-        {
+        if (HP <= 0) {
+            Instantiate(LootDrops, transform.position, transform.rotation);
+
             Destroy(gameObject);
             GameManager.instance.gameGoalCounter++;
-
             GameManager.instance.UpdateKeysLeft();
         }
         else

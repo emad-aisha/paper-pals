@@ -305,7 +305,6 @@ public class PlayerController : MonoBehaviour, IDamage {
             GunStats Gun = (GunStats)Weapons[WeaponListPos];
 
             if (Gun.AmmoCurr <= 0) {
-                Debug.Log("out of ammo");
                 // TODO: add a disappointing sound here idk
                 return;
             }
@@ -383,9 +382,7 @@ public class PlayerController : MonoBehaviour, IDamage {
 
     void Swing() {
         MeleeTimer = 0;
-        //Debug.Log("called");
         if (Enemies.Count > 0) {
-
             RaycastHit hit;
             aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange, ~IgnoreLayer)) {
