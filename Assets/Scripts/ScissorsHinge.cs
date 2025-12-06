@@ -1,28 +1,20 @@
 using UnityEngine;
 
-public class ScissorsHinge : MonoBehaviour
+public class ScissorBlade : MonoBehaviour
 {
-    private HingeJoint hinge;
-    private bool isOpen = false;
-    void Start()
+    [SerializeField] private float speed = 2.0f;
+    [SerializeField] private float maxAngle = 45.0f;
+    [SerializeField] private bool invert = false; 
+
+    private float timer;
+
+    private void Update()
     {
-        hinge = GetComponent<HingeJoint>();
-    }
+        timer += Time.deltaTime * speed;
+        float angle = Mathf.PingPong(timer, maxAngle);
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isOpen = !isOpen;
-            JointSpring spring = hinge.spring;
-
-            if (isOpen)
-                spring.targetPosition = 45f; // Open angle
-            else
-                spring.targetPosition = 0f; // Closed angle
-
-            hinge.spring = spring;
-            hinge.useSpring = true;
-        }
+        
+        float finalAngle = invert ? -angle : angle;
+        transform.localRotation = Quaternion.Euler(0, 0, finalAngle);
     }
 }
