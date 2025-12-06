@@ -33,7 +33,7 @@ public class C4 : MonoBehaviour
         // "shockwave" stuff
         Exploded = true;
         C4Model.enabled = false;
-        Instantiate(C4ParticleSystem, C4Model.transform.position, Quaternion.identity);
+        Instantiate(C4ParticleSystem, C4Model.transform.position, C4Model.transform.rotation);
         float Duration = 0.25f;
         float StartRadius = 0.1f;
         float EndRadius = Stats.BlastRadius;
