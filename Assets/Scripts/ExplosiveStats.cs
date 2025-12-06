@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 [CreateAssetMenu(menuName = "Weapon - Explosive")]
 public class ExplosiveStats : WeaponStats
 {
@@ -9,7 +11,8 @@ public class ExplosiveStats : WeaponStats
     [Range(1, 1000)] public int BlastRadius;
     [Range(0, 1)] public float SoundVol;
     [Range(1, 10)] public int Timer;
-    public AudioClip[] WeaponSound;
+    public AudioClip[] BeepSound;
+    public AudioClip ExplosionSound;
     
 
     public override int GetDamage()
@@ -19,6 +22,6 @@ public class ExplosiveStats : WeaponStats
 
     public override AudioClip GetAudio()
     {
-        return WeaponSound[Random.Range(0, WeaponSound.Length)];
+        return BeepSound[Random.Range(0, BeepSound.Length)];
     }
 }

@@ -11,10 +11,11 @@ public class C4 : MonoBehaviour
     bool Exploded;
 
     [SerializeField] GameObject RedLight;
-
+    AudioSource aud;
 
     public void OnThrow(ExplosiveStats NewStats)
     {
+        aud = GetComponentInChildren<AudioSource>();
         Exploded = false;
         Stats = NewStats;
         Collider = this.GetComponent<SphereCollider>();
@@ -53,7 +54,7 @@ public class C4 : MonoBehaviour
             Collider.radius = Mathf.Lerp(StartRadius, EndRadius, lerp);
             yield return null;
         }
-
+        yield return new WaitForSeconds(.7f);
         Destroy(gameObject);
         
         
@@ -63,12 +64,16 @@ public class C4 : MonoBehaviour
     {
         while (C4Model.enabled)
         {
+            aud.pitch = 5;
+            aud.PlayOneShot(Stats.GetAudio(), Stats.SoundVol);
             RedLight.SetActive(true);
             yield return new WaitForSeconds(0.1f);
             RedLight.SetActive(false);
             yield return new WaitForSeconds(0.1f);
         }
         RedLight.SetActive(false);
+        aud.pitch = 1;
+        aud.PlayOneShot(Stats.ExplosionSound, Stats.SoundVol);
     }
 
 
@@ -88,8 +93,16 @@ public class C4 : MonoBehaviour
             }
             else if (other.CompareTag("Player"))
             {
+               
                 IDamage Target = other.GetComponentInParent<IDamage>();
-                Target.TakeDamage(Stats.SelfDamage);
+                float dist = Vector3.Distance(other.transform.position, transform.position);
+
+                if (dist <= Stats.BlastRadius)
+                {
+                    Debug.Log("player hit");
+                    Target.TakeDamage(Stats.Damage);
+                }
+                Debug.Log("not in range");
             }
         }
     }
