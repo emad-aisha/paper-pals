@@ -396,7 +396,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             IDamage Enemy = other.GetComponent<IDamage>();
 
             if (!Enemies.Contains(Enemy)) {
-                //Enemies.Add(Enemy);
+                Enemies.Add(Enemy);
             }
         }
     }
@@ -406,21 +406,24 @@ public class PlayerController : MonoBehaviour, IDamage {
             IDamage Enemy = other.GetComponent<IDamage>();
 
             if (Enemies.Contains(Enemy)) {
-                //Enemies.Remove(Enemy);
+                Enemies.Remove(Enemy);
             }
         }
     }
 
     void Swing() {
+        Debug.Log("swung");
         MeleeTimer = 0;
         if (Enemies.Count > 0) {
+            Debug.Log("made it here");
             RaycastHit hit;
             aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange, ~IgnoreLayer)) {
                 IDamage dmg = hit.collider.GetComponent<IDamage>();
-
+                Debug.Log("found hit");
                 if (dmg != null && Enemies.Contains(dmg)) {
                     dmg.TakeDamage(Weapons[WeaponListPos].GetDamage());
+                    Debug.Log("HIT");
                     return;
                 }
             }
