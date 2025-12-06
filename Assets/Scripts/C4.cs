@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class C4 : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class C4 : MonoBehaviour
     MeshRenderer C4Model;
     ParticleSystem C4ParticleSystem;
     bool Exploded;
+
 
     [SerializeField] GameObject RedLight;
     AudioSource aud;
@@ -21,11 +21,6 @@ public class C4 : MonoBehaviour
         Collider = this.GetComponent<SphereCollider>();
         C4Model = GetComponentInChildren<MeshRenderer>();
         C4ParticleSystem = NewStats.HitFX;
-
-        if (Collider == null)
-        {
-            Debug.Log("um why no lcllider");
-        }
 
         StartCoroutine(Explode());
     }
@@ -65,7 +60,10 @@ public class C4 : MonoBehaviour
         while (C4Model.enabled)
         {
             aud.pitch = 5;
-            aud.PlayOneShot(Stats.GetAudio(), Stats.SoundVol);
+            // TODO: this is commented for now cuz it shows a bug
+            // TODO: put a sound in the serialized field for this
+            // aud.PlayOneShot(Stats.GetAudio(), Stats.SoundVol);
+
             RedLight.SetActive(true);
             yield return new WaitForSeconds(0.1f);
             RedLight.SetActive(false);
@@ -99,10 +97,8 @@ public class C4 : MonoBehaviour
 
                 if (dist <= Stats.BlastRadius)
                 {
-                    Debug.Log("player hit");
-                    Target.TakeDamage(Stats.Damage);
+                    Target.TakeDamage(Stats.SelfDamage);
                 }
-                Debug.Log("not in range");
             }
         }
     }

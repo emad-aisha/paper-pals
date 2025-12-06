@@ -77,7 +77,6 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] float audHurtVol;
 
 
-
     // private variables
     // movement
     Vector3 moveDir;
@@ -87,7 +86,6 @@ public class PlayerController : MonoBehaviour, IDamage {
     int jumpCount;
 
 
-    // TODO: change this to shooting based on tapping
     // weapon
     GameObject EquippedWeapon;
     int WeaponListPos;
@@ -112,6 +110,8 @@ public class PlayerController : MonoBehaviour, IDamage {
     public float IFrames;
     float IFramesTimer;
 
+    int C4AmmoCurr = 10;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -129,15 +129,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     // Update is called once per frame
     void Update() {
         if (!GameManager.instance.isPaused) {
-            // TODO: turn these into functions
-            if (isInvincible) {
-                IFramesTimer += Time.deltaTime;
-            }
-            if (IFramesTimer >= IFrames) {
-                IFramesTimer = 0;
-                isInvincible = false;
-                GameManager.instance.FlashFrames.SetActive(false);
-            }
+            SetIFrames();
 
             if (hasMap && !GameManager.instance.MapImage.activeSelf) {
                 GameManager.instance.MapImage.SetActive(true);
@@ -227,8 +219,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         if (Weapons.Count > 0) {
             if (Input.GetButton("Fire1")) {
 
-                if (Weapons[WeaponListPos].Throwable && ThrowTimer >= Weapons[WeaponListPos].ThrowSpeed) 
-                {
+                if (Weapons[WeaponListPos].Throwable && ThrowTimer >= Weapons[WeaponListPos].ThrowSpeed) {
                     Throw();
                 }
 
@@ -261,6 +252,17 @@ public class PlayerController : MonoBehaviour, IDamage {
         }
 
         isPlayingStep = false;
+    }
+
+    void SetIFrames() {
+        if (isInvincible) {
+            IFramesTimer += Time.deltaTime;
+        }
+        if (IFramesTimer >= IFrames) {
+            IFramesTimer = 0;
+            isInvincible = false;
+            GameManager.instance.FlashFrames.SetActive(false);
+        }
     }
 
     void Sprint() {
@@ -318,7 +320,7 @@ public class PlayerController : MonoBehaviour, IDamage {
                 RaycastHit hit;
 
                 aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
-                    if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer)) {
+                if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer)) {
                     IDamage dmg = hit.collider.GetComponent<IDamage>();
                     if (dmg != null) {
                         Instantiate(Weapons[WeaponListPos].HitFX, hit.point, Quaternion.identity);
@@ -329,7 +331,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         }
     }
 
-    // TODO: ammo reloading shizz
+
     void Reload() {
         if (Weapons[WeaponListPos].type == WeaponType.Gun) {
             GunStats Gun = (GunStats)(Weapons[WeaponListPos]);
@@ -353,6 +355,33 @@ public class PlayerController : MonoBehaviour, IDamage {
                 }
 
                 GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
+                GameManager.instance.TotalAmmo.text = Gun.AmmoMax.ToString();
+            }
+        }
+        else if (Weapons[WeaponListPos].type == WeaponType.Explosive) {
+            ExplosiveStats explosive = (ExplosiveStats)Weapons[WeaponListPos];
+            int C4AmmoMax = 10;
+
+            if (C4AmmoCurr != C4AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
+            {
+                int totalAmmo = GameManager.instance.TotalAmmoOwned;
+
+                if (totalAmmo - C4AmmoMax >= 0 && C4AmmoCurr + totalAmmo > C4AmmoMax && C4AmmoCurr == 0) {
+                    C4AmmoCurr = C4AmmoMax;
+                    GameManager.instance.UpdateAmmoCount(-C4AmmoMax);
+                }
+                else if (totalAmmo - C4AmmoMax >= 0 && C4AmmoCurr + totalAmmo > C4AmmoMax) {
+                    int deleteAmmount = C4AmmoMax - C4AmmoCurr;
+                    C4AmmoCurr = C4AmmoMax;
+                    GameManager.instance.UpdateAmmoCount(-deleteAmmount);
+                }
+                else {
+                    C4AmmoCurr += totalAmmo;
+                    GameManager.instance.UpdateAmmoCount(-totalAmmo);
+                }
+
+                GameManager.instance.CurrAmmo.text = C4AmmoCurr.ToString();
+                GameManager.instance.TotalAmmo.text = C4AmmoMax.ToString();
             }
         }
     }
@@ -398,8 +427,11 @@ public class PlayerController : MonoBehaviour, IDamage {
         }
     }
 
-    void Throw()
-    { 
+    void Throw() {
+        if (C4AmmoCurr == 0) return;
+        C4AmmoCurr = 0;
+        GameManager.instance.CurrAmmo.text = C4AmmoCurr.ToString();
+
         Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, ThrowDistance, ~IgnoreLayer);
 
         Vector3 Force = Camera.main.transform.forward * Weapons[WeaponListPos].ThrowForce + transform.up * Weapons[WeaponListPos].ThrowUpwardForce;
@@ -414,12 +446,11 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         ThrowTimer = 0;
 
-        if (ThrownObject.GetComponent<C4>())
-        {
+        if (ThrownObject.GetComponent<C4>()) {
             ExplosiveStats Info = (ExplosiveStats)Weapons[WeaponListPos];
             C4 c4 = ThrownObject.GetComponent<C4>();
-            if (c4 != null)
-            {
+            if (c4 != null) {
+                
                 c4.OnThrow(Info);
             }
         }
@@ -546,35 +577,38 @@ public class PlayerController : MonoBehaviour, IDamage {
             WeaponModel.layer = 10;
         }
 
-        else if (Weapon.type == WeaponType.Explosive)
-        {
+        else if (Weapon.type == WeaponType.Explosive) {
             ThrowDistance = Weapon.ThrowDistance;
             Weapon.Throwable = true;
+
             WeaponModel.SetActive(true);
+            GunModel.SetActive(false);
             WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
             WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
+            WeaponModel.layer = 10;
+
+            GameManager.instance.CurrAmmo.text = C4AmmoCurr.ToString();
+            GameManager.instance.TotalAmmo.text = 10.ToString();
+            GameManager.instance.AmmoMenu.SetActive(true);
         }
-            // sets inventory image
-            for (int i = 0; i < GameManager.instance.Weapons.Count; i++)
-            {
-                string name = GameManager.instance.Weapons[i].name;
 
-                int index = WeaponListPos;
-                if (Weapons.Count == 2)
-                {
-                    if (index + 1 > 1) index = 0;
-                    else index = 1;
-                }
+        // sets inventory image
+        for (int i = 0; i < GameManager.instance.Weapons.Count; i++) {
+            string name = GameManager.instance.Weapons[i].name;
 
-                if (name.ToUpper() == Weapons[index].name.ToUpper())
-                {
-                    GameManager.instance.Weapons[i].SetActive(true);
-                }
-                else
-                {
-                    GameManager.instance.Weapons[i].SetActive(false);
-                }
+            int index = WeaponListPos;
+            if (Weapons.Count == 2) {
+                if (index + 1 > 1) index = 0;
+                else index = 1;
             }
+
+            if (name.ToUpper() == Weapons[index].name.ToUpper()) {
+                GameManager.instance.Weapons[i].SetActive(true);
+            }
+            else {
+                GameManager.instance.Weapons[i].SetActive(false);
+            }
+        }
 
     }
 
@@ -595,6 +629,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     public void RespawnPlayer() {
+        isInvincible = false;
         // reset player position to last checkpoint
         controller.transform.position = GameManager.instance.playerSpawnPos.transform.position;
 

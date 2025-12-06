@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Audio;
 [CreateAssetMenu(menuName = "Weapon - Explosive")]
 public class ExplosiveStats : WeaponStats
 {
@@ -13,7 +11,10 @@ public class ExplosiveStats : WeaponStats
     [Range(1, 10)] public int Timer;
     public AudioClip[] BeepSound;
     public AudioClip ExplosionSound;
-    
+
+    [Header("please")]
+    [Range(1, 10)] public int AmmoCurr;
+    public const int AmmoMax = 5;
 
     public override int GetDamage()
     {
