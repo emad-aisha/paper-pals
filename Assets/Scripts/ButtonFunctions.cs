@@ -19,6 +19,24 @@ public class ButtonFunctions : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    //option button function
+    public void Option()
+    {
+        GameManager.instance.OptionMenu();   
+    }
+    public void OptionExit()
+    {
+        GameManager.instance.ExitOptionMenu();
+    }
+    public void OptionVOL()
+    {
+        GameManager.instance.VolOptionMenu();
+    }
+    public void OptionMouse()
+    {
+        GameManager.instance.MouseOptionMenu();
+    }
+
     public void Play()
     {
         Time.timeScale = 1.0f;

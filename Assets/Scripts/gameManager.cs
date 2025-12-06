@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuOption;
+    [SerializeField] GameObject menuVOLOption;
+    [SerializeField] GameObject menuMouseOption;
     public GameObject mapMenu;
 
     [Header("Dialogue")]
@@ -34,7 +37,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Weapons;
     public List<GameObject> EyedropPhases;
     public Image SprintBar;
-    public GameObject flashRed; 
+    public GameObject flashRed;
     public GameObject FlashFrames;
     public GameObject FlashlightMessage;
     public GameObject crosshair;
@@ -84,7 +87,7 @@ public class GameManager : MonoBehaviour
     public bool hasDoubleJump;
     public int totalKeys = 3;
     public int ownedKeys = 0;
-    
+
 
     [Header("Camera")]
     public Camera mainCamera;
@@ -105,7 +108,7 @@ public class GameManager : MonoBehaviour
     //Mouse sensitivity slider and value display
     public Slider MouseSensSliderObj;
     public TMP_Text MouseSensNumberDisplay;
-    
+
     public TMP_Text gameGoalCountText;
     public bool isPaused;
 
@@ -178,32 +181,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SetHearts() {
+    void SetHearts()
+    {
         List<GameObject> temp = new List<GameObject>();
         temp.AddRange(GameObject.FindGameObjectsWithTag("Alive"));
 
-        for (int i = 0; i < temp.Count; i++) {
-            for (int j = 0; j < temp.Count; j++) {
+        for (int i = 0; i < temp.Count; i++)
+        {
+            for (int j = 0; j < temp.Count; j++)
+            {
                 string name = temp[j].name;
                 int heartOrder = int.Parse(name.Substring(5, 1));
 
-                if (heartOrder == i + 1) {
+                if (heartOrder == i + 1)
+                {
                     Hearts.Add(temp[j]);
                     break;
                 }
             }
         }
     }
-    void SetEydrops() {
+    void SetEydrops()
+    {
         List<GameObject> temp = new List<GameObject>();
         temp.AddRange(GameObject.FindGameObjectsWithTag("Eyedrop"));
 
-        for (int i = 0; i < temp.Count; i++) {
-            for (int j = 0; j < temp.Count; j++) {
+        for (int i = 0; i < temp.Count; i++)
+        {
+            for (int j = 0; j < temp.Count; j++)
+            {
                 string name = temp[j].name;
                 int eyedropOrder = int.Parse(name.Substring(7, 1));
 
-                if (eyedropOrder == i + 1) {
+                if (eyedropOrder == i + 1)
+                {
                     EyedropPhases.Add(temp[j]);
                     break;
                 }
@@ -211,9 +222,11 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    void SetWepons() {
+    void SetWepons()
+    {
         Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
-        for (int i = 0; i < Weapons.Count; i++) {
+        for (int i = 0; i < Weapons.Count; i++)
+        {
             Weapons[i].SetActive(false);
         }
     }
@@ -242,27 +255,31 @@ public class GameManager : MonoBehaviour
         string currLevelName = SceneManager.GetActiveScene().name;
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
-        string levelThree = "Level 3";  
+        string levelThree = "Level 3";
 
-        if (currLevelName == levelOne) {
+        if (currLevelName == levelOne)
+        {
             hasFlashlight = false;
             hasDoubleJump = false;
         }
-        else if (currLevelName == levelTwo) {
+        else if (currLevelName == levelTwo)
+        {
             hasFlashlight = true;
             hasDoubleJump = false;
             controller.GetWeaponStats(pencil);
         }
-        else if (currLevelName == levelThree) {
+        else if (currLevelName == levelThree)
+        {
             hasFlashlight = true;
             hasDoubleJump = true;
             controller.GetWeaponStats(pencil);
             controller.GetWeaponStats(gun);
         }
-        else {
+        else
+        {
             hasFlashlight = true;
             hasDoubleJump = true;
-          //  controller.GetWeaponStats(pencil);
+            //  controller.GetWeaponStats(pencil);
             // controller.GetWeaponStats(gun);
         }
     }
@@ -316,15 +333,18 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(levelThree);
         }
-        else if (currLevelName == levelThree) {
+        else if (currLevelName == levelThree)
+        {
             Win();
         }
-        else {
+        else
+        {
             SceneManager.LoadScene(levelOne);
         }
     }
 
-    public void Win() {
+    public void Win()
+    {
         PauseGame();
         menuActive = menuWin;
         menuActive.SetActive(true);
@@ -391,29 +411,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SetEyedrop() {
+    void SetEyedrop()
+    {
         float percent = ((float)CoinsCounter / CoinsMax);
         int phase = 0;
 
-        if (percent < 0.25) {
+        if (percent < 0.25)
+        {
             phase = 1;
         }
-        else if (percent < 0.5) {
+        else if (percent < 0.5)
+        {
             phase = 2;
         }
-        else if (percent < 0.75) {
+        else if (percent < 0.75)
+        {
             phase = 3;
         }
-        else if (percent < 1) {
+        else if (percent < 1)
+        {
             phase = 4;
         }
 
-        for (int i = 0; i < EyedropPhases.Count; i++) {
+        for (int i = 0; i < EyedropPhases.Count; i++)
+        {
 
-            if (phase == i + 1) {
+            if (phase == i + 1)
+            {
                 EyedropPhases[i].SetActive(true);
             }
-            else {
+            else
+            {
                 EyedropPhases[i].SetActive(false);
             }
         }
@@ -421,14 +449,17 @@ public class GameManager : MonoBehaviour
 
     public void UpdateCoinCount(int ammount)
     {
-        if (CoinsCounter < CoinsMax) {
+        if (CoinsCounter < CoinsMax)
+        {
             CoinsCounter += ammount;
         }
 
-        if (CoinsCounter >= CoinsMax) {
+        if (CoinsCounter >= CoinsMax)
+        {
             CoinsCounter -= CoinsMax;
 
-            if (TotalCoinsOwned < 999) {
+            if (TotalCoinsOwned < 999)
+            {
                 TotalCoinsOwned += 1;
             }
         }
@@ -440,7 +471,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateAmmoCount(int ammount)
     {
-        if (TotalAmmoOwned < 999) { 
+        if (TotalAmmoOwned < 999)
+        {
             TotalAmmoOwned += ammount;
         }
         AmmoCountText.text = TotalAmmoOwned.ToString("F0");
@@ -456,5 +488,52 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         FlashlightMessage.SetActive(false);
+    }
+
+    //option functions
+    public void OptionMenu()
+    {
+        menuActive.SetActive(false);
+        menuOption.SetActive(true);
+        PauseGame();
+    }
+    public void ExitOptionMenu()
+    {
+        //if you're in the Mouse MiniOptions
+        if (menuMouseOption)
+        {
+            menuMouseOption.SetActive(false);
+            menuOption.SetActive(false);
+            menuActive.SetActive(true);
+            PauseGame();
+        }
+        //if you're in the VOL MiniOptions
+        else if (menuVOLOption)
+        {
+            menuVOLOption.SetActive(false);
+            menuOption.SetActive(false);
+            menuActive.SetActive(true);
+            PauseGame();
+        }
+        else  //if you're in the regular option menu (volume will be active on default)
+        {
+            menuVOLOption.SetActive(false);
+            menuOption.SetActive(false);
+            menuActive.SetActive(true);
+            PauseGame();
+        }
+    }
+    public void VolOptionMenu()
+    {
+        menuMouseOption.SetActive(false);
+        menuVOLOption.SetActive(true);
+        PauseGame();
+    }
+
+    public void MouseOptionMenu()
+    {
+        menuVOLOption.SetActive(false);
+        menuMouseOption.SetActive(true);
+        PauseGame();
     }
 }
