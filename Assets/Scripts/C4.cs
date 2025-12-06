@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class C4 : MonoBehaviour
 {
@@ -7,12 +8,14 @@ public class C4 : MonoBehaviour
     SphereCollider Collider;
     MeshRenderer C4Model;
     ParticleSystem C4ParticleSystem;
+    bool Exploded;
 
     [SerializeField] GameObject RedLight;
 
 
     public void OnThrow(ExplosiveStats NewStats)
     {
+        Exploded = false;
         Stats = NewStats;
         Collider = this.GetComponent<SphereCollider>();
         C4Model = GetComponentInChildren<MeshRenderer>();
@@ -32,6 +35,7 @@ public class C4 : MonoBehaviour
         yield return new WaitForSeconds(Stats.Timer);
 
         // "shockwave" stuff
+        Exploded = true;
         C4Model.enabled = false;
         Instantiate(C4ParticleSystem, C4Model.transform.position, Quaternion.identity);
         float Duration = 0.25f;
@@ -70,15 +74,36 @@ public class C4 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (Exploded)
         {
-            IDamage Target = other.GetComponent<IDamage>();
-            Target.TakeDamage(Stats.Damage);
+            if (other.CompareTag("Enemy"))
+            {
+                IDamage Target = other.GetComponentInParent<IDamage>();
+                float dist = Vector3.Distance(other.transform.position, transform.position);
+
+                if (dist <= Stats.BlastRadius)
+                {
+                    Target.TakeDamage(Stats.Damage);
+                }
+            }
+            else if (other.CompareTag("Player"))
+            {
+                IDamage Target = other.GetComponentInParent<IDamage>();
+                Target.TakeDamage(Stats.SelfDamage);
+            }
         }
-        else if (other.CompareTag("Player"))
+    }
+    // shows explosion for debugging only in scene view
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying && Exploded)
         {
-            IDamage Target = other.GetComponent<IDamage>();
-            Target.TakeDamage(2);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, Collider.radius);
+
+            // final blast radius for comparison
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, Stats.BlastRadius);
         }
     }
 }

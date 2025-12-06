@@ -14,17 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   Model: {fileID: 5208442872754085264, guid: b361d94591c32444590a82c68ce053c9, type: 3}
-  HitFX: {fileID: 0}
+  HitFX: {fileID: 2007263358027198124, guid: 3aeca9306de57374da6ccc15a39993c6, type: 3}
   AOE: 1
   Throwable: 1
-  Thrown: 0
   ThrowDistance: 1000
-  ThrowForce: 5
+  ThrowForce: 7
   ThrowUpwardForce: 0
   ThrowSpeed: 0.1
   Volume: 0
   Damage: 1
-  BlastRadius: 5
+  BlastRadius: 2
   SoundVol: 0
   Timer: 3
   WeaponSound: []
