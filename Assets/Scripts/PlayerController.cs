@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] List<WeaponStats> Weapons = new List<WeaponStats>();
     [SerializeField] GameObject WeaponModel;
     [SerializeField] GameObject GunModel;
+    [SerializeField] GameObject ThrowPoint;
 
     [Header("Layers")]
     [SerializeField] LayerMask IgnoreLayer;
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] float FireRate;
     [SerializeField] float MeleeSpeed;
     [SerializeField] int TickDamage;
+    [SerializeField] int ThrowDistance;
     [SerializeField] GameObject MeleeHitbox;
 
     float MeleeRange;
@@ -89,6 +91,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     int WeaponListPos;
     float FireTimer;
     float MeleeTimer;
+    float ThrowTimer;
 
     // TODO: make this from another script I think?
     // inventory
@@ -180,6 +183,7 @@ public class PlayerController : MonoBehaviour, IDamage {
                 GameManager.instance.crosshair.SetActive(true); // Show crosshair when map is closed
                 FireTimer += Time.deltaTime;
                 MeleeTimer += Time.deltaTime;
+                ThrowTimer += Time.deltaTime;
                 Movement();
                 Sprint();
             }
@@ -220,6 +224,12 @@ public class PlayerController : MonoBehaviour, IDamage {
         controller.Move(jumpVelocity * Time.deltaTime);
         if (Weapons.Count > 0) {
             if (Input.GetButton("Fire1")) {
+
+                if (Weapons[WeaponListPos].Throwable && ThrowTimer >= Weapons[WeaponListPos].ThrowSpeed) 
+                {
+                    Throw();
+                }
+
                 if (Weapons[WeaponListPos].type == WeaponType.Gun && FireTimer >= FireRate) {
                     Shoot();
                 }
@@ -307,7 +317,7 @@ public class PlayerController : MonoBehaviour, IDamage {
                 RaycastHit hit;
 
                 aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
-                if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer)) {
+                    if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer)) {
                     IDamage dmg = hit.collider.GetComponent<IDamage>();
                     if (dmg != null) {
                         Instantiate(Weapons[WeaponListPos].HitFX, hit.point, Quaternion.identity);
@@ -387,6 +397,20 @@ public class PlayerController : MonoBehaviour, IDamage {
                 }
             }
         }
+    }
+
+    void Throw()
+    {
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, ThrowDistance, ~IgnoreLayer);
+
+        Vector3 Force = Camera.main.transform.forward * Weapons[WeaponListPos].ThrowForce + transform.up * Weapons[WeaponListPos].ThrowUpwardForce;
+
+        GameObject ThrownObject = Instantiate(EquippedWeapon, ThrowPoint.transform.position, Camera.main.transform.rotation);
+        Rigidbody rb = ThrownObject.GetComponent<Rigidbody>();
+
+        rb.AddForce(Force, ForceMode.Impulse);
+
+        ThrowTimer = 0;
     }
 
 
@@ -470,6 +494,7 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         WeaponStats Weapon = Weapons[WeaponListPos];
         Damage = Weapon.GetDamage();
+        ThrowDistance = Weapon.ThrowDistance;
 
         if (Weapon.type == WeaponType.Gun) {
             GunStats Gun = (GunStats)Weapon;
@@ -507,23 +532,36 @@ public class PlayerController : MonoBehaviour, IDamage {
             WeaponModel.layer = 10;
         }
 
-        // sets inventory image
-        for (int i = 0; i < GameManager.instance.Weapons.Count; i++) {
-            string name = GameManager.instance.Weapons[i].name;
-            
-            int index = WeaponListPos;
-            if (Weapons.Count == 2) {
-                if (index + 1 > 1) index = 0;
-                else index = 1;
-            }
-
-            if (name.ToUpper() == Weapons[index].name.ToUpper()) {
-                GameManager.instance.Weapons[i].SetActive(true);
-            }
-            else {
-                GameManager.instance.Weapons[i].SetActive(false);
-            }
+        else if (Weapon.type == WeaponType.Explosive)
+        {
+            EquippedWeapon = Weapon.Model;
+            ThrowDistance = Weapon.ThrowDistance;
+            Weapon.Throwable = true;
+            WeaponModel.SetActive(true);
+            WeaponModel.GetComponent<MeshFilter>().sharedMesh = Weapons[WeaponListPos].Model.GetComponent<MeshFilter>().sharedMesh;
+            WeaponModel.GetComponent<MeshRenderer>().sharedMaterial = Weapons[WeaponListPos].Model.GetComponent<MeshRenderer>().sharedMaterial;
         }
+            // sets inventory image
+            for (int i = 0; i < GameManager.instance.Weapons.Count; i++)
+            {
+                string name = GameManager.instance.Weapons[i].name;
+
+                int index = WeaponListPos;
+                if (Weapons.Count == 2)
+                {
+                    if (index + 1 > 1) index = 0;
+                    else index = 1;
+                }
+
+                if (name.ToUpper() == Weapons[index].name.ToUpper())
+                {
+                    GameManager.instance.Weapons[i].SetActive(true);
+                }
+                else
+                {
+                    GameManager.instance.Weapons[i].SetActive(false);
+                }
+            }
 
     }
 
