@@ -38,9 +38,9 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] int maxJumps;
     [SerializeField] float gravity;
 
-    [SerializeField]  float dashForce = 20f;
-    [SerializeField]  float dashDuration = 0.2f;
-    [SerializeField]  float dashCooldown = 1f;
+    [SerializeField]  float dashForce; //20
+    [Range(0, 1)] public float dashDuration; // 0.2
+    [SerializeField]  float dashCooldown; // 1
 
     [Header("Combat")]
     [SerializeField] int Damage;
@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] float FireRate;
     [SerializeField] float MeleeSpeed;
     [SerializeField] int TickDamage;
+
     [SerializeField] int ThrowDistance;
     [SerializeField] GameObject MeleeHitbox;
 
@@ -88,10 +89,8 @@ public class PlayerController : MonoBehaviour, IDamage {
     int OGGravity;
     float maxGravity;
     int jumpCount;
-    bool canDash;
-    bool isDashing;
-    float dashTimer;
-    Vector3 dashDirection;
+
+    
 
     // weapon
     GameObject EquippedWeapon;
@@ -103,6 +102,11 @@ public class PlayerController : MonoBehaviour, IDamage {
     // TODO: make this from another script I think?
     // inventory
     bool HaveTape;
+
+    bool canDash;
+    bool isDashing;
+    float dashTimer;
+    Vector3 dashDirection;
 
 
     // OG stats before boosts
@@ -201,19 +205,20 @@ public class PlayerController : MonoBehaviour, IDamage {
             dashTimer += Time.deltaTime;
             controller.Move(dashDirection * dashForce * Time.deltaTime);
             
-            if (dashTimer <= 0f )
+            if (dashTimer >= dashDuration)
             {
+                Debug.Log("can dash again");
                 isDashing = false;
                 dashDirection = Vector3.zero;
             }
             return; 
         }
+
         // jump physics
         if (controller.isGrounded) {
             if (moveDir.normalized.magnitude > 0.3f && !isPlayingStep) {
                 StartCoroutine(playStep());
             }
-    ;
 
             jumpVelocity = Vector3.zero;
             jumpCount = 0;
@@ -254,28 +259,27 @@ public class PlayerController : MonoBehaviour, IDamage {
         }
 
         if (Input.GetButtonDown("Interact")) {
-            // initial interact
             Interact();
         }
         SelectWeapon();
 
-        if(Input.GetKeyDown(KeyCode.LeftShift) && canDash)
-        {
-            StartCoroutine(Dash());
+        if (Input.GetKeyDown(KeyCode.C) && canDash && GameManager.instance.hasDash) {
+            Debug.Log("can dash");
+            Dash();
         }
     }
-    IEnumerator Dash()
+    void Dash()
     {
+        Debug.Log("dash");
         canDash = false;
         isDashing = true;
-        dashTimer = dashDuration;
+        dashTimer = 0;
 
         dashDirection = moveDir.normalized;
         if(dashDirection == Vector3.zero)
         {
             dashDirection = transform.forward;
         }
-        yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
 
@@ -539,6 +543,13 @@ public class PlayerController : MonoBehaviour, IDamage {
             interact.Interact();
             HaveTape = interact.SetTape();
         }
+        else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
+            IInteractable interact = hit.collider.GetComponent<IInteractable>();
+            interact.Interact();
+            HaveTape = interact.SetTape();
+        }
+
+        canDash = GameManager.instance.hasDash;
     }
 
     public void Heal(int amount) {

@@ -85,14 +85,17 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public PlayerController controller;
     public bool hasFlashlight;
+
     public bool hasDoubleJump;
+    public bool hasDash;
+
     public int totalKeys = 3;
     public int ownedKeys = 0;
-    public bool hasDash;
 
 
     [Header("Camera")]
     public Camera mainCamera;
+    public bool invertY;
 
     [Header("Checkpoints")]
     public GameObject playerSpawnPos;
@@ -110,6 +113,9 @@ public class GameManager : MonoBehaviour
     //Mouse sensitivity slider and value display
     public Slider MouseSensSliderObj;
     public TMP_Text MouseSensNumberDisplay;
+
+    //make the button display an x when pressed
+    public TMP_Text Display_X_Button;
 
     public TMP_Text gameGoalCountText;
     public bool isPaused;
@@ -152,6 +158,11 @@ public class GameManager : MonoBehaviour
         SetEyedrop();
 
         if (isTurnOffLighting) Destroy(Lighting);
+
+        //used to set the default values of the sliders for the options menu
+        MusicSliderObj.onValueChanged.AddListener(GameManager.instance.DisplayTextSlider);
+        MouseSensSliderObj.onValueChanged.AddListener(GameManager.instance.DisplayTextSlider);
+        SFXSliderObj.onValueChanged.AddListener(GameManager.instance.DisplayTextSlider);
     }
 
 
@@ -259,6 +270,7 @@ public class GameManager : MonoBehaviour
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
+        // TODO: fix this up for the new levels
         if (currLevelName == levelOne)
         {
             hasFlashlight = false;
@@ -517,9 +529,17 @@ public class GameManager : MonoBehaviour
     //option functions
     public void OptionMenu()
     {
-        menuActive.SetActive(false);
-        menuOption.SetActive(true);
-        PauseGame();
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu"))
+        {
+            SceneManager.LoadScene("MMOption");
+            //menuOption.SetActive(true);
+        }
+        else
+        {
+            menuActive.SetActive(false);
+            menuOption.SetActive(true);
+            PauseGame();
+        }
     }
     public void ExitOptionMenu()
     {
@@ -539,7 +559,15 @@ public class GameManager : MonoBehaviour
             menuActive.SetActive(true);
             PauseGame();
         }
-        else  //if you're in the regular option menu (volume will be active on default)
+        //if you're in the main menu option scene
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
+        {
+            SceneManager.LoadScene("Main Menu");
+            //SceneManager.Equals("Main Menu", SceneManager.GetActiveScene());
+            //menuOption.SetActive(false);
+        }
+        //if you're in the regular option menu (volume will be active on default)
+        else
         {
             menuVOLOption.SetActive(false);
             menuOption.SetActive(false);
@@ -549,15 +577,46 @@ public class GameManager : MonoBehaviour
     }
     public void VolOptionMenu()
     {
-        menuMouseOption.SetActive(false);
-        menuVOLOption.SetActive(true);
-        PauseGame();
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
+        {
+            menuMouseOption.SetActive(false);
+            menuVOLOption.SetActive(true);
+        }
+        else
+        {
+            menuMouseOption.SetActive(false);
+            menuVOLOption.SetActive(true);
+            PauseGame();
+        }
     }
 
     public void MouseOptionMenu()
     {
-        menuVOLOption.SetActive(false);
-        menuMouseOption.SetActive(true);
-        PauseGame();
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
+        {
+            menuVOLOption.SetActive(false);
+            menuMouseOption.SetActive(true);
+        }
+        else
+        {
+            menuVOLOption.SetActive(false);
+            menuMouseOption.SetActive(true);
+            PauseGame();
+        }
+    }
+
+    public void DisplayTextSlider(float _Value)
+    {
+        //takes the value from the slider and displays it on top to the slider
+        Slider MusicValue = GameManager.instance.MusicSliderObj;
+        GameManager.instance.MusicNumberDisplay.text = MusicValue.value.ToString("F0");
+
+        //takes the value from the slider and displays it on top to the slider
+        Slider SFXValue = GameManager.instance.SFXSliderObj;
+        GameManager.instance.SFXNumberDisplay.text = SFXValue.value.ToString("F0");
+
+        //takes the value from the slider and displays it on top to the slider
+        Slider MouseValue = GameManager.instance.MouseSensSliderObj;
+        GameManager.instance.MouseSensNumberDisplay.text = MouseValue.value.ToString("F0");
     }
 }

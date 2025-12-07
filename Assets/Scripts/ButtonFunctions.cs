@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
     // TODO: add a button for, next level in Menu Win (it doesnt get shown in level 3)
@@ -22,7 +23,7 @@ public class ButtonFunctions : MonoBehaviour
     //option button function
     public void Option()
     {
-        GameManager.instance.OptionMenu();   
+        GameManager.instance.OptionMenu();
     }
     public void OptionExit()
     {
@@ -36,6 +37,25 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.MouseOptionMenu();
     }
+    public void OptionMouseInvert()
+    {
+        //if it's off turn it on
+        if (!GameManager.instance.invertY)
+        {
+            GameManager.instance.invertY = true;
+            GameManager.instance.Display_X_Button.text = "(X)";
+            Debug.Log("Invert Y is ON: " + GameManager.instance.Display_X_Button.text);
+        }
+        else
+        {
+            //if it's on turn it off
+            GameManager.instance.invertY = false;
+            GameManager.instance.Display_X_Button.text = "( )";
+            Debug.Log("Invert Y is off: " + GameManager.instance.Display_X_Button.text);
+        }
+        GameManager.instance.Display_X_Button.text = "(X)";
+    }
+
 
     public void Play()
     {
