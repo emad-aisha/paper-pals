@@ -139,6 +139,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             RaycastHit hit;
 
             Debug.DrawRay(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward * MeleeRange, Color.red);
+            Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * MeleeRange, Color.blue);
 
             // interact icon
             if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, ~IgnoreLayer)) {
@@ -226,9 +227,17 @@ public class PlayerController : MonoBehaviour, IDamage {
                 if (Weapons[WeaponListPos].type == WeaponType.Gun && FireTimer >= FireRate) {
                     Shoot();
                 }
-                else if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed) {
-                    Swing();
-                }
+                /* else if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed) {
+                    Swing(); 
+                }*/
+            }
+        }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed)
+            {
+                Swing();
             }
         }
 
@@ -414,12 +423,12 @@ public class PlayerController : MonoBehaviour, IDamage {
     void Swing() {
         Debug.Log("swung");
         MeleeTimer = 0;
+        aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
         if (Enemies.Count > 0) {
             Debug.Log("made it here");
             RaycastHit hit;
-            aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange, ~IgnoreLayer)) {
-                IDamage dmg = hit.collider.GetComponent<IDamage>();
+                IDamage dmg = hit.collider.GetComponentInParent<IDamage>();
                 Debug.Log("found hit");
                 if (dmg != null && Enemies.Contains(dmg)) {
                     dmg.TakeDamage(Weapons[WeaponListPos].GetDamage());

@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Transform[] SpawnPositions;
     [SerializeField] int SpawnAmount;
     [SerializeField] float SpawnRate;
+    [SerializeField] int SpawnMax;
 
     int SpawnCount;
     float SpawnTimer;
@@ -21,6 +22,8 @@ public class EnemySpawner : MonoBehaviour
         //SpawnCount
 
         // thank you so much for these comments mat ily
+
+        // please get a room aisha and mat, thank you... - marcellus
         GameManager.instance.gameGoalCount = SpawnAmount;
     }
 
@@ -44,7 +47,7 @@ public class EnemySpawner : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //when the "Player" enters the collider
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && SpawnCount < SpawnMax)
         {
             StartSpawning = true;
         }

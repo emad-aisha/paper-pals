@@ -119,7 +119,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             RoamTimer += Time.deltaTime;
         }
 
-        FaceTarget();
+       FaceTarget(); 
 
         if (enemyType == EnemyType.ranged)
         {
@@ -211,7 +211,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         RaycastHit hit;
 
         //cast a ray from the enemy to the player to check for obstacles
-        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 100, ~IgnoreLayer))
+        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 30, ~IgnoreLayer))
         {
             if (AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
@@ -234,6 +234,7 @@ public class EnemyAI : MonoBehaviour, IDamage
                 {
                     AttackPlayer();
                 }
+
                 AgentAI.stoppingDistance = StoppingDistanceOG;
                 return true;
             }
@@ -320,10 +321,10 @@ public class EnemyAI : MonoBehaviour, IDamage
             }
 
             // Optional: spawn hit effect at hit point
-            if (Bullet != null)
+           /* if (Bullet != null)
             {
-                Instantiate(Bullet, hit.point, Quaternion.identity);
-            }
+               // Instantiate(Bullet, hit.point, Quaternion.identity);
+            } */
         }
     }
 
