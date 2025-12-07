@@ -227,17 +227,9 @@ public class PlayerController : MonoBehaviour, IDamage {
                 if (Weapons[WeaponListPos].type == WeaponType.Gun && FireTimer >= FireRate) {
                     Shoot();
                 }
-                /* else if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed) {
+                else if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed) {
                     Swing(); 
-                }*/
-            }
-        }
-
-        if (Input.GetButtonUp("Fire1"))
-        {
-            if (Weapons[WeaponListPos].type == WeaponType.Melee && MeleeTimer >= MeleeSpeed)
-            {
-                Swing();
+                }
             }
         }
 

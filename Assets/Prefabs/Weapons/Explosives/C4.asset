@@ -21,12 +21,12 @@ MonoBehaviour:
   ThrowForce: 7
   ThrowUpwardForce: 0
   ThrowSpeed: 0.1
-  Volume: 1
-  Damage: 4
+  Volume: 0
+  Damage: 6
   SelfDamage: 2
-  BlastRadius: 16
-  SoundVol: 1
+  BlastRadius: 2
+  SoundVol: 0
   Timer: 3
-  BeepSound:
-  - {fileID: 8300000, guid: 85b2db2b70047944688143a0046f1c7a, type: 3}
-  ExplosionSound: {fileID: 8300000, guid: 0a99334e15517254fbeb17c41ec36c95, type: 3}
+  BeepSound: []
+  ExplosionSound: {fileID: 0}
+  AmmoCurr: 1

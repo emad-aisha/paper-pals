@@ -60,9 +60,7 @@ public class C4 : MonoBehaviour
         while (C4Model.enabled)
         {
             aud.pitch = 5;
-            // TODO: this is commented for now cuz it shows a bug
-            // TODO: put a sound in the serialized field for this
-            // aud.PlayOneShot(Stats.GetAudio(), Stats.SoundVol);
+            aud.PlayOneShot(Stats.GetAudio(), Stats.SoundVol);
 
             RedLight.SetActive(true);
             yield return new WaitForSeconds(0.1f);
