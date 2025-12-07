@@ -12,8 +12,8 @@ public class EnemyAI : MonoBehaviour, IDamage
     [Header("Loot Drops")]
     [SerializeField] GameObject LootDrops;
 
-	[Header("Neccesities")]
-	[SerializeField] LayerMask IgnoreLayer;
+    [Header("Neccesities")]
+    [SerializeField] LayerMask IgnoreLayer;
     [SerializeField] NavMeshAgent AgentAI;
     [SerializeField] SpriteRenderer Sprite;
 
@@ -65,6 +65,10 @@ public class EnemyAI : MonoBehaviour, IDamage
     float StoppingDistanceOG;
     Vector3 StartPosition;
 
+    [Header("Animation")]
+    [SerializeField] Animator anim;
+    [SerializeField] string walkBoolName = "catWalking";
+
     // private variables   
     bool PlayerInTrigger;
     float ShootTimer;
@@ -79,6 +83,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        anim = GetComponentInChildren<Animator>();
+
         OGColor = Sprite.material.color;
         normalSpeed = AgentAI.speed;
 
@@ -96,6 +103,10 @@ public class EnemyAI : MonoBehaviour, IDamage
     {
         attackTimer = 0f; // reset cooldown timer
 
+        //Animation: Cat Attack
+        if (anim != null)
+            anim.SetTrigger("catAttack");
+
         // Try to get the player's damage interface
         IDamage dmg = GameManager.instance.player.GetComponent<IDamage>();
 
@@ -108,8 +119,6 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-      
-
         ShootTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
 
@@ -119,7 +128,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             RoamTimer += Time.deltaTime;
         }
 
-       FaceTarget(); 
+        FaceTarget();
 
         if (enemyType == EnemyType.ranged)
         {
@@ -159,7 +168,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             chargeTimer += Time.deltaTime;
 
             float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-           
+
             if (distance <= attackRange && attackTimer >= attackCooldown)
             {
 
@@ -172,6 +181,8 @@ public class EnemyAI : MonoBehaviour, IDamage
             }
         }
 
+       
+        UpdateMovementAnimation();
     }
 
     void CheckRoam()
@@ -257,7 +268,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         Quaternion targetRot = Quaternion.LookRotation(flatDir);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot,FaceTargetSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, FaceTargetSpeed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
@@ -266,7 +277,8 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-        if (HP <= 0) {
+        if (HP <= 0)
+        {
             Instantiate(LootDrops, transform.position, transform.rotation);
 
             Destroy(gameObject);
@@ -321,10 +333,10 @@ public class EnemyAI : MonoBehaviour, IDamage
             }
 
             // Optional: spawn hit effect at hit point
-           /* if (Bullet != null)
-            {
-               // Instantiate(Bullet, hit.point, Quaternion.identity);
-            } */
+            /* if (Bullet != null)
+             {
+                // Instantiate(Bullet, hit.point, Quaternion.identity);
+             } */
         }
     }
 
@@ -392,7 +404,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         pos.y = target.y;
         transform.position = pos;
 
-      
+
 
         if (ShootTimer >= ShootRate)
         {
@@ -418,6 +430,21 @@ public class EnemyAI : MonoBehaviour, IDamage
         yield return new WaitForSeconds(1); // Pause briefly after attack
 
         isSwooping = false;
-        ShootTimer = originalShootTimer; 
+        ShootTimer = originalShootTimer;
+    }
+
+
+    //Walk Animation
+    void UpdateMovementAnimation()
+    {
+        if (anim == null || AgentAI == null)
+            return;
+
+        float speed = AgentAI.velocity.sqrMagnitude;  
+        bool walking = speed > 0.05f;                 
+
+        anim.SetBool("catWalking", walking);
     }
 }
+
+
