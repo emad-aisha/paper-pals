@@ -9,7 +9,8 @@ public class Interactable : MonoBehaviour, IInteractable {
         Weapon,
         Flashlight,
         Keys,
-        DoubleJump
+        DoubleJump,
+        Dash
     };
 
     PlayerController Player;
