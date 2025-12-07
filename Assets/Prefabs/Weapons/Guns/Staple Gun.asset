@@ -15,11 +15,17 @@ MonoBehaviour:
   type: 1
   Model: {fileID: 1102889181992154, guid: 4f79713dbf78d4b868f908ddef942c1a, type: 3}
   HitFX: {fileID: 3323735894242698497, guid: 1d9d3102383961d4699d55599793fc30, type: 3}
+  AOE: 0
+  Throwable: 0
+  ThrowDistance: 1
+  ThrowForce: 0
+  ThrowUpwardForce: 0
+  ThrowSpeed: 0
   Volume: 1
-  Damage: 2
+  Damage: 10
   ShootDistance: 146
   ShootRate: 0.3
-  AmmoCur: 10
+  AmmoCurr: 10
   AmmoMax: 10
   ShootSound:
   - {fileID: 8300000, guid: 19f6f2cae8064e940948aae82bdbdc1c, type: 3}

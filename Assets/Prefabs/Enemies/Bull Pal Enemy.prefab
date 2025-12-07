@@ -69,7 +69,7 @@ MonoBehaviour:
   swoopTrigger: {fileID: 0}
   swoopSpeed: 0
   isSwooping: 0
-  HP: 11
+  HP: 50
   contactDamage: 5
   attackRange: 3
   attackCooldown: 5
@@ -87,6 +87,8 @@ MonoBehaviour:
   FaceTargetSpeed: 4
   RoamDistance: 0
   RoamPauseTime: 0
+  anim: {fileID: 0}
+  walkBoolName: catWalking
 --- !u!33 &7413830075673646942
 MeshFilter:
   m_ObjectHideFlags: 0
