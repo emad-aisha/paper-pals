@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
     public bool hasDoubleJump;
     public int totalKeys = 3;
     public int ownedKeys = 0;
+    public bool hasDash;
 
 
     [Header("Camera")]
@@ -261,17 +262,20 @@ public class GameManager : MonoBehaviour
         {
             hasFlashlight = false;
             hasDoubleJump = false;
+            hasDash = false;
         }
         else if (currLevelName == levelTwo)
         {
             hasFlashlight = true;
             hasDoubleJump = false;
+            hasDash = true;
             controller.GetWeaponStats(pencil);
         }
         else if (currLevelName == levelThree)
         {
             hasFlashlight = true;
             hasDoubleJump = true;
+            hasDash = true;
             controller.GetWeaponStats(pencil);
             controller.GetWeaponStats(gun);
         }
@@ -279,6 +283,7 @@ public class GameManager : MonoBehaviour
         {
             hasFlashlight = true;
             hasDoubleJump = true;
+            hasDash = true;
             //  controller.GetWeaponStats(pencil);
             // controller.GetWeaponStats(gun);
         }

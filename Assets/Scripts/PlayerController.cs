@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] int maxJumps;
     [SerializeField] float gravity;
 
+    [SerializeField]  float dashForce = 20f;
+    [SerializeField]  float dashDuration = 0.2f;
+    [SerializeField]  float dashCooldown = 1f;
+
     [Header("Combat")]
     [SerializeField] int Damage;
     [SerializeField] int ShootDistance;
@@ -84,7 +88,10 @@ public class PlayerController : MonoBehaviour, IDamage {
     int OGGravity;
     float maxGravity;
     int jumpCount;
-
+    bool canDash;
+    bool isDashing;
+    float dashTimer;
+    Vector3 dashDirection;
 
     // weapon
     GameObject EquippedWeapon;
@@ -188,6 +195,19 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Movement() {
+        //dash mechanics
+        if (isDashing)
+        {
+            dashTimer += Time.deltaTime;
+            controller.Move(dashDirection * dashForce * Time.deltaTime);
+            
+            if (dashTimer <= 0f )
+            {
+                isDashing = false;
+                dashDirection = Vector3.zero;
+            }
+            return; 
+        }
         // jump physics
         if (controller.isGrounded) {
             if (moveDir.normalized.magnitude > 0.3f && !isPlayingStep) {
@@ -238,6 +258,25 @@ public class PlayerController : MonoBehaviour, IDamage {
             Interact();
         }
         SelectWeapon();
+
+        if(Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+    }
+    IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        dashTimer = dashDuration;
+
+        dashDirection = moveDir.normalized;
+        if(dashDirection == Vector3.zero)
+        {
+            dashDirection = transform.forward;
+        }
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
 
     IEnumerator playStep() {

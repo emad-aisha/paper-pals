@@ -62,6 +62,9 @@ public class Interactable : MonoBehaviour, IInteractable {
         else if (type == InterfaceType.DoubleJump) {
             GameManager.instance.hasDoubleJump = true;
         }
+        else if(type == InterfaceType.Dash){
+           GameManager.instance.hasDash = true;
+        }
 
         if (type != InterfaceType.Trophy) Destroy(this.gameObject);
     }
