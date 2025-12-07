@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0, g: 0, b: 0, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.05
@@ -35,7 +35,7 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
+  m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
@@ -19039,11 +19039,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8253969070600433763, guid: 9e596e244e1246e478abf56139167cb1, type: 3}
   m_PrefabInstance: {fileID: 1749789401}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &323402608564653672 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5074060330238446303, guid: df836421c4045884cb146ca0d76954be, type: 3}
-  m_PrefabInstance: {fileID: 2916955439661904594}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1908520944043671103
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19129,6 +19124,10 @@ PrefabInstance:
     - target: {fileID: 1114272102366181742, guid: 54bcfcd40b8c4644fadb9f1f4a3ee183, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534365739828514930, guid: 54bcfcd40b8c4644fadb9f1f4a3ee183, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 58.35
       objectReference: {fileID: 0}
     - target: {fileID: 1703062201707214321, guid: 54bcfcd40b8c4644fadb9f1f4a3ee183, type: 3}
       propertyPath: m_Enabled
@@ -19302,7 +19301,7 @@ PrefabInstance:
     - target: {fileID: 3358457811071789149, guid: df836421c4045884cb146ca0d76954be, type: 3}
       propertyPath: 'SpawnPositions.Array.data[2]'
       value: 
-      objectReference: {fileID: 323402608564653672}
+      objectReference: {fileID: 0}
     - target: {fileID: 3358457811071789149, guid: df836421c4045884cb146ca0d76954be, type: 3}
       propertyPath: 'SpawnPositions.Array.data[3]'
       value: 
@@ -19322,7 +19321,7 @@ PrefabInstance:
     - target: {fileID: 3358457811071789149, guid: df836421c4045884cb146ca0d76954be, type: 3}
       propertyPath: 'SpawnPositions.Array.data[7]'
       value: 
-      objectReference: {fileID: 5357281818721884204}
+      objectReference: {fileID: 0}
     - target: {fileID: 4422619390715036711, guid: df836421c4045884cb146ca0d76954be, type: 3}
       propertyPath: m_Name
       value: Enemy Spawner (Cats)
@@ -19351,9 +19350,15 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8917508526682785699, guid: df836421c4045884cb146ca0d76954be, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 29.13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1555007328422300658, guid: df836421c4045884cb146ca0d76954be, type: 3}
+    - {fileID: 8018809244731610495, guid: df836421c4045884cb146ca0d76954be, type: 3}
+    - {fileID: 3338678593211930724, guid: df836421c4045884cb146ca0d76954be, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df836421c4045884cb146ca0d76954be, type: 3}
@@ -19365,11 +19370,6 @@ Transform:
 --- !u!4 &4658909158653942313 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5283415744659101229, guid: df836421c4045884cb146ca0d76954be, type: 3}
-  m_PrefabInstance: {fileID: 2916955439661904594}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5357281818721884204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5730098903875219248, guid: df836421c4045884cb146ca0d76954be, type: 3}
   m_PrefabInstance: {fileID: 2916955439661904594}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5498813681319994301 stripped
@@ -19388,6 +19388,14 @@ PrefabInstance:
     - target: {fileID: 351730257955298230, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 405193156415969759, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 68.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 405193156415969759, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 58.57
       objectReference: {fileID: 0}
     - target: {fileID: 596293360241629661, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: m_Enabled
@@ -19437,9 +19445,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1739344832750141320, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 114.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1739344832750141320, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -86.51
+      objectReference: {fileID: 0}
     - target: {fileID: 2187942270081008013, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741525272906653904, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 148.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741525272906653904, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17.36
       objectReference: {fileID: 0}
     - target: {fileID: 3687241333061236634, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: SpawnMax
@@ -19468,7 +19492,7 @@ PrefabInstance:
     - target: {fileID: 3687241333061236634, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: 'SpawnPositions.Array.data[3]'
       value: 
-      objectReference: {fileID: 323402608564653672}
+      objectReference: {fileID: 0}
     - target: {fileID: 3687241333061236634, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: 'SpawnPositions.Array.data[4]'
       value: 
@@ -19488,7 +19512,7 @@ PrefabInstance:
     - target: {fileID: 3687241333061236634, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: 'SpawnPositions.Array.data[8]'
       value: 
-      objectReference: {fileID: 5357281818721884204}
+      objectReference: {fileID: 0}
     - target: {fileID: 5141400424438963850, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -19501,6 +19525,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Spawner (Bulls)
       objectReference: {fileID: 0}
+    - target: {fileID: 6037722947623212981, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 21.44
+      objectReference: {fileID: 0}
     - target: {fileID: 6861913690790960888, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -19510,7 +19538,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3574135454499792111, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80d5f71f5806e4b4a8269f77de185859, type: 3}
