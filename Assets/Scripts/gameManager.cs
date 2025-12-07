@@ -84,10 +84,12 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public PlayerController controller;
     public bool hasFlashlight;
+
     public bool hasDoubleJump;
+    public bool hasDash;
+
     public int totalKeys = 3;
     public int ownedKeys = 0;
-    public bool hasDash;
 
 
     [Header("Camera")]
@@ -267,6 +269,7 @@ public class GameManager : MonoBehaviour
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
+        // TODO: fix this up for the new levels
         if (currLevelName == levelOne)
         {
             hasFlashlight = false;
