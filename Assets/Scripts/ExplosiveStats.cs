@@ -14,7 +14,7 @@ public class ExplosiveStats : WeaponStats
 
     [Header("please")]
     [Range(1, 10)] public int AmmoCurr;
-    public const int AmmoMax = 5;
+    public int AmmoMax = 5;
 
 
     public override int GetDamage()

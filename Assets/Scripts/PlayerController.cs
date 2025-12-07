@@ -353,8 +353,11 @@ public class PlayerController : MonoBehaviour, IDamage {
                 return;
             }
             else {
-                Gun.AmmoCurr -= 1;
+               Gun.AmmoCurr -= 1;
+                // GameManager.instance.UpdateAmmoCount(-1, Gun);
                 GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
+                // inventory top-right (clip + stored)
+                GameManager.instance.UpdateTotal(Gun);
                 FireTimer = 0;
 
                 RaycastHit hit;
@@ -376,53 +379,45 @@ public class PlayerController : MonoBehaviour, IDamage {
         if (Weapons[WeaponListPos].type == WeaponType.Gun) {
             GunStats Gun = (GunStats)(Weapons[WeaponListPos]);
 
-            if (Gun.AmmoCurr != Gun.AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
-            {
-                int totalAmmo = GameManager.instance.TotalAmmoOwned;
-
-                if (totalAmmo - Gun.AmmoMax >= 0 && Gun.AmmoCurr + totalAmmo > Gun.AmmoMax && Gun.AmmoCurr == 0) {
-                    Gun.AmmoCurr = Gun.AmmoMax;
-                    GameManager.instance.UpdateAmmoCount(-Gun.AmmoMax);
-                }
-                else if (totalAmmo - Gun.AmmoMax >= 0 && Gun.AmmoCurr + totalAmmo > Gun.AmmoMax) {
-                    int deleteAmmount = Gun.AmmoMax - Gun.AmmoCurr;
-                    Gun.AmmoCurr = Gun.AmmoMax;
-                    GameManager.instance.UpdateAmmoCount(-deleteAmmount);
-                }
-                else {
-                    Gun.AmmoCurr += totalAmmo;
-                    GameManager.instance.UpdateAmmoCount(-totalAmmo);
-                }
-
-                GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
-                GameManager.instance.TotalAmmo.text = Gun.AmmoMax.ToString();
+            if (Gun.AmmoCurr >= Gun.AmmoMax) { 
+                return;
             }
+            int stored = (int)GameManager.instance.TotalAmmoOwned;
+            if (stored <= 0)
+            {
+                return;
+            }
+
+            int Needed = Gun.AmmoMax - Gun.AmmoCurr;
+            int ToLoad = Mathf.Min(Needed, stored); //  basically takes however much we need
+
+            Gun.AmmoCurr += ToLoad;
+
+            GameManager.instance.UpdateAmmoCount(-ToLoad, Gun);
+
+            GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
+            GameManager.instance.TotalAmmo.text = Gun.AmmoMax.ToString();
         }
-        else if (Weapons[WeaponListPos].type == WeaponType.Explosive) {
+        else if (Weapons[WeaponListPos].type == WeaponType.Explosive)
+        {
             ExplosiveStats explosive = (ExplosiveStats)Weapons[WeaponListPos];
-            int C4AmmoMax = 10;
 
-            if (C4AmmoCurr != C4AmmoMax) // Are able to reload - Can't reload full magazine, Add further functionality if we have ammo in our inventory.
-            {
-                int totalAmmo = GameManager.instance.TotalAmmoOwned;
+            // already full
+            if (explosive.AmmoCurr >= explosive.AmmoMax)
+                return;
 
-                if (totalAmmo - C4AmmoMax >= 0 && C4AmmoCurr + totalAmmo > C4AmmoMax && C4AmmoCurr == 0) {
-                    C4AmmoCurr = C4AmmoMax;
-                    GameManager.instance.UpdateAmmoCount(-C4AmmoMax);
-                }
-                else if (totalAmmo - C4AmmoMax >= 0 && C4AmmoCurr + totalAmmo > C4AmmoMax) {
-                    int deleteAmmount = C4AmmoMax - C4AmmoCurr;
-                    C4AmmoCurr = C4AmmoMax;
-                    GameManager.instance.UpdateAmmoCount(-deleteAmmount);
-                }
-                else {
-                    C4AmmoCurr += totalAmmo;
-                    GameManager.instance.UpdateAmmoCount(-totalAmmo);
-                }
+            int stored = (int)GameManager.instance.TotalAmmoOwned;
+            if (stored <= 0)
+                return;
 
-                GameManager.instance.CurrAmmo.text = C4AmmoCurr.ToString();
-                GameManager.instance.TotalAmmo.text = C4AmmoMax.ToString();
-            }
+            int needed = explosive.AmmoMax - explosive.AmmoCurr;
+            int toLoad = Mathf.Min(needed, stored);
+
+            explosive.AmmoCurr += toLoad;
+            GameManager.instance.UpdateExplosiveCount(-toLoad);
+
+            GameManager.instance.CurrAmmo.text = explosive.AmmoCurr.ToString();
+            GameManager.instance.TotalAmmo.text = explosive.AmmoMax.ToString();
         }
     }
 
@@ -600,6 +595,8 @@ public class PlayerController : MonoBehaviour, IDamage {
             GunStats CurrGun = (GunStats)Weapons[WeaponListPos];
             GameManager.instance.CurrAmmo.text = CurrGun.AmmoCurr.ToString();
             GameManager.instance.TotalAmmo.text = CurrGun.AmmoMax.ToString();
+            GameManager.instance.TotalAmmoOwned = CurrGun.AmmoCurr;
+            // GameManager.instance.UpdateAmmoCount(CurrGun.AmmoCurr + GameManager.instance.TotalAmmoOwned);
             GameManager.instance.AmmoMenu.SetActive(true);
         }
 
@@ -686,5 +683,9 @@ public class PlayerController : MonoBehaviour, IDamage {
             mapOn = !mapOn;
             GameManager.instance.mapMenu.SetActive(mapOn);
         }
+    }
+    public WeaponStats GetCurrentWeapon()
+    {
+        return Weapons[WeaponListPos];
     }
 }

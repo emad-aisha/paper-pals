@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Collectables")]
     public int TotalAmmoOwned;
+    [SerializeField] public int AmmoAndExtra;
     public int TotalCoinsOwned;
     int CoinsMax = 15;
     public int CoinsCounter;
@@ -474,12 +475,30 @@ public class GameManager : MonoBehaviour
         CoinCountText.text = TotalCoinsOwned.ToString("F0");
     }
 
-    public void UpdateAmmoCount(int ammount)
+
+    public void UpdateAmmoCount(int amount)
     {
-        if (TotalAmmoOwned < 999)
-        {
-            TotalAmmoOwned += ammount;
-        }
+        // Stored ammo only
+        TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
+    }
+
+    public void UpdateTotal(GunStats weaponInfo)
+    {
+        AmmoAndExtra = TotalAmmoOwned + weaponInfo.AmmoCurr;
+        AmmoCountText.text = AmmoAndExtra.ToString("F0");
+    }
+
+    public void UpdateAmmoCount(int amount, GunStats weaponInfo)
+    {
+        // Apply to stored ammo only
+        UpdateAmmoCount(amount);
+        // Then refresh UI using the clip info
+        UpdateTotal(weaponInfo);
+    }
+
+    public void UpdateExplosiveCount(int amount)
+    {
+        TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
         AmmoCountText.text = TotalAmmoOwned.ToString("F0");
     }
 
