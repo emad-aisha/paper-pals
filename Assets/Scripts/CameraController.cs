@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] int Sens;
     [SerializeField] int LockVertMin, LockVertMax;
-    [SerializeField] bool invertY;
+    
     
     float CamX;
 
@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
             float mouseY = Input.GetAxis("Mouse Y") * Sens * Time.deltaTime;
             // use the invertY 
 
-            if (invertY)
+            if (GameManager.instance.invertY)
             {
                 CamX += mouseY;
             }
