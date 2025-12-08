@@ -63,12 +63,12 @@ public class UIManager : MonoBehaviour {
 
         if (instance == null) instance = this;
 
-        CoinAmount.text = LoadSave.instance.playerCoins.ToString();
-        AmmoAmount.text = LoadSave.instance.playerAmmo.ToString();
+        if (CoinAmount) CoinAmount.text = LoadSave.instance.playerCoins.ToString();
+        if (AmmoAmount) AmmoAmount.text = LoadSave.instance.playerAmmo.ToString();
 
 
-        haveMap = LoadSave.instance.playerMap;
-        haveTape = LoadSave.instance.playerTape;
+        if (haveMap) haveMap = LoadSave.instance.playerMap;
+        if (haveTape) haveTape = LoadSave.instance.playerTape;
 
         // Shop UI
         SetCostColors();

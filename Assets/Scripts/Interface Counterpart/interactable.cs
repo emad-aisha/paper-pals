@@ -25,7 +25,7 @@ public class Interactable : MonoBehaviour, IInteractable {
 
     public void Interact() {
         // TODO: change into a switch
-        if (type == InterfaceType.HealingTape && !SetTape()) {
+        if (type == InterfaceType.HealingTape && !LoadSave.instance.playerTape) {
             GameManager.instance.TapeImage.SetActive(true);
             SetTape();
         }
