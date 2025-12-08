@@ -182,6 +182,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (Input.GetKey(KeyCode.P) && Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.A)) {
+            SceneManager.LoadScene("Mat's Scene");
+        }
+
         if (Input.GetButtonDown("Flashlight") && hasFlashlight)
         {
             controller.FlashlightToggle();

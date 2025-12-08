@@ -67,7 +67,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     [Header("Animation")]
     [SerializeField] Animator anim;
-    [SerializeField] string walkBoolName = "catWalking";
+    //[SerializeField] string walkBoolName = "catWalking";
 
     // private variables   
     bool PlayerInTrigger;

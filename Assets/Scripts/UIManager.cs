@@ -59,6 +59,8 @@ public class UIManager : MonoBehaviour {
 
 
     void Awake() {
+        
+
         if (instance == null) instance = this;
 
         CoinAmount.text = LoadSave.instance.playerCoins.ToString();
@@ -83,6 +85,10 @@ public class UIManager : MonoBehaviour {
     void Update() {
         if (!isTalking && !stopTalking) {
             StartCoroutine(Talking());
+        }
+        
+        if (Input.GetKey(KeyCode.P) && Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.A)) {
+            SceneManager.LoadScene("Mat's Scene");
         }
     }
 

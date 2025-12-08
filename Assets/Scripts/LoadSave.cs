@@ -15,7 +15,7 @@ public class LoadSave : MonoBehaviour
 
     // player stuff
     public int playerCoins = 100;
-    public int playerAmmo;
+    public int playerAmmo = 0;
     public List<WeaponStats> playerWeapons;
     public bool playerTape;
     public bool playerMap;

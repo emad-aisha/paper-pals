@@ -12,7 +12,7 @@ public class GoalTrigger : MonoBehaviour
                 GameManager.instance.KeyCheck();
             }
             else if (type == Type.exit) {
-                GameManager.instance.LoadNextLevel();
+                UIManager.instance.OnNextLevel();
             }
         }
     }
