@@ -339,12 +339,19 @@ public class GameManager : MonoBehaviour
     {
         string currLevelName = SceneManager.GetActiveScene().name;
 
+        string TutorialLevel = "The Map";
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
         string levelFour = "Level 4";
 
-        if (currLevelName == levelOne)
+
+
+        if (currLevelName == TutorialLevel)
+        {
+            SceneManager.LoadScene(levelOne);
+        }
+        else if (currLevelName == levelOne)
         {
             SceneManager.LoadScene(levelTwo);
         }
