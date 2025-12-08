@@ -443,7 +443,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         float speed = AgentAI.velocity.sqrMagnitude;  
         bool walking = speed > 0.05f;                 
 
-        anim.SetBool("catWalking", walking);
+        //anim.SetBool("catWalking", walking);
     }
 }
 
