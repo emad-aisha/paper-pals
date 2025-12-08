@@ -39,21 +39,21 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.MouseOptionMenu();
     }
-    public void OptionMouseInvert()
+    public static void OptionMouseInvert()
     {
         //if it's off turn it on
         if (!GameManager.instance.invertY)
         {
             GameManager.instance.invertY = true;
             GameManager.instance.Display_X_Button.text = "(X)";
-            LoadSave.instance.SetInvertYSettings(GameManager.instance.invertY);
+            LoadSave.SetInvertYSettings(GameManager.instance.invertY);
         }
         else
         {
             //if it's on turn it off
             GameManager.instance.invertY = false;
             GameManager.instance.Display_X_Button.text = "( )";
-            LoadSave.instance.SetInvertYSettings(GameManager.instance.invertY);
+            LoadSave.SetInvertYSettings(GameManager.instance.invertY);
         }
     }
 

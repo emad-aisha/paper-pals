@@ -433,4 +433,6 @@ public class UIManager : MonoBehaviour {
         yield return new WaitForSeconds(time);
         stopTalking = true;
     }
+
+
 }

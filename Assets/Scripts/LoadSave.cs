@@ -11,7 +11,7 @@ public class LoadSave : MonoBehaviour
     float MusicValue;
     float SFXValue;
     float MouseValue;
-    bool isInvertedY = false;
+    public static bool isInvertedY = false;
 
     // player stuff
     public int playerCoins = 100;
@@ -42,18 +42,20 @@ public class LoadSave : MonoBehaviour
         MusicValue = _sMusicValue.value;
         //MusicValue = float.Parse(_sMusicValue.value.ToString());
     }
+    public void SetVolumeSettings()
+    {
+        //GameManager.instance.controller.GetComponent<AudioSource>().volume = GetSFXSettings().volume;
+    }
+
     public void SetSFXSettings(Slider _sSFXValue)
     {
         SFXValue = _sSFXValue.value;
-        Debug.Log("SFX Value set to: " + SFXValue);
-        //SFXValue = float.Parse(_sSFXValue.value.ToString());
     }
     public void SetMouseSettings(Slider _sMouseValue)
     {
         MouseValue = _sMouseValue.value;
-        //MouseValue = float.Parse(_sMouseValue.value.ToString());
     }
-    public void SetInvertYSettings(bool _isInvertedY)
+    public static void SetInvertYSettings(bool _isInvertedY)
     {
         isInvertedY = _isInvertedY;
     }
@@ -78,9 +80,18 @@ public class LoadSave : MonoBehaviour
         //Mouse Sensitivity
         return MouseValue;
     }
-    public bool GetInvertYSettings()
+    public static bool GetInvertYSettings()
     {
         return isInvertedY;
+    }
+
+
+    public void BigSave()
+    {
+        GetMusicSettings();
+        GetSFXSettings();
+        GetMouseSettings();
+        GetInvertYSettings();
     }
 
     //miscellaneous settings

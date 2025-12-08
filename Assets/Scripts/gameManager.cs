@@ -162,6 +162,9 @@ public class GameManager : MonoBehaviour
         MusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+
+        //LoadSave.instance.SetVolumeSettings();
+        
     }
 
 
@@ -195,6 +198,7 @@ public class GameManager : MonoBehaviour
         {
             controller.MapToggle();
         }
+        
     }
 
     void SetHearts()
@@ -348,6 +352,8 @@ public class GameManager : MonoBehaviour
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
         string levelFour = "Level 4";
+
+        LoadSave.GetInvertYSettings();
 
         if (currLevelName == TutorialLevel || currLevelName == levelOne || currLevelName == levelTwo || currLevelName == levelThree) {
             SceneManager.LoadScene(shop);
@@ -538,7 +544,7 @@ public class GameManager : MonoBehaviour
     //option functions
     public void OptionMenu()
     {
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu"))
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu") || Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene("MMOption");
             //menuOption.SetActive(true);
@@ -576,7 +582,7 @@ public class GameManager : MonoBehaviour
             //menuOption.SetActive(false);
         }
         //if you're in the regular option menu (volume will be active on default)
-        else
+        else if (Input.GetKeyDown(KeyCode.Escape))
         {
             menuVOLOption.SetActive(false);
             menuOption.SetActive(false);
@@ -616,6 +622,7 @@ public class GameManager : MonoBehaviour
 
     public void DisplayTextSlider(float _Value)
     {
+        controller.GetComponent<AudioSource>().volume = 100;
         //takes the value from the slider and displays it on top to the slider
         MusicNumberDisplay.text = MusicSliderObj.value.ToString("F2");
         LoadSave.instance.SetMusicSettings(MusicSliderObj);
@@ -627,5 +634,7 @@ public class GameManager : MonoBehaviour
         //takes the value from the slider and displays it on top to the slider
         MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
         LoadSave.instance.SetMouseSettings(MouseSensSliderObj);
+
+      
     }
 }
