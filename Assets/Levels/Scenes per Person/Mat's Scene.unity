@@ -2362,10 +2362,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
-    - target: {fileID: 2227742974745939419, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3020494633501212398, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2446,17 +2442,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3053728575661384484, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4542202295784784026, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4542202295784784026, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+    - target: {fileID: 7311301031522848972, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
+      propertyPath: m_MaxValue
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

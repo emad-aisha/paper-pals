@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class ButtonFunctions : MonoBehaviour
 {
+    LoadSave loadSave;
+
     // TODO: add a button for, next level in Menu Win (it doesnt get shown in level 3)
     // loads the next level and sets the appropriate variables for each level
     // lvl1 - all = false
@@ -44,16 +46,15 @@ public class ButtonFunctions : MonoBehaviour
         {
             GameManager.instance.invertY = true;
             GameManager.instance.Display_X_Button.text = "(X)";
-            Debug.Log("Invert Y is ON: " + GameManager.instance.Display_X_Button.text);
+            LoadSave.instance.SetInvertYSettings(GameManager.instance.invertY);
         }
         else
         {
             //if it's on turn it off
             GameManager.instance.invertY = false;
             GameManager.instance.Display_X_Button.text = "( )";
-            Debug.Log("Invert Y is off: " + GameManager.instance.Display_X_Button.text);
+            LoadSave.instance.SetInvertYSettings(GameManager.instance.invertY);
         }
-        GameManager.instance.Display_X_Button.text = "(X)";
     }
 
 

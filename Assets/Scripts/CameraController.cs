@@ -5,8 +5,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] int Sens;
     [SerializeField] int LockVertMin, LockVertMax;
-    
-    
+
     float CamX;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,14 +18,17 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.isPaused) {
+        
+        if (!GameManager.instance.isPaused)
+        {
             // get input
-            float mouseX = Input.GetAxis("Mouse X") * Sens * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * Sens * Time.deltaTime;
-            // use the invertY 
+            float mouseX = Input.GetAxis("Mouse X") * (Sens + LoadSave.instance.GetMouseSettings()) * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * (Sens + LoadSave.instance.GetMouseSettings()) * Time.deltaTime;
 
+            // use the invertY 
             if (GameManager.instance.invertY)
             {
+                //loadSave.GetInvertYSettings()
                 CamX += mouseY;
             }
             else

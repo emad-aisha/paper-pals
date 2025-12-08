@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Camera")]
     public Camera mainCamera;
-    public bool invertY;
+    public bool invertY = false;
 
     [Header("Checkpoints")]
     public GameObject playerSpawnPos;
@@ -125,7 +125,6 @@ public class GameManager : MonoBehaviour
     float originalTimeScale = 1f;
     public int gameGoalCount = 0;
     public int gameGoalCounter;
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -160,9 +159,9 @@ public class GameManager : MonoBehaviour
         if (isTurnOffLighting) Destroy(Lighting);
 
         //used to set the default values of the sliders for the options menu
-        MusicSliderObj.onValueChanged.AddListener(GameManager.instance.DisplayTextSlider);
-        MouseSensSliderObj.onValueChanged.AddListener(GameManager.instance.DisplayTextSlider);
-        SFXSliderObj.onValueChanged.AddListener(GameManager.instance.DisplayTextSlider);
+        MusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
     }
 
 
@@ -620,15 +619,15 @@ public class GameManager : MonoBehaviour
     public void DisplayTextSlider(float _Value)
     {
         //takes the value from the slider and displays it on top to the slider
-        Slider MusicValue = GameManager.instance.MusicSliderObj;
-        GameManager.instance.MusicNumberDisplay.text = MusicValue.value.ToString("F0");
+        MusicNumberDisplay.text = MusicSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMusicSettings(MusicSliderObj);
 
         //takes the value from the slider and displays it on top to the slider
-        Slider SFXValue = GameManager.instance.SFXSliderObj;
-        GameManager.instance.SFXNumberDisplay.text = SFXValue.value.ToString("F0");
+        SFXNumberDisplay.text = SFXSliderObj.value.ToString("F2");
+        LoadSave.instance.SetSFXSettings(SFXSliderObj);
 
         //takes the value from the slider and displays it on top to the slider
-        Slider MouseValue = GameManager.instance.MouseSensSliderObj;
-        GameManager.instance.MouseSensNumberDisplay.text = MouseValue.value.ToString("F0");
+        MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMouseSettings(MouseSensSliderObj);
     }
 }
