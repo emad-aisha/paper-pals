@@ -1,10 +1,6 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IDamage {
@@ -173,6 +169,7 @@ public class PlayerController : MonoBehaviour, IDamage {
                 Heal(healAmount);
                 HaveTape = false;
                 GameManager.instance.TapeImage.SetActive(false);
+                LoadSave.instance.playerTape = HaveTape;
             }
 
 
@@ -542,11 +539,13 @@ public class PlayerController : MonoBehaviour, IDamage {
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
             HaveTape = interact.SetTape();
+            LoadSave.instance.playerTape = HaveTape;
         }
         else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
             HaveTape = interact.SetTape();
+            LoadSave.instance.playerTape = HaveTape;
         }
 
         canDash = GameManager.instance.hasDash;
@@ -577,6 +576,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         Weapons.Add(Weapon);
         WeaponListPos = Weapons.Count - 1;
 
+        LoadSave.instance.playerWeapons.Add(Weapon);
         ChangeItem();
 
         return Weapon;

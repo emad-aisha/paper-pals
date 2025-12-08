@@ -1,26 +1,38 @@
-using System.IO;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;//files input/output
+using System.Collections.Generic;
 
 public class LoadSave : MonoBehaviour
 {
     public static LoadSave instance;
 
-    AudioSource audListen = GameManager.instance.controller.GetComponent<AudioSource>();
+    AudioSource audListen;
 
     float MusicValue;
     float SFXValue;
     float MouseValue;
     bool isInvertedY = false;
-    
+
+    // player stuff
+    public int playerCoins = 100;
+    public int playerAmmo;
+    public List<WeaponStats> playerWeapons;
+    public bool playerTape;
+    public bool playerMap;
+
+    public int heartsBought;
+
+    public int LevelLoad = 0;
+
+
     void Awake()
     {
         if(instance == null)
         {
             instance = this;
         }
+
+        if (GameManager.instance != null) audListen = GameManager.instance.controller.GetComponent<AudioSource>();
     }
 
     //setters

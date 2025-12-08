@@ -334,41 +334,32 @@ public class GameManager : MonoBehaviour
         reminderMenu.SetActive(false);
     }
 
-    public void LoadNextLevel()
+    public void LoadNextLevel(int levelToLoad)
     {
         string currLevelName = SceneManager.GetActiveScene().name;
 
         string TutorialLevel = "The Map";
+        string shop = "Shop";
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
         string levelFour = "Level 4";
 
+        if (currLevelName == TutorialLevel || currLevelName == levelOne || currLevelName == levelTwo || currLevelName == levelThree) {
+            SceneManager.LoadScene(shop);
+        }
 
 
-        if (currLevelName == TutorialLevel)
+        if (currLevelName == shop)
         {
-            SceneManager.LoadScene(levelOne);
+            if (levelToLoad == 1) SceneManager.LoadScene(levelOne);
+            if (levelToLoad == 2) SceneManager.LoadScene(levelTwo);
+            if (levelToLoad == 3) SceneManager.LoadScene(levelThree);
+            if (levelToLoad == 4) SceneManager.LoadScene(levelFour);
         }
-        else if (currLevelName == levelOne)
-        {
-            SceneManager.LoadScene(levelTwo);
-        }
-        else if (currLevelName == levelTwo)
-        {
-            SceneManager.LoadScene(levelThree);
-        }
-        else if (currLevelName == levelThree)
-        {
-            SceneManager.LoadScene(levelFour);
-        }
-        else if (currLevelName == levelFour)
-        {
+
+        if (currLevelName == levelFour){
             Win();
-        }
-        else
-        {
-            SceneManager.LoadScene(levelOne);
         }
     }
 
@@ -481,6 +472,7 @@ public class GameManager : MonoBehaviour
         if (CoinsCounter < CoinsMax)
         {
             CoinsCounter += ammount;
+            LoadSave.instance.playerCoins = CoinsCounter;
         }
 
         if (CoinsCounter >= CoinsMax)
@@ -503,6 +495,8 @@ public class GameManager : MonoBehaviour
     {
         // Stored ammo only
         TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
+
+        LoadSave.instance.playerAmmo = TotalAmmoOwned;
     }
 
     public void UpdateTotal(GunStats weaponInfo)
