@@ -89,12 +89,13 @@ public class C4 : MonoBehaviour
             }
             else if (other.CompareTag("Player"))
             {
-               
+                Debug.Log("player hit");
                 IDamage Target = other.GetComponentInParent<IDamage>();
                 float dist = Vector3.Distance(other.transform.position, transform.position);
-
+                Debug.Log(dist);
                 if (dist <= Stats.BlastRadius)
                 {
+                    Debug.Log("damage player");
                     Target.TakeDamage(Stats.SelfDamage);
                 }
             }
