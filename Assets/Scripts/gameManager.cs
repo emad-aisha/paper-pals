@@ -342,6 +342,7 @@ public class GameManager : MonoBehaviour
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
+        string levelFour = "Level 4";
 
         if (currLevelName == levelOne)
         {
@@ -352,6 +353,10 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(levelThree);
         }
         else if (currLevelName == levelThree)
+        {
+            SceneManager.LoadScene(levelFour);
+        }
+        else if (currLevelName == levelFour)
         {
             Win();
         }
