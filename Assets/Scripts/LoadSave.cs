@@ -78,12 +78,12 @@ public class LoadSave : MonoBehaviour
     //MusicValue = int.Parse(sMusicValue.value.ToString());
     //GameManager.instance.aud
     }
-    public AudioSource GetSFXSettings()
-    {
-        //SFXValue
-        audListen.volume = SFXValue;
-        return audListen;
-    }
+    //public AudioSource GetSFXSettings()
+    //{
+    //    //SFXValue
+    //    audListen.volume = SFXValue;
+    //    return audListen;
+    //}
     public float GetMouseSettings()
     {
         //Mouse Sensitivity
