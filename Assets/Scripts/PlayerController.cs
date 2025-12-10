@@ -45,6 +45,9 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] float FireRate;
     [SerializeField] float MeleeSpeed;
     [SerializeField] int TickDamage;
+    [SerializeField] Transform playerShootPos;
+    [SerializeField] GameObject playerBullet;
+
 
     [SerializeField] int ThrowDistance;
     [SerializeField] GameObject MeleeHitbox;
@@ -95,6 +98,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     float FireTimer;
     float MeleeTimer;
     float ThrowTimer;
+ 
 
     // TODO: make this from another script I think?
     // inventory
@@ -354,7 +358,8 @@ public class PlayerController : MonoBehaviour, IDamage {
 
     void Shoot() {
 
-        if (Weapons[WeaponListPos].type == WeaponType.Gun) {
+        if (Weapons[WeaponListPos].type == WeaponType.Gun)
+        {
             GunStats Gun = (GunStats)Weapons[WeaponListPos];
 
             if (Gun.AmmoCurr <= 0) {
@@ -362,6 +367,8 @@ public class PlayerController : MonoBehaviour, IDamage {
                 return;
             }
             else {
+
+              
                 Gun.AmmoCurr -= 1;
                 GameManager.instance.UpdateAmmoCount(-1, Gun);
 
@@ -370,9 +377,14 @@ public class PlayerController : MonoBehaviour, IDamage {
                 GameManager.instance.UpdateTotal(Gun);
                 FireTimer = 0;
 
-                RaycastHit hit;
+                Instantiate(playerBullet, playerShootPos.position, Quaternion.LookRotation(GameManager.instance.mainCamera.transform.forward)).GetComponent<playerBullet>().SetDirection(GameManager.instance.mainCamera.transform.forward);
 
                 aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
+
+                RaycastHit hit;
+                Vector3 shootDir = GameManager.instance.mainCamera.transform.forward;
+
+                
                 if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer)) {
                     IDamage dmg = hit.collider.GetComponent<IDamage>();
                     if (dmg != null) {
