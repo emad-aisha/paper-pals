@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     // TODO: make this from another script I think?
     // inventory
     bool HaveTape;
-
+    bool IsDead = false;
     bool canDash;
     bool isDashing;
     float dashTimer;
@@ -129,8 +130,10 @@ public class PlayerController : MonoBehaviour, IDamage {
         HaveTape = false;
         sprintCurr = sprintTimer;
         OGSpeed = speed;
-
-        ChangeItem();
+        if (Weapons.Count > 0)
+        {
+            ChangeItem();
+        }
         RespawnPlayer();
     }
 
@@ -304,6 +307,11 @@ public class PlayerController : MonoBehaviour, IDamage {
             isInvincible = false;
             GameManager.instance.FlashFrames.SetActive(false);
         }
+    }
+
+    void DisableIFrames() // Only for turning off UI Element
+    {
+        GameManager.instance.FlashFrames.SetActive(false);
     }
 
     void Sprint() {
@@ -509,7 +517,7 @@ public class PlayerController : MonoBehaviour, IDamage {
 
 
     public void TakeDamage(int amount) {
-        if (!isInvincible) {
+        if (!isInvincible && !IsDead) {
             HP -= amount;
 
             StartCoroutine(Flash(0.1f));
@@ -519,12 +527,22 @@ public class PlayerController : MonoBehaviour, IDamage {
             aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
 
             if (HP <= 0) {
-                GameManager.instance.Defeat();
+                IsDead = true;
+                StartCoroutine(DeathAnimation());
             }
             isInvincible = true;
             GameManager.instance.FlashFrames.SetActive(true);
         }
 
+    }
+
+    IEnumerator DeathAnimation()
+    {
+        if (HP <= 0)
+        {
+            yield return new WaitForSeconds(0.1f); // leting the character anims and flash play before end the game
+            GameManager.instance.Defeat();
+        }
     }
 
     public void Interact() {
@@ -681,6 +699,8 @@ public class PlayerController : MonoBehaviour, IDamage {
 
     public void RespawnPlayer() {
         isInvincible = false;
+        IsDead = false;
+        DisableIFrames();
         // reset player position to last checkpoint
         controller.transform.position = GameManager.instance.playerSpawnPos.transform.position;
 
@@ -688,6 +708,8 @@ public class PlayerController : MonoBehaviour, IDamage {
         HP = MaxHP;
         UpdateHealthHearts();
     }
+
+
 
     public void MapToggle() {
         if (hasMap) {

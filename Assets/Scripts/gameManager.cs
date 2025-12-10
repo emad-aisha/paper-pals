@@ -240,14 +240,14 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    void SetWepons()
+     void SetWepons()
     {
         Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
         for (int i = 0; i < Weapons.Count; i++)
         {
             Weapons[i].SetActive(false);
         }
-    }
+    } 
 
     public void PauseGame()
     {
@@ -312,8 +312,8 @@ public class GameManager : MonoBehaviour
             hasFlashlight = true;
             hasDoubleJump = true;
             hasDash = true;
-            controller.GetWeaponStats(pencil);
-            controller.GetWeaponStats(gun);
+           // controller.GetWeaponStats(pencil);
+            // controller.GetWeaponStats(gun);
         }
     }
 
