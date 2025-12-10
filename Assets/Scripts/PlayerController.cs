@@ -263,13 +263,11 @@ public class PlayerController : MonoBehaviour, IDamage {
         SelectWeapon();
 
         if (Input.GetKeyDown(KeyCode.C) && canDash && GameManager.instance.hasDash) {
-            Debug.Log("can dash");
             Dash();
         }
     }
     void Dash()
     {
-        Debug.Log("dash");
         canDash = false;
         isDashing = true;
         dashTimer = 0;
