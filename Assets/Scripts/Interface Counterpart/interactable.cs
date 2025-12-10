@@ -30,14 +30,16 @@ public class Interactable : MonoBehaviour, IInteractable {
             SetTape();
         }
         else if (type == InterfaceType.Ammo) {
-            WeaponStats CurrentWeapon = Player.GetCurrentWeapon();
             GameManager.instance.UpdateAmmoCount(amount);
-            if (CurrentWeapon != null && CurrentWeapon.type == WeaponType.Gun)
-            {
-                GunStats gun = (GunStats)CurrentWeapon;
-                GameManager.instance.UpdateTotal(gun);
-            }
 
+            //TODO: this doesnt work
+            //WeaponStats CurrentWeapon = Player.GetCurrentWeapon();
+
+            //if (CurrentWeapon != null && CurrentWeapon.type == WeaponType.Gun)
+            //{
+            //    GunStats gun = (GunStats)CurrentWeapon;
+            //    GameManager.instance.UpdateTotal(gun);
+            //}
         }
         else if (type == InterfaceType.Currency) {
             GameManager.instance.UpdateCoinCount(amount);

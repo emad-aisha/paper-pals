@@ -208,7 +208,6 @@ MonoBehaviour:
   Sens: 300
   LockVertMin: -90
   LockVertMax: 90
-  invertY: 0
 --- !u!20 &6346108839982119050
 Camera:
   m_ObjectHideFlags: 0
@@ -513,6 +512,9 @@ MonoBehaviour:
   jumpSpeed: 15
   maxJumps: 2
   gravity: 35
+  dashForce: 20
+  dashDuration: 0.3
+  dashCooldown: 2
   Damage: 0
   ShootDistance: 150
   FireRate: 0.5

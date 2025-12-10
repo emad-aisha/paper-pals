@@ -185,10 +185,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.P) && Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.A)) {
-            SceneManager.LoadScene("Mat's Scene");
-        }
-
         if (Input.GetButtonDown("Flashlight") && hasFlashlight)
         {
             controller.FlashlightToggle();
@@ -280,6 +276,7 @@ public class GameManager : MonoBehaviour
         string levelThree = "Level 3";
 
         // TODO: fix this up for the new levels
+        // TODO: make this use the saveLoad instead
         if (currLevelName == levelOne)
         {
             hasFlashlight = false;
@@ -301,13 +298,22 @@ public class GameManager : MonoBehaviour
             controller.GetWeaponStats(pencil);
             controller.GetWeaponStats(gun);
         }
+        else if (currLevelName == "Aisha's Scene") {
+            hasFlashlight = false;
+            hasDoubleJump = false;
+            hasDash = false;
+            controller.GetWeaponStats(pencil);
+            controller.GetWeaponStats(gun);
+            TotalAmmoOwned = gun.AmmoCurr;
+            UpdateAmmoCount(0);
+        }
         else
         {
             hasFlashlight = true;
             hasDoubleJump = true;
             hasDash = true;
-            //  controller.GetWeaponStats(pencil);
-            // controller.GetWeaponStats(gun);
+            controller.GetWeaponStats(pencil);
+            controller.GetWeaponStats(gun);
         }
     }
 
@@ -507,12 +513,13 @@ public class GameManager : MonoBehaviour
         TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
 
         LoadSave.instance.playerAmmo = TotalAmmoOwned;
+        AmmoCountText.text = TotalAmmoOwned.ToString();
     }
 
     public void UpdateTotal(GunStats weaponInfo)
     {
         AmmoAndExtra = TotalAmmoOwned + weaponInfo.AmmoCurr;
-        AmmoCountText.text = AmmoAndExtra.ToString("F0");
+        //AmmoCountText.text = AmmoAndExtra.ToString("F0");
     }
 
     public void UpdateAmmoCount(int amount, GunStats weaponInfo)

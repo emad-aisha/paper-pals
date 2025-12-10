@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         sprintCurr = sprintTimer;
         OGSpeed = speed;
 
+        ChangeItem();
         RespawnPlayer();
     }
 
@@ -355,8 +356,9 @@ public class PlayerController : MonoBehaviour, IDamage {
                 return;
             }
             else {
-               Gun.AmmoCurr -= 1;
-                // GameManager.instance.UpdateAmmoCount(-1, Gun);
+                Gun.AmmoCurr -= 1;
+                GameManager.instance.UpdateAmmoCount(-1, Gun);
+
                 GameManager.instance.CurrAmmo.text = Gun.AmmoCurr.ToString();
                 // inventory top-right (clip + stored)
                 GameManager.instance.UpdateTotal(Gun);
@@ -381,14 +383,13 @@ public class PlayerController : MonoBehaviour, IDamage {
         if (Weapons[WeaponListPos].type == WeaponType.Gun) {
             GunStats Gun = (GunStats)(Weapons[WeaponListPos]);
 
-            if (Gun.AmmoCurr >= Gun.AmmoMax) { 
+            if (Gun.AmmoCurr >= Gun.AmmoMax)
                 return;
-            }
-            int stored = (int)GameManager.instance.TotalAmmoOwned;
+            
+            int stored = GameManager.instance.TotalAmmoOwned;
             if (stored <= 0)
-            {
                 return;
-            }
+            
 
             int Needed = Gun.AmmoMax - Gun.AmmoCurr;
             int ToLoad = Mathf.Min(Needed, stored); //  basically takes however much we need
@@ -408,7 +409,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             if (explosive.AmmoCurr >= explosive.AmmoMax)
                 return;
 
-            int stored = (int)GameManager.instance.TotalAmmoOwned;
+            int stored = GameManager.instance.TotalAmmoOwned;
             if (stored <= 0)
                 return;
 
@@ -607,7 +608,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             GunStats CurrGun = (GunStats)Weapons[WeaponListPos];
             GameManager.instance.CurrAmmo.text = CurrGun.AmmoCurr.ToString();
             GameManager.instance.TotalAmmo.text = CurrGun.AmmoMax.ToString();
-            GameManager.instance.TotalAmmoOwned = CurrGun.AmmoCurr;
+            // GameManager.instance.TotalAmmoOwned = CurrGun.AmmoCurr;
             // GameManager.instance.UpdateAmmoCount(CurrGun.AmmoCurr + GameManager.instance.TotalAmmoOwned);
             GameManager.instance.AmmoMenu.SetActive(true);
         }
