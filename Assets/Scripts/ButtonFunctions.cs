@@ -44,16 +44,14 @@ public class ButtonFunctions : MonoBehaviour
         //if it's off turn it on
         if (!GameManager.instance.invertY)
         {
-            GameManager.instance.invertY = true;
+            LoadSave.instance.SetInvertYSettings(true);
             GameManager.instance.Display_X_Button.text = "(X)";
-            LoadSave.SetInvertYSettings(GameManager.instance.invertY);
         }
         else
         {
             //if it's on turn it off
-            GameManager.instance.invertY = false;
+            LoadSave.instance.SetInvertYSettings(false);
             GameManager.instance.Display_X_Button.text = "( )";
-            LoadSave.SetInvertYSettings(GameManager.instance.invertY);
         }
     }
 

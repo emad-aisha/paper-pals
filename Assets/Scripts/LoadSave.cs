@@ -1,6 +1,7 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class LoadSave : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class LoadSave : MonoBehaviour
     float MusicValue;
     float SFXValue;
     float MouseValue;
-    public static bool isInvertedY = false;
+    public bool isInvertedY = false;
 
     // player stuff
     public int playerCoins = 100;
@@ -30,9 +31,15 @@ public class LoadSave : MonoBehaviour
         if(instance == null)
         {
             instance = this;
+            
+            //Does not get destroyed on another scene
+            DontDestroyOnLoad(this.gameObject);
         }
 
-        if (GameManager.instance != null) audListen = GameManager.instance.controller.GetComponent<AudioSource>();
+        if (GameManager.instance != null)
+        {
+            audListen = GameManager.instance.controller.GetComponent<AudioSource>();
+        } 
     }
 
     //setters
@@ -55,7 +62,7 @@ public class LoadSave : MonoBehaviour
     {
         MouseValue = _sMouseValue.value;
     }
-    public static void SetInvertYSettings(bool _isInvertedY)
+    public void SetInvertYSettings(bool _isInvertedY)
     {
         isInvertedY = _isInvertedY;
     }
@@ -80,97 +87,12 @@ public class LoadSave : MonoBehaviour
         //Mouse Sensitivity
         return MouseValue;
     }
-    public static bool GetInvertYSettings()
+    public bool GetInvertYSettings()
     {
         return isInvertedY;
     }
 
-
-    public void BigSave()
-    {
-        GetMusicSettings();
-        GetSFXSettings();
-        GetMouseSettings();
-        GetInvertYSettings();
-    }
-
     //miscellaneous settings
-
-    void SaveSettings() {
-        //string path = "LoadSave.bin";
-        //byte[] bytes;
-
-        //FileStream file = new FileStream(path, FileMode.Create);
-
-        //file.Write(bytes, 0, bytes.Length);
-
-        //file.open("settings.bin", FileMode.OpenOrCreate | FileAccess.Write);
-        //std::ofstream file("settings.bin", std::ios::out | std::ios::binary);
-
-        //if (file.is_open()) {
-
-        //	file.write(reinterpret_cast<const char*>(this), sizeof(Settings));
-        //	file.close();
-        //}
-    }
-
-    void LoadSettings()
-    {
-
-        //ifstream file("settings.bin", std::ios::binary | std::ios::in);
-
-        //if (file.is_open())
-        //{
-
-        //    file.read(reinterpret_cast<char*>(this), sizeof(Settings));
-        //    file.close();
-        //}
-    }
-
 
 }
 
-//struct Save 
-//{
-
-//    int MusicValue;
-//    Slider sMusicValue = GameManager.instance.MusicSliderObj;
-
-//    int SFXValue;
-//    Slider sSFXValue = GameManager.instance.SFXSliderObj;
-
-//    int MouseValue;
-//    Slider sMouseValue = GameManager.instance.MouseSensSliderObj;
-
-//    //music settings
-//    //MusicValue
-//    MusicValue = (int) sMusicValue.;
-
-//    //SFXValue
-//    //MouseValue
-
-//    //SFX settings
-
-//    //Mouse settings
-//    //Mouse Sensitivity
-//    //invert Y
-
-//    //miscellaneous settings
-
-//}
-//struct Load
-//{
-//    Save SaveSettings;
-
-
-//    //music settings method
-
-//    //SFX settings method
-
-//    //Mouse settings method
-//        //Mouse Sensitivity
-//        //invert Y
-
-//    //miscellaneous settings method
-
-//}

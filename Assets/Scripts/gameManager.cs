@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
 
 
         SetHearts();
-        SetEydrops();
+        SetEyedrops();
         SetWepons();
 
         SetEyedrop();
@@ -198,7 +198,9 @@ public class GameManager : MonoBehaviour
         {
             controller.MapToggle();
         }
-        
+
+        invertY = LoadSave.instance.GetInvertYSettings();
+
     }
 
     void SetHearts()
@@ -221,7 +223,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void SetEydrops()
+    void SetEyedrops()
     {
         List<GameObject> temp = new List<GameObject>();
         temp.AddRange(GameObject.FindGameObjectsWithTag("Eyedrop"));
@@ -353,14 +355,12 @@ public class GameManager : MonoBehaviour
         string levelThree = "Level 3";
         string levelFour = "Level 4";
 
-        LoadSave.GetInvertYSettings();
-
         if (currLevelName == TutorialLevel || currLevelName == levelOne || currLevelName == levelTwo || currLevelName == levelThree) {
             SceneManager.LoadScene(shop);
         }
 
 
-        if (currLevelName == shop)
+        if (currLevelName == shop || currLevelName == "Mat's Scene")
         {
             if (levelToLoad == 1) SceneManager.LoadScene(levelOne);
             if (levelToLoad == 2) SceneManager.LoadScene(levelTwo);
@@ -622,7 +622,7 @@ public class GameManager : MonoBehaviour
 
     public void DisplayTextSlider(float _Value)
     {
-        controller.GetComponent<AudioSource>().volume = 100;
+        //controller.GetComponent<AudioSource>().volume = 100;
         //takes the value from the slider and displays it on top to the slider
         MusicNumberDisplay.text = MusicSliderObj.value.ToString("F2");
         LoadSave.instance.SetMusicSettings(MusicSliderObj);
@@ -634,7 +634,5 @@ public class GameManager : MonoBehaviour
         //takes the value from the slider and displays it on top to the slider
         MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
         LoadSave.instance.SetMouseSettings(MouseSensSliderObj);
-
-      
     }
 }

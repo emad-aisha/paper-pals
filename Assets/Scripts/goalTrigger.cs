@@ -7,12 +7,14 @@ public class GoalTrigger : MonoBehaviour
     [SerializeField] Type type;
 
     private void OnTriggerEnter(Collider other) {
+
         if (other.CompareTag("Player")) {
             if (type == Type.exitCover) {
                 GameManager.instance.KeyCheck();
             }
-            else if (type == Type.exit) {
-                UIManager.instance.OnNextLevel();
+            if (type == Type.exit) {
+                LoadSave.instance.LevelLoad++;
+                GameManager.instance.LoadNextLevel(LoadSave.instance.LevelLoad);
             }
         }
     }
