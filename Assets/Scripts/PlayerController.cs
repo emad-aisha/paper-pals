@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] int TickDamage;
     [SerializeField] Transform playerShootPos;
     [SerializeField] GameObject playerBullet;
+    [SerializeField] float bulletToCamera;  //Changes the the the amount of time it takes for the bullet to get to the center of the camera
 
 
     [SerializeField] int ThrowDistance;
@@ -394,14 +395,16 @@ public class PlayerController : MonoBehaviour, IDamage {
                 GameManager.instance.UpdateTotal(Gun);
                 FireTimer = 0;
 
-                Instantiate(playerBullet, playerShootPos.position, Quaternion.LookRotation(GameManager.instance.mainCamera.transform.forward)).GetComponent<playerBullet>().SetDirection(GameManager.instance.mainCamera.transform.forward);
-
                 aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
 
-                RaycastHit hit;
-                Vector3 shootDir = GameManager.instance.mainCamera.transform.forward;
+                Vector3 camDir = GameManager.instance.mainCamera.transform.forward;
+                Vector3 gunDir = playerShootPos.forward;
+                Vector3 shootDir = Vector3.Lerp(gunDir, camDir, bulletToCamera).normalized;
 
+                Instantiate(playerBullet, playerShootPos.position, Quaternion.LookRotation(shootDir)).GetComponent<playerBullet>().SetDirection(shootDir);
                 
+                RaycastHit hit;
+
                 if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, ShootDistance, ~IgnoreLayer)) {
                     IDamage dmg = hit.collider.GetComponent<IDamage>();
                     if (dmg != null) {
