@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public List<GameObject> Hearts;
+    public List<GameObject> ExtraHearts;
     public List<GameObject> Weapons;
     public List<GameObject> EyedropPhases;
     public Image SprintBar;
@@ -143,14 +144,15 @@ public class GameManager : MonoBehaviour
         exit = GameObject.FindWithTag("Exit");
         exitCover = GameObject.FindWithTag("Exit Cover");
 
+
         if (gunObject != null) gunObject.layer = 7;
         if (pencilObject != null) pencilObject.layer = 7;
+
+        
 
         SetAbilities();
         UpdateKeysLeft();
 
-
-        SetHearts();
         SetEyedrops();
         SetWepons();
 
@@ -199,26 +201,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void SetHearts()
-    {
-        List<GameObject> temp = new List<GameObject>();
-        temp.AddRange(GameObject.FindGameObjectsWithTag("Alive"));
-
-        for (int i = 0; i < temp.Count; i++)
-        {
-            for (int j = 0; j < temp.Count; j++)
-            {
-                string name = temp[j].name;
-                int heartOrder = int.Parse(name.Substring(5, 1));
-
-                if (heartOrder == i + 1)
-                {
-                    Hearts.Add(temp[j]);
-                    break;
-                }
-            }
-        }
-    }
     void SetEyedrops()
     {
         List<GameObject> temp = new List<GameObject>();
@@ -275,6 +257,7 @@ public class GameManager : MonoBehaviour
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
 
+        
         // TODO: fix this up for the new levels
         // TODO: make this use the saveLoad instead
         if (currLevelName == levelOne)
@@ -299,8 +282,8 @@ public class GameManager : MonoBehaviour
             controller.GetWeaponStats(gun);
         }
         else if (currLevelName == "Aisha's Scene") {
-            hasFlashlight = false;
-            hasDoubleJump = false;
+            hasFlashlight = true;
+            hasDoubleJump = true;
             hasDash = false;
             controller.GetWeaponStats(pencil);
             controller.GetWeaponStats(gun);
@@ -530,11 +513,6 @@ public class GameManager : MonoBehaviour
         UpdateTotal(weaponInfo);
     }
 
-    public void UpdateExplosiveCount(int amount)
-    {
-        TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
-        AmmoCountText.text = TotalAmmoOwned.ToString("F0");
-    }
 
     public void ShowFlashlightHint()
     {

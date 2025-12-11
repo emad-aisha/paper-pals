@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Transform[] SpawnPositions;
     [SerializeField] int SpawnAmount;
     [SerializeField] float SpawnRate;
-    [SerializeField] int SpawnMax;
 
     int SpawnCount;
     float SpawnTimer;
@@ -37,8 +37,18 @@ public class EnemySpawner : MonoBehaviour
 
             if (SpawnCount < SpawnAmount && SpawnTimer >= SpawnRate)
             {
+                Debug.Log("spawn");
                 Spawn();
+                SpawnTimer = 0;
             }
+            else if (SpawnCount >= SpawnAmount) {
+                StartSpawning = false;
+                Debug.Log("no more spawning");
+            }
+        }
+        else if (!StartSpawning && SpawnCount >= SpawnAmount) {
+            Debug.Log("die");
+            Destroy(this.gameObject);
         }
 
     }
@@ -46,11 +56,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //when the "Player" enters the collider
-        if (other.CompareTag("Player") && SpawnCount < SpawnMax)
-        {
-            StartSpawning = true;
-        }
+        StartSpawning = true;
     }
 
     void Spawn()

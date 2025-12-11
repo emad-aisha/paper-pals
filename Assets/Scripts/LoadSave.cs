@@ -21,7 +21,7 @@ public class LoadSave : MonoBehaviour
     public bool playerTape;
     public bool playerMap;
 
-    public int heartsBought;
+    public int heartsBought = 1;
 
     public int LevelLoad = 0;
 

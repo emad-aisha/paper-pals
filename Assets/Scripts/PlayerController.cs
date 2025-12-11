@@ -138,6 +138,23 @@ public class PlayerController : MonoBehaviour, IDamage {
         {
             ChangeItem();
         }
+
+
+        if (LoadSave.instance.heartsBought == 0) {
+            GameManager.instance.ExtraHearts[0].SetActive(false);
+            GameManager.instance.ExtraHearts[1].SetActive(false);
+        }
+        else if (LoadSave.instance.heartsBought == 1) {
+            MaxHP++;
+            GameManager.instance.ExtraHearts[0].SetActive(true);
+            GameManager.instance.ExtraHearts[1].SetActive(false);
+        }
+        else if (LoadSave.instance.heartsBought >= 2) {
+            MaxHP++;
+            GameManager.instance.ExtraHearts[0].SetActive(true);
+            GameManager.instance.ExtraHearts[1].SetActive(true);
+        }
+
         RespawnPlayer();
     }
 
@@ -422,22 +439,24 @@ public class PlayerController : MonoBehaviour, IDamage {
         else if (Weapons[WeaponListPos].type == WeaponType.Explosive)
         {
             ExplosiveStats explosive = (ExplosiveStats)Weapons[WeaponListPos];
+            
 
-            // already full
-            if (explosive.AmmoCurr >= explosive.AmmoMax)
+            if (C4AmmoCurr >= explosive.AmmoMax)
                 return;
 
             int stored = GameManager.instance.TotalAmmoOwned;
-            if (stored <= 0)
+            if (stored < 10)
                 return;
 
-            int needed = explosive.AmmoMax - explosive.AmmoCurr;
-            int toLoad = Mathf.Min(needed, stored);
 
-            explosive.AmmoCurr += toLoad;
-            GameManager.instance.UpdateExplosiveCount(-toLoad);
+            int needed = explosive.AmmoMax - C4AmmoCurr;
+            int toLoad = 10;
 
-            GameManager.instance.CurrAmmo.text = explosive.AmmoCurr.ToString();
+
+            C4AmmoCurr += toLoad;
+            GameManager.instance.UpdateAmmoCount(-toLoad);
+
+            GameManager.instance.CurrAmmo.text = C4AmmoCurr.ToString();
             GameManager.instance.TotalAmmo.text = explosive.AmmoMax.ToString();
         }
     }
@@ -472,7 +491,6 @@ public class PlayerController : MonoBehaviour, IDamage {
         MeleeTimer = 0;
         aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
         if (Enemies.Count > 0) {
-            Debug.Log("made it here");
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange, ~IgnoreLayer)) {
                 IDamage dmg = hit.collider.GetComponentInParent<IDamage>();
@@ -542,6 +560,7 @@ public class PlayerController : MonoBehaviour, IDamage {
                 IsDead = true;
                 StartCoroutine(DeathAnimation());
             }
+
             isInvincible = true;
             GameManager.instance.FlashFrames.SetActive(true);
         }

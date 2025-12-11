@@ -376,10 +376,13 @@ public class UIManager : MonoBehaviour {
             LoadSave.instance.playerCoins -= int.Parse(CostTexts[2].text);
             UpdateCoins();
 
+
+            // this is before the increment so minus 1
             if (LoadSave.instance.heartsBought == 1) {
                 PurchaseOptions[2].SetActive(false); 
                 //MoveItemsUp();
             }
+            // increment hearts bought
             else LoadSave.instance.heartsBought++;
 
             UpdateHearts();
