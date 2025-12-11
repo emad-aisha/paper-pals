@@ -140,6 +140,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             ChangeItem();
         }
 
+        flashlightOn = false;
 
         if (LoadSave.instance.heartsBought == 0) {
             GameManager.instance.ExtraHearts[0].SetActive(false);
