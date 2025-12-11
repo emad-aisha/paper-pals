@@ -58,6 +58,13 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Play()
     {
+        MusicManager music = Object.FindFirstObjectByType<MusicManager>();
+
+        if (music != null)
+        {
+            music.StopMusic();
+        }
+
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("The Map");
     }
