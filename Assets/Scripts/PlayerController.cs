@@ -66,7 +66,9 @@ public class PlayerController : MonoBehaviour, IDamage {
 
     [Header("Flashlight")]
     public GameObject flashlightSwitch;
-    bool flashlightOn = true;
+     bool flashlightOn = true;
+    public bool FlashlightOn { get { return flashlightOn; } }
+
 
     [Header("Map")]
     public GameObject mapSwitch;

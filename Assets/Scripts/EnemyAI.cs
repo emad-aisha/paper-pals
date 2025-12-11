@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -65,14 +66,26 @@ public class EnemyAI : MonoBehaviour, IDamage
     float StoppingDistanceOG;
     Vector3 StartPosition;
 
+    [Header("Detection")]
+    [SerializeField] float baseDetectionDistance = 5f;
+    [SerializeField] float flashlightMultiplier = 2f;
+    [SerializeField] float lookMultiplier = 1.5f;
+    [SerializeField] float awayMultiplier = 0.5f;
+    [SerializeField] float loseSightDelay = 3f;
+    [SerializeField] float lookDotThreshold = 0.75f;
+
     [Header("Animation")]
     [SerializeField] Animator anim;
+
     //[SerializeField] string walkBoolName = "catWalking";
 
     // private variables   
     bool PlayerInTrigger;
     float ShootTimer;
     Color OGColor;
+
+    float timeSinceLastSeen;
+    bool canSeePlayer;
 
     // bull variables
     float attackTimer = 0;
@@ -130,6 +143,8 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         FaceTarget();
 
+        HandleFlashlightDetection();
+
         if (enemyType == EnemyType.ranged)
         {
             FlyingBehavior();
@@ -183,6 +198,60 @@ public class EnemyAI : MonoBehaviour, IDamage
 
        
         UpdateMovementAnimation();
+    }
+
+    //flashlight detection methods
+
+    float GetDetectionDistance(Transform player)
+    {
+        float distance = baseDetectionDistance;
+
+        bool hasFlashlight = GameManager.instance.hasFlashlight;
+        bool flashlightOn = GameManager.instance.controller.FlashlightOn;
+
+        if(hasFlashlight && flashlightOn)
+        {
+            distance *= flashlightMultiplier;
+
+            if(IsPlayerLookingAtEnemy(player))
+                distance *= lookMultiplier;
+            else
+                distance *= awayMultiplier;
+        }
+        return distance;
+
+    }
+    bool IsPlayerLookingAtEnemy(Transform player)
+    {
+        Vector3 toEnemy =(transform.position - player.position).normalized;
+        float dot = Vector3.Dot(player.forward, toEnemy);
+        return dot >= lookDotThreshold;
+    }
+
+    void HandleFlashlightDetection()
+    {
+        Transform player = GameManager.instance.player.transform;
+        float detectionDistance = GetDetectionDistance(player);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= detectionDistance)
+        {
+            canSeePlayer = true;
+            timeSinceLastSeen = 0f;
+            AgentAI.SetDestination(player.position);
+        }
+        else
+        {
+            canSeePlayer = false;
+            timeSinceLastSeen += Time.deltaTime;
+
+            if (timeSinceLastSeen >= loseSightDelay)
+            {
+                canSeePlayer = false;
+                Roam();
+
+            }
+        }
     }
 
     void CheckRoam()
