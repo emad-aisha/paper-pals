@@ -147,80 +147,96 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (enemyType == EnemyType.ranged)
         {
+            if (canSeePlayer)
+            {
+                timeSinceLastSeen = 0f;
+                AgentAI.SetDestination(GameManager.instance.player.transform.position);
+            }
+            else
+            {
+                timeSinceLastSeen += Time.deltaTime;
+                if (timeSinceLastSeen >= loseSightDelay)
+                {
+                    CheckRoam();
+                }
+            }
             FlyingBehavior();
-            return;
-        }
-
-        //if player is in the trigger collider
-        if (PlayerInTrigger && !CanSeePlayer() && enemyType == EnemyType.ranged)
-        {
-            CheckRoam();
-        }
-        else if (!PlayerInTrigger && enemyType == EnemyType.ranged)
-        {
-            CheckRoam();
         }
 
 
-        if (PlayerInTrigger && enemyType == EnemyType.melee)
+        if (enemyType == EnemyType.melee)
         {
-            AgentAI.SetDestination(GameManager.instance.player.transform.position);
-
-            // Check distance between enemy and player
-            float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-
-            // If close enough to attack, and cooldown is ready and EnemyType.melee
-            if (distance <= attackRange && attackTimer >= attackCooldown)
+            if (canSeePlayer)
             {
-                AttackPlayer();
+                timeSinceLastSeen = 0f;
+
+                AgentAI.SetDestination(GameManager.instance.player.transform.position);
+
+                // Check distance between enemy and player
+                float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
+
+                // If close enough to attack, and cooldown is ready and EnemyType.melee
+                if (distance <= attackRange && attackTimer >= attackCooldown)
+                {
+                    AttackPlayer();
+                }
             }
-        }
-
-        // Bull charge logic
-        if (enemyType == EnemyType.bull && PlayerInTrigger)
-        {
-
-            chargeTimer += Time.deltaTime;
-
-            float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-
-            if (distance <= attackRange && attackTimer >= attackCooldown)
+            else
             {
+                AgentAI.ResetPath();
+                timeSinceLastSeen += Time.deltaTime;
 
-                AttackPlayer();
+                if (timeSinceLastSeen >= loseSightDelay)
+                {
+                    CheckRoam();
+                }
             }
 
-            if (chargeTimer >= chargeCooldown)
+            // Bull charge logic
+            if (enemyType == EnemyType.bull)
             {
-                StartCoroutine(BullCharge());
-            }
-        }
+                if (canSeePlayer)
+                {
+                    timeSinceLastSeen = 0f;
 
-       
-        UpdateMovementAnimation();
+                    AgentAI.SetDestination(GameManager.instance.player.transform.position);
+
+                    float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
+                    if (distance <= attackRange && attackTimer >= attackCooldown)
+                    {
+                        AttackPlayer();
+                    }
+
+                    chargeTimer += Time.deltaTime;
+                    if (chargeTimer >= chargeCooldown)
+                    {
+                        StartCoroutine(BullCharge());
+                        chargeTimer = 0f;
+                    }
+
+
+                }
+                else
+                {
+                    AgentAI.ResetPath();
+                    timeSinceLastSeen += Time.deltaTime;
+                    if (timeSinceLastSeen >= loseSightDelay)
+                    {
+                        CheckRoam();
+                    }
+                    chargeTimer = 0f;
+                }
+
+
+            }
+
+
+            UpdateMovementAnimation();
+        }
     }
 
     //flashlight detection methods
 
-    float GetDetectionDistance(Transform player)
-    {
-        float distance = baseDetectionDistance;
-
-        bool hasFlashlight = GameManager.instance.hasFlashlight;
-        bool flashlightOn = GameManager.instance.controller.FlashlightOn;
-
-        if(hasFlashlight && flashlightOn)
-        {
-            distance *= flashlightMultiplier;
-
-            if(IsPlayerLookingAtEnemy(player))
-                distance *= lookMultiplier;
-            else
-                distance *= awayMultiplier;
-        }
-        return distance;
-
-    }
     bool IsPlayerLookingAtEnemy(Transform player)
     {
         Vector3 toEnemy =(transform.position - player.position).normalized;
@@ -231,26 +247,27 @@ public class EnemyAI : MonoBehaviour, IDamage
     void HandleFlashlightDetection()
     {
         Transform player = GameManager.instance.player.transform;
-        float detectionDistance = GetDetectionDistance(player);
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        bool flashlightActive = GameManager.instance.hasFlashlight && GameManager.instance.controller.FlashlightOn;
+        bool flashlightSeesPlayer = flashlightActive && IsPlayerLookingAtEnemy(player);
+        bool withinTrigger = PlayerInTrigger;
 
-        if (distanceToPlayer <= detectionDistance)
+        if (flashlightSeesPlayer && withinTrigger)
         {
-            canSeePlayer = true;
-            timeSinceLastSeen = 0f;
-            AgentAI.SetDestination(player.position);
+            if(CanSeePlayer())
+            {
+                canSeePlayer = true;    
+                timeSinceLastSeen = 0f;
+            }
+            else
+            {
+                canSeePlayer = false;
+                timeSinceLastSeen += Time.deltaTime;
+            }
         }
         else
         {
             canSeePlayer = false;
             timeSinceLastSeen += Time.deltaTime;
-
-            if (timeSinceLastSeen >= loseSightDelay)
-            {
-                canSeePlayer = false;
-                Roam();
-
-            }
         }
     }
 
@@ -326,18 +343,18 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void FaceTarget()
     {
-        // Update direction EVERY frame
-        Vector3 targetPos = GameManager.instance.player.transform.position;
-        playerDirection = targetPos - HeadPosition.position;
+     // Update direction EVERY frame
+     Vector3 targetPos = GameManager.instance.player.transform.position;
+     playerDirection = targetPos - HeadPosition.position;
 
-        if (playerDirection.sqrMagnitude < 0.001f)
-            return;
+      if (playerDirection.sqrMagnitude < 0.001f)
+      return;
 
-        Vector3 flatDir = new Vector3(playerDirection.x, 0, playerDirection.z);
+      Vector3 flatDir = new Vector3(playerDirection.x, 0, playerDirection.z);
 
-        Quaternion targetRot = Quaternion.LookRotation(flatDir);
+      Quaternion targetRot = Quaternion.LookRotation(flatDir);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, FaceTargetSpeed * Time.deltaTime);
+      transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, FaceTargetSpeed * Time.deltaTime);
     }
 
     public void TakeDamage(int amount)
