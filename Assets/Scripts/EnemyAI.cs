@@ -67,12 +67,12 @@ public class EnemyAI : MonoBehaviour, IDamage
     Vector3 StartPosition;
 
     [Header("Detection")]
-    [SerializeField] float baseDetectionDistance = 5f;
-    [SerializeField] float flashlightMultiplier = 2f;
-    [SerializeField] float lookMultiplier = 1.5f;
-    [SerializeField] float awayMultiplier = 0.5f;
-    [SerializeField] float loseSightDelay = 3f;
-    [SerializeField] float lookDotThreshold = 0.75f;
+    [SerializeField] float baseDetectionDistance;
+    [SerializeField] float flashlightMultiplier;
+    [SerializeField] float lookMultiplier;
+    [SerializeField] float awayMultiplier;
+    [SerializeField] float loseSightDelay;
+    [SerializeField] float lookDotThreshold;
 
     [Header("Animation")]
     [SerializeField] Animator anim;

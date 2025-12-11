@@ -87,8 +87,13 @@ MonoBehaviour:
   FaceTargetSpeed: 4
   RoamDistance: 0
   RoamPauseTime: 0
+  baseDetectionDistance: 6
+  flashlightMultiplier: 3
+  lookMultiplier: 2
+  awayMultiplier: 0.25
+  loseSightDelay: 4
+  lookDotThreshold: 0.7
   anim: {fileID: 0}
-  walkBoolName: catWalking
 --- !u!33 &7413830075673646942
 MeshFilter:
   m_ObjectHideFlags: 0
