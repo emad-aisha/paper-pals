@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
             float mouseY = Input.GetAxis("Mouse Y") * (Sens + LoadSave.instance.GetMouseSettings()) * Time.deltaTime;
 
             // use the invertY 
-            if (GameManager.instance.invertY)
+            if (LoadSave.instance.GetInvertYSettings())
             {
                 //loadSave.GetInvertYSettings()
                 CamX += mouseY;

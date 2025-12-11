@@ -12,7 +12,7 @@ public class LoadSave : MonoBehaviour
     float MusicValue;
     float SFXValue;
     float MouseValue;
-    public bool isInvertedY = false;
+    public bool isInvertedY;
 
     // player stuff
     public int playerCoins = 100;
@@ -25,13 +25,12 @@ public class LoadSave : MonoBehaviour
 
     public int LevelLoad = 0;
 
-
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
-            
+
             //Does not get destroyed on another scene
             DontDestroyOnLoad(this.gameObject);
         }
@@ -39,9 +38,14 @@ public class LoadSave : MonoBehaviour
         if (GameManager.instance != null)
         {
             audListen = GameManager.instance.controller.GetComponent<AudioSource>();
-        } 
+        }
 
         // TODO: MAT - Set Default Values
+
+        MusicValue = 100;
+        SFXValue = 100;
+        MouseValue = 0;
+        isInvertedY = false;
     }
 
     //setters
@@ -72,11 +76,11 @@ public class LoadSave : MonoBehaviour
     //getters
     public void GetMusicSettings()
     {
-        //nmusic is needed for this.....
+        //music is needed for this.....
 
-    //MusicValue
-    //MusicValue = int.Parse(sMusicValue.value.ToString());
-    //GameManager.instance.aud
+        //MusicValue
+        //MusicValue = int.Parse(sMusicValue.value.ToString());
+        //GameManager.instance.aud
     }
     //public AudioSource GetSFXSettings()
     //{
@@ -92,6 +96,12 @@ public class LoadSave : MonoBehaviour
     public bool GetInvertYSettings()
     {
         return isInvertedY;
+    }
+
+    public float GetSFXSettings()
+    {
+        //SFX Sensitivity
+        return SFXValue;
     }
 
     //miscellaneous settings

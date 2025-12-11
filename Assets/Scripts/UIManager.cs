@@ -55,11 +55,22 @@ public class UIManager : MonoBehaviour {
 
 
     [Header("\n\nOption Dependencies")]
-    [SerializeField] GameObject TempPt2;
+    [SerializeField] GameObject MinMenuMouse;
+    [SerializeField] GameObject MinMenuVol;
+
+    public Slider mMusicSliderObj;
+    public TMP_Text mMusicNumberDisplay;
+
+    public Slider mSFXSliderObj;
+    public TMP_Text mSFXNumberDisplay;
+
+    public Slider mMouseSensSliderObj;
+    public TMP_Text mMouseSensNumberDisplay;
+
+    public TMP_Text mDisplay_X_Button;
 
 
     void Awake() {
-        
 
         if (instance == null) instance = this;
 
@@ -80,6 +91,7 @@ public class UIManager : MonoBehaviour {
 
         OnPurchasable();
         StartCoroutine(StopTalking(5f));
+
     }
 
     void Update() {
@@ -90,6 +102,16 @@ public class UIManager : MonoBehaviour {
         if (Input.GetKey(KeyCode.P) && Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.A)) {
             SceneManager.LoadScene("Mat's Scene");
         }
+
+        //used to set the default values of the sliders for the options menu
+        //mMusicSliderObj = GameManager.instance.MusicSliderObj;
+        mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+
+        //mSFXSliderObj = GameManager.instance.SFXSliderObj;
+        mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+
+        //mMouseSensSliderObj = GameManager.instance.MouseSensSliderObj;
+        mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
     }
 
 
@@ -438,4 +460,23 @@ public class UIManager : MonoBehaviour {
     }
 
 
+    // OPTION BUTTON FUNCTIONS
+    public void DisplayTextSlider(float _Value)
+    {
+        //controller.GetComponent<AudioSource>().volume = 100;
+        //takes the value from the slider and displays it on top to the slider
+        mMusicNumberDisplay.text = mMusicSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
+        Debug.Log("Music Value: " + mMusicSliderObj.value.ToString("F2"));
+
+        //takes the value from the slider and displays it on top to the slider
+        mSFXNumberDisplay.text = mSFXSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
+        Debug.Log("SFX Value: " + mSFXSliderObj.value.ToString("F2"));  
+
+        //takes the value from the slider and displays it on top to the slider
+        mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
+        Debug.Log("Mouse Sensitivity Value: " + mMouseSensSliderObj.value.ToString("F2"));
+    }
 }
