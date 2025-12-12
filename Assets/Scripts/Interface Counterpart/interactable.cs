@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable {
@@ -25,7 +26,8 @@ public class Interactable : MonoBehaviour, IInteractable {
 
     public void Interact() {
         // TODO: change into a switch
-        if (type == InterfaceType.HealingTape && !SetTape()) {
+        if (type == InterfaceType.HealingTape) {
+            if (SetTape()) return;
             GameManager.instance.TapeImage.SetActive(true);
             SetTape();
         }

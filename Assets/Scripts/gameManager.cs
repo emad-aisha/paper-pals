@@ -256,11 +256,17 @@ public class GameManager : MonoBehaviour
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
+        string tutorial = "The Map";
 
-        
+
         // TODO: fix this up for the new levels
         // TODO: make this use the saveLoad instead
-        if (currLevelName == levelOne)
+        if (currLevelName == tutorial) {
+            hasFlashlight = false;
+            hasDoubleJump = false;
+            hasDash = false;
+        }
+        else if (currLevelName == levelOne)
         {
             hasFlashlight = false;
             hasDoubleJump = false;

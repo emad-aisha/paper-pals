@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             
             if (dashTimer >= dashDuration)
             {
-                Debug.Log("can dash again");
+                Debug.Log("add a fov change and lines");
                 isDashing = false;
                 dashDirection = Vector3.zero;
             }
@@ -493,14 +493,16 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Swing() {
-        Debug.Log("swung");
+        //Debug.Log("swing");
         MeleeTimer = 0;
         aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
+
+
         if (Enemies.Count > 0) {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, MeleeRange, ~IgnoreLayer)) {
                 IDamage dmg = hit.collider.GetComponentInParent<IDamage>();
-                Debug.Log("found hit");
+
                 if (dmg != null && Enemies.Contains(dmg)) {
                     dmg.TakeDamage(Weapons[WeaponListPos].GetDamage());
                     Debug.Log("HIT");

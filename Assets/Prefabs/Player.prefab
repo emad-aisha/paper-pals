@@ -523,6 +523,7 @@ MonoBehaviour:
   TickDamage: 0
   playerShootPos: {fileID: 1491061795676519545}
   playerBullet: {fileID: 4431192231594648550, guid: c5ec891ac79ad6e4d8a58d3e9980fe9b, type: 3}
+  bulletToCamera: 0
   ThrowDistance: 0
   MeleeHitbox: {fileID: 0}
   DamageOverTime: 0
@@ -1184,8 +1185,20 @@ PrefabInstance:
       value: MeleeHitbox
       objectReference: {fileID: 0}
     - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0267
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1193,7 +1206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.2477
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
       propertyPath: m_LocalRotation.w
