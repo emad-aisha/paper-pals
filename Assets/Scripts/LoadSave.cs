@@ -12,18 +12,17 @@ public class LoadSave : MonoBehaviour
     float MusicValue;
     float SFXValue;
     float MouseValue;
-    public bool isInvertedY;
+    bool isInvertedY;
 
     // player stuff
-    public int playerCoins = 100;
-    public int playerAmmo = 0;
-    public List<WeaponStats> playerWeapons;
-    public bool playerTape;
-    public bool playerMap;
+    int playerCoins = 0;
+    int playerAmmo = 0;
+    List<WeaponStats> playerWeapons = new List<WeaponStats>();
+    bool playerTape = false;
+    bool playerMap = false;
 
-    public int heartsBought = 1;
-
-    public int LevelLoad = 0;
+    int heartsBought = 0;
+    int levelLoad = 0;
 
     void Awake()
     {
@@ -73,6 +72,36 @@ public class LoadSave : MonoBehaviour
         isInvertedY = _isInvertedY;
     }
 
+    // player shit
+    public void SetPlayerCoins(int _playerCoins) {
+        playerCoins = _playerCoins;
+    }
+
+    public void SetPlayerAmmo(int _playerAmmo) {
+        playerAmmo = _playerAmmo;
+    }
+
+    public void SetPlayerWeapons(List<WeaponStats> _playerWeapons) {
+        playerWeapons = _playerWeapons;
+    }
+
+    public void SetPlayerTape(bool _playerTape) {
+        playerTape = _playerTape;
+    }
+
+    public void SetPlayerMap(bool _playerMap) {
+        playerMap = _playerMap;
+    }
+
+    public void SetHeartsBought(int _heartsBought) {
+        heartsBought = _heartsBought;
+    }
+
+    public void SetLevelLoad(int _levelLoad) {
+        levelLoad = _levelLoad;
+    }
+
+
     //getters
     public void GetMusicSettings()
     {
@@ -102,6 +131,52 @@ public class LoadSave : MonoBehaviour
     {
         //SFX Sensitivity
         return SFXValue;
+    }
+
+    //player shit
+    public int GetPlayerCoins() {
+        return playerCoins;
+    }
+
+    public int GetPlayerAmmo() {
+        return playerAmmo;
+    }
+
+    public List<WeaponStats> GetPlayerWeapons() {
+        return playerWeapons;
+    }
+
+    public bool GetPlayerTape() {
+        return playerTape;
+    }
+
+    public bool GetPlayerMap() {
+        return playerMap;
+    }
+
+    public int GetHeartsBought() {
+        return heartsBought;
+    }
+
+    public int GetLevelLoad() {
+        return levelLoad;
+    }
+
+
+    public void IncrementLevelLoad() {
+        levelLoad++;
+    }
+
+    public void AddPlayerWeapon(WeaponStats weapon) {
+        playerWeapons.Add(weapon);
+    }
+
+    public void IncrementHeartsBought() {
+        heartsBought++;
+    }
+
+    public void AddAmmo(int amount) {
+        playerAmmo += amount;
     }
 
     //miscellaneous settings

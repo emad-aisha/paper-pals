@@ -94,7 +94,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-
+        GameManager.instance.AllEnemies.Add(this.gameObject);
         anim = GetComponentInChildren<Animator>();
 
         OGColor = Sprite.material.color;
@@ -140,14 +140,14 @@ public class EnemyAI : MonoBehaviour, IDamage {
         HandleFlashlightDetection();
 
         if (enemyType == EnemyType.ranged) {
-            if (canSeePlayer) {
+            if (canSeePlayer || CanSeePlayer()) {
                 timeSinceLastSeen = 0f;
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
             }
             else {
                 timeSinceLastSeen += Time.deltaTime;
                 if (timeSinceLastSeen >= loseSightDelay) {
-                    //CheckRoam();
+                    CheckRoam();
                 }
             }
             FlyingBehavior();
@@ -155,7 +155,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
 
         if (enemyType == EnemyType.melee) {
-            if (canSeePlayer) {
+            if (canSeePlayer || CanSeePlayer()) {
                 timeSinceLastSeen = 0f;
 
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
@@ -179,7 +179,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
             // Bull charge logic
             if (enemyType == EnemyType.bull) {
-                if (canSeePlayer) {
+                if (canSeePlayer || CanSeePlayer()) {
                     timeSinceLastSeen = 0f;
 
                     AgentAI.SetDestination(GameManager.instance.player.transform.position);
@@ -329,6 +329,7 @@ public class EnemyAI : MonoBehaviour, IDamage {
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
         if (HP <= 0) {
+            Debug.Log("Drop ink");
             Instantiate(LootDrops, transform.position, transform.rotation);
 
             Destroy(gameObject);

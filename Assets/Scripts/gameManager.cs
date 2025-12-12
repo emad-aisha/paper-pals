@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     public int TotalAmmoOwned;
     [SerializeField] public int AmmoAndExtra;
     public int TotalCoinsOwned;
-    int CoinsMax = 15;
+    int CoinsMax = 8;
     public int CoinsCounter;
 
     [Header("Player")]
@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text gameGoalCountText;
     public bool isPaused;
 
+    public List<GameObject> AllEnemies;
 
     // private variables
     float originalTimeScale = 1f;
@@ -175,13 +176,13 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (menuActive == null)
+            if (menuActive == null && !menuOption.activeSelf)
             {
                 PauseGame();
                 menuActive = menuPause;
                 menuActive.SetActive(true);
             }
-            else if (menuActive == menuPause)
+            else if (menuActive == menuPause && !menuOption.activeSelf)
             {
                 UnpauseGame();
             }
@@ -259,8 +260,7 @@ public class GameManager : MonoBehaviour
         string tutorial = "The Map";
 
 
-        // TODO: fix this up for the new levels
-        // TODO: make this use the saveLoad instead
+        // TODO: dont set weapons hee, do it in save load
         if (currLevelName == tutorial) {
             hasFlashlight = false;
             hasDoubleJump = false;
@@ -477,7 +477,7 @@ public class GameManager : MonoBehaviour
         if (CoinsCounter < CoinsMax)
         {
             CoinsCounter += ammount;
-            LoadSave.instance.playerCoins = CoinsCounter;
+            LoadSave.instance.SetPlayerCoins(CoinsCounter);
         }
 
         if (CoinsCounter >= CoinsMax)
@@ -501,7 +501,7 @@ public class GameManager : MonoBehaviour
         // Stored ammo only
         TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
 
-        LoadSave.instance.playerAmmo = TotalAmmoOwned;
+        LoadSave.instance.SetPlayerAmmo(TotalAmmoOwned);
         AmmoCountText.text = TotalAmmoOwned.ToString();
     }
 
@@ -535,7 +535,7 @@ public class GameManager : MonoBehaviour
     //option functions
     public void OptionMenu()
     {
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu") || Input.GetKeyDown(KeyCode.Escape))
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu"))
         {
             SceneManager.LoadScene("MMOption");
             //menuOption.SetActive(true);
@@ -573,7 +573,7 @@ public class GameManager : MonoBehaviour
             //menuOption.SetActive(false);
         }
         //if you're in the regular option menu (volume will be active on default)
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else
         {
             menuVOLOption.SetActive(false);
             menuOption.SetActive(false);

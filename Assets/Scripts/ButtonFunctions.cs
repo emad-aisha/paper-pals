@@ -71,6 +71,8 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Exit()
     {
+        // TODO: i might have to get rid of this...
+        Destroy(LoadSave.instance);
         SceneManager.LoadScene("Main Menu");
     }
 

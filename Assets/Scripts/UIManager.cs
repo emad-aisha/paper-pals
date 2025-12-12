@@ -58,28 +58,31 @@ public class UIManager : MonoBehaviour {
     [SerializeField] GameObject MinMenuMouse;
     [SerializeField] GameObject MinMenuVol;
 
-    public Slider mMusicSliderObj;
-    public TMP_Text mMusicNumberDisplay;
+    [SerializeField] Slider mMusicSliderObj;
+    [SerializeField] TMP_Text mMusicNumberDisplay;
 
-    public Slider mSFXSliderObj;
-    public TMP_Text mSFXNumberDisplay;
+    [SerializeField] Slider mSFXSliderObj;
+    [SerializeField] TMP_Text mSFXNumberDisplay;
 
-    public Slider mMouseSensSliderObj;
-    public TMP_Text mMouseSensNumberDisplay;
+    [SerializeField] Slider mMouseSensSliderObj;
+    [SerializeField] TMP_Text mMouseSensNumberDisplay;
 
-    public TMP_Text mDisplay_X_Button;
+    [SerializeField] TMP_Text mDisplay_X_Button;
 
 
     void Awake() {
 
         if (instance == null) instance = this;
 
-        CoinAmount.text = LoadSave.instance.playerCoins.ToString();
-        AmmoAmount.text = LoadSave.instance.playerAmmo.ToString();
+        if (Cursor.lockState == CursorLockMode.Locked) Cursor.lockState = CursorLockMode.None;
+        if (Cursor.visible == false) Cursor.visible = true;
+
+        CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
+        AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
 
 
-        haveMap = LoadSave.instance.playerMap;
-        haveTape = LoadSave.instance.playerTape;
+        haveMap = LoadSave.instance.GetPlayerMap();
+        haveTape = LoadSave.instance.GetPlayerTape();
 
         // Shop UI
         SetCostColors();
@@ -104,14 +107,9 @@ public class UIManager : MonoBehaviour {
         }
 
         //used to set the default values of the sliders for the options menu
-        //mMusicSliderObj = GameManager.instance.MusicSliderObj;
-        mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-
-        //mSFXSliderObj = GameManager.instance.SFXSliderObj;
-        mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-
-        //mMouseSensSliderObj = GameManager.instance.MouseSensSliderObj;
-        mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        if (mMusicSliderObj) mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        if (mSFXSliderObj) mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        if (mMouseSensSliderObj) mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
     }
 
 
@@ -127,7 +125,7 @@ public class UIManager : MonoBehaviour {
 
 
             // if cost is too high, make the text gray
-            if (cost > LoadSave.instance.playerCoins)
+            if (cost > LoadSave.instance.GetPlayerCoins())
                 CostTexts[i].color = Color.gray;
             else
                 CostTexts[i].color = Color.black;
@@ -149,27 +147,6 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    /*
-    void MoveItemsUp() {
-        int index = 1;
-        bool startMoving = false;
-
-        for (int i = 0; i < PurchaseOptions.Count; i++) {
-            if (!PurchaseOptions[i].activeSelf)
-                startMoving = true;
-            if (!startMoving) continue;
-
-
-            float xValue = PurchaseOptions[i].transform.position.x;
-            float yValue = PurchaseOptions[i].transform.position.y;
-            int height = 300 * index;
-
-            PurchaseOptions[i].transform.position = new Vector3(xValue, yValue + height, 0);
-
-        }
-    }
-    */
-
     void SetEquipPositions() {
         float initial = 1175;
         for (int i = 0; i < EquipOptions.Count; i++) {
@@ -183,15 +160,15 @@ public class UIManager : MonoBehaviour {
     }
 
     void UpdateHearts() {
-        if (LoadSave.instance.heartsBought == 0) {
+        if (LoadSave.instance.GetHeartsBought() == 0) {
             Hearts[0].SetActive(false);
             Hearts[1].SetActive(false);
         }
-        else if (LoadSave.instance.heartsBought == 1) {
+        else if (LoadSave.instance.GetHeartsBought() == 1) {
             Hearts[0].SetActive(true);
             Hearts[1].SetActive(false);
         }
-        else if (LoadSave.instance.heartsBought == 2) {
+        else if (LoadSave.instance.GetHeartsBought() == 2) {
             Hearts[0].SetActive(true);
             Hearts[1].SetActive(true);
         }
@@ -199,40 +176,36 @@ public class UIManager : MonoBehaviour {
     }
 
     void UpdateCoins() {
-        CoinAmount.text = LoadSave.instance.playerCoins.ToString();
+        CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
     }
 
     void UpdateAmmo() {
-        AmmoAmount.text = LoadSave.instance.playerAmmo.ToString();
+        AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
     }
 
     void SetInventory() {
-        // TODO: set item
-        //       get item from save
-
-        // if item.name = player.inven.1
         int currentItem = -1;
-        if (LoadSave.instance.playerWeapons.Count >= 1) {
-            if (LoadSave.instance.playerWeapons[0].type == WeaponType.Gun) {
+        if (LoadSave.instance.GetPlayerWeapons().Count >= 1) {
+            if (LoadSave.instance.GetPlayerWeapons()[0].type == WeaponType.Gun) {
                 currentItem = 1;
             }
-            else if (LoadSave.instance.playerWeapons[0].type == WeaponType.Melee) {
+            else if (LoadSave.instance.GetPlayerWeapons()[0].type == WeaponType.Melee) {
                 currentItem = 0;
             }
-            else if (LoadSave.instance.playerWeapons[0].type == WeaponType.Explosive) {
+            else if (LoadSave.instance.GetPlayerWeapons()[0].type == WeaponType.Explosive) {
                 currentItem = 2;
             }
         }
 
         int nextItem = -1;
-        if (LoadSave.instance.playerWeapons.Count == 2) {
-            if (LoadSave.instance.playerWeapons[1].type == WeaponType.Gun) {
+        if (LoadSave.instance.GetPlayerWeapons().Count == 2) {
+            if (LoadSave.instance.GetPlayerWeapons()[1].type == WeaponType.Gun) {
                 nextItem = 1;
             }
-            else if (LoadSave.instance.playerWeapons[1].type == WeaponType.Melee) {
+            else if (LoadSave.instance.GetPlayerWeapons()[1].type == WeaponType.Melee) {
                 nextItem = 0;
             }
-            else if (LoadSave.instance.playerWeapons[1].type == WeaponType.Explosive) {
+            else if (LoadSave.instance.GetPlayerWeapons()[1].type == WeaponType.Explosive) {
                 nextItem = 2;
             }
         }
@@ -256,16 +229,17 @@ public class UIManager : MonoBehaviour {
 
 
     // SHOP BUTTON FUNCTIONS
-
     public void OnNextLevel() {
-        LoadSave.instance.LevelLoad++;
-        GameManager.instance.LoadNextLevel(LoadSave.instance.LevelLoad);
+        LoadSave.instance.IncrementLevelLoad();
+        int levelToLoad = LoadSave.instance.GetLevelLoad();
 
-        //string level = "Level " + LoadSave.instance.LevelLoad.ToString();
-
-        //Debug.Log(level);
-        //SceneManager.LoadScene(level);
+        Debug.Log(levelToLoad + " what the fatr");
+        if (levelToLoad == 1) SceneManager.LoadScene("Level 1");
+        if (levelToLoad == 2) SceneManager.LoadScene("Level 2");
+        if (levelToLoad == 3) SceneManager.LoadScene("Level 3");
+        if (levelToLoad == 4) SceneManager.LoadScene("Level 4");
     }
+
     public void OnPurchasable() {
         // set menus
         PurchaseMenu.SetActive(true);
@@ -297,13 +271,13 @@ public class UIManager : MonoBehaviour {
     public void OnPencilEquip() {
         // make sure this doesnt put multiple
         for (int i = 1; i < 3; i++) {
-            if (LoadSave.instance.playerWeapons.Count == 0) {
-                LoadSave.instance.playerWeapons.Add(Melee);
+            if (LoadSave.instance.GetPlayerWeapons().Count == 0) {
+                LoadSave.instance.AddPlayerWeapon(Melee);
                 break;
             }
-            else if (LoadSave.instance.playerWeapons.Count == 1) {
-                if (LoadSave.instance.playerWeapons[0].type == WeaponType.Melee) break;
-                LoadSave.instance.playerWeapons.Add(Melee);
+            else if (LoadSave.instance.GetPlayerWeapons().Count == 1) {
+                if (LoadSave.instance.GetPlayerWeapons()[0].type == WeaponType.Melee) break;
+                LoadSave.instance.AddPlayerWeapon(Melee);
                 break;
             }
         }
@@ -313,13 +287,13 @@ public class UIManager : MonoBehaviour {
 
     public void OnStaplerEquip() {
         for (int i = 1; i < 3; i++) {
-            if (LoadSave.instance.playerWeapons.Count == 0) {
-                LoadSave.instance.playerWeapons.Add(Gun);
+            if (LoadSave.instance.GetPlayerWeapons().Count == 0) {
+                LoadSave.instance.AddPlayerWeapon(Gun);
                 break;
             }
-            else if (LoadSave.instance.playerWeapons.Count == 1) {
-                if (LoadSave.instance.playerWeapons[0].type == WeaponType.Gun) break;
-                LoadSave.instance.playerWeapons.Add(Gun);
+            else if (LoadSave.instance.GetPlayerWeapons().Count == 1) {
+                if (LoadSave.instance.GetPlayerWeapons()[0].type == WeaponType.Gun) break;
+                LoadSave.instance.AddPlayerWeapon(Gun);
                 break;
             }
         }
@@ -330,13 +304,13 @@ public class UIManager : MonoBehaviour {
     public void OnC4Equip() {
         // set player inventory (if empty)
         for (int i = 1; i < 3; i++) {
-            if (LoadSave.instance.playerWeapons.Count == 0) {
-                LoadSave.instance.playerWeapons.Add(C4);
+            if (LoadSave.instance.GetPlayerWeapons().Count == 0) {
+                LoadSave.instance.AddPlayerWeapon(C4);
                 break;
             }
-            else if (LoadSave.instance.playerWeapons.Count == 1) {
-                if (LoadSave.instance.playerWeapons[0].type == WeaponType.Explosive) break;
-                LoadSave.instance.playerWeapons.Add(C4);
+            else if (LoadSave.instance.GetPlayerWeapons().Count == 1) {
+                if (LoadSave.instance.GetPlayerWeapons()[0].type == WeaponType.Explosive) break;
+                LoadSave.instance.AddPlayerWeapon(C4);
                 break;
             }
         }
@@ -346,16 +320,16 @@ public class UIManager : MonoBehaviour {
 
     // unequiping UNFINISHED
     public void OnInventory1() {
-        if (LoadSave.instance.playerWeapons.Count > 0) {
-            LoadSave.instance.playerWeapons.RemoveAt(0);
+        if (LoadSave.instance.GetPlayerWeapons().Count > 0) {
+            LoadSave.instance.GetPlayerWeapons().RemoveAt(0);
         }
 
         SetInventory();
     }
 
     public void OnInventory2() {
-        if (LoadSave.instance.playerWeapons.Count > 1) {
-            LoadSave.instance.playerWeapons.RemoveAt(1);
+        if (LoadSave.instance.GetPlayerWeapons().Count > 1) {
+            LoadSave.instance.GetPlayerWeapons().RemoveAt(1);
         }
 
         SetInventory();
@@ -366,12 +340,15 @@ public class UIManager : MonoBehaviour {
     // add it to save
     // TODO: save these to LoadSave
     public void OnBuyMap() {
-        if (LoadSave.instance.playerCoins >= int.Parse(CostTexts[3].text)) {
-            LoadSave.instance.playerCoins -= int.Parse(CostTexts[3].text);
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[3].text)) {
+            int oldCoins = LoadSave.instance.GetPlayerCoins();
+            int newCoins = oldCoins -= int.Parse(CostTexts[3].text);
+            LoadSave.instance.SetPlayerCoins(newCoins);
+
             UpdateCoins();
 
             haveMap = true;
-            LoadSave.instance.playerMap = haveMap;
+            LoadSave.instance.SetPlayerMap(haveMap);
             if (haveMap) Map.SetActive(true);
 
             PurchaseOptions[3].SetActive(false);
@@ -382,8 +359,11 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnBuyTape() {
-        if (LoadSave.instance.playerCoins >= int.Parse(CostTexts[0].text)) {
-            LoadSave.instance.playerCoins -= int.Parse(CostTexts[0].text);
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[0].text)) {
+            int oldCoins = LoadSave.instance.GetPlayerCoins();
+            int newCoins = oldCoins -= int.Parse(CostTexts[0].text);
+            LoadSave.instance.SetPlayerCoins(newCoins);
+
             UpdateCoins();
 
             haveTape = true;
@@ -394,18 +374,17 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnBuyHeart() {
-        if (LoadSave.instance.playerCoins >= int.Parse(CostTexts[2].text)) {
-            LoadSave.instance.playerCoins -= int.Parse(CostTexts[2].text);
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[2].text)) {
+            int oldCoins = LoadSave.instance.GetPlayerCoins();
+            int newCoins = oldCoins -= int.Parse(CostTexts[2].text);
+            LoadSave.instance.SetPlayerCoins(newCoins);
+            LoadSave.instance.IncrementHeartsBought();
             UpdateCoins();
 
 
-            // this is before the increment so minus 1
-            if (LoadSave.instance.heartsBought == 1) {
+            if (LoadSave.instance.GetHeartsBought() == 2) {
                 PurchaseOptions[2].SetActive(false); 
-                //MoveItemsUp();
             }
-            // increment hearts bought
-            else LoadSave.instance.heartsBought++;
 
             UpdateHearts();
             SetCostColors();
@@ -413,10 +392,13 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnBuyAmmo() {
-        if (LoadSave.instance.playerCoins >= int.Parse(CostTexts[1].text)) {
-            LoadSave.instance.playerCoins -= int.Parse(CostTexts[1].text); 
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[1].text)) {
+            int oldCoins = LoadSave.instance.GetPlayerCoins();
+            int newCoins = oldCoins -= int.Parse(CostTexts[1].text);
+            LoadSave.instance.SetPlayerCoins(newCoins);
+
             UpdateCoins();
-            LoadSave.instance.playerAmmo += 5;
+            LoadSave.instance.AddAmmo(5);
             UpdateAmmo();
 
             SetCostColors();
@@ -424,10 +406,14 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnBuyStapler() {
-        if (LoadSave.instance.playerCoins >= int.Parse(CostTexts[4].text)) {
-            LoadSave.instance.playerCoins -= int.Parse(CostTexts[4].text);
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[4].text)) {
+            int oldCoins = LoadSave.instance.GetPlayerCoins();
+            int newCoins = oldCoins -= int.Parse(CostTexts[4].text);
+            LoadSave.instance.SetPlayerCoins(newCoins);
+
             UpdateCoins();
 
+            EquipOptions[1].SetActive(true);
             PurchaseOptions[4].SetActive(false);
             //MoveItemsUp();
             SetCostColors();
@@ -435,10 +421,14 @@ public class UIManager : MonoBehaviour {
     }
 
     public void OnBuyCalculator() {
-        if (LoadSave.instance.playerCoins >= int.Parse(CostTexts[5].text)) {
-            LoadSave.instance.playerCoins -= int.Parse(CostTexts[5].text);
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[5].text)) {
+            int oldCoins = LoadSave.instance.GetPlayerCoins();
+            int newCoins = oldCoins -= int.Parse(CostTexts[5].text);
+            LoadSave.instance.SetPlayerCoins(newCoins);
+
             UpdateCoins();
 
+            EquipOptions[2].SetActive(true);
             PurchaseOptions[5].SetActive(false);
             //MoveItemsUp();
             SetCostColors();

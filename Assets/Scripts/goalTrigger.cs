@@ -13,13 +13,7 @@ public class GoalTrigger : MonoBehaviour
                 GameManager.instance.KeyCheck();
             }
             if (type == Type.exit) {
-                if (SceneManager.GetActiveScene().name.EndsWith("1") || 
-                    SceneManager.GetActiveScene().name.EndsWith("2") ||
-                    SceneManager.GetActiveScene().name.EndsWith("3"))
-                    { 
-                    LoadSave.instance.LevelLoad++; 
-                }
-                GameManager.instance.LoadNextLevel(LoadSave.instance.LevelLoad);
+                GameManager.instance.LoadNextLevel(LoadSave.instance.GetLevelLoad());
             }
         }
     }

@@ -144,16 +144,16 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         flashlightOn = false;
 
-        if (LoadSave.instance.heartsBought == 0) {
+        if (LoadSave.instance.GetHeartsBought() == 0) {
             GameManager.instance.ExtraHearts[0].SetActive(false);
             GameManager.instance.ExtraHearts[1].SetActive(false);
         }
-        else if (LoadSave.instance.heartsBought == 1) {
+        else if (LoadSave.instance.GetHeartsBought() == 1) {
             MaxHP++;
             GameManager.instance.ExtraHearts[0].SetActive(true);
             GameManager.instance.ExtraHearts[1].SetActive(false);
         }
-        else if (LoadSave.instance.heartsBought >= 2) {
+        else if (LoadSave.instance.GetHeartsBought() >= 2) {
             MaxHP++;
             GameManager.instance.ExtraHearts[0].SetActive(true);
             GameManager.instance.ExtraHearts[1].SetActive(true);
@@ -198,7 +198,7 @@ public class PlayerController : MonoBehaviour, IDamage {
                 Heal(healAmount);
                 HaveTape = false;
                 GameManager.instance.TapeImage.SetActive(false);
-                LoadSave.instance.playerTape = HaveTape;
+                LoadSave.instance.SetPlayerTape(HaveTape);
             }
 
 
@@ -596,13 +596,13 @@ public class PlayerController : MonoBehaviour, IDamage {
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
             HaveTape = interact.SetTape();
-            LoadSave.instance.playerTape = HaveTape;
+            LoadSave.instance.SetPlayerTape(HaveTape);
         }
         else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
             IInteractable interact = hit.collider.GetComponent<IInteractable>();
             interact.Interact();
             HaveTape = interact.SetTape();
-            LoadSave.instance.playerTape = HaveTape;
+            LoadSave.instance.SetPlayerTape(HaveTape);
         }
 
         canDash = GameManager.instance.hasDash;
@@ -633,7 +633,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         Weapons.Add(Weapon);
         WeaponListPos = Weapons.Count - 1;
 
-        LoadSave.instance.playerWeapons.Add(Weapon);
+        LoadSave.instance.SetPlayerWeapons(Weapons);
         ChangeItem();
 
         return Weapon;
@@ -737,6 +737,11 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     public void RespawnPlayer() {
+        if (GameManager.instance.AllEnemies.Count > 0)
+        for (int i = GameManager.instance.AllEnemies.Count; i <= 0; i++) {
+            Destroy(GameManager.instance.AllEnemies[i]);
+        }
+
         isInvincible = false;
         IsDead = false;
         DisableIFrames();

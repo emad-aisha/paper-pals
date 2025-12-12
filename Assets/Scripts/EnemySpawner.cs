@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [Header("Spawner")]
     [SerializeField] GameObject ObjectToSpawn;
     [SerializeField] Transform[] SpawnPositions;
-    [SerializeField] int SpawnAmount;
+     int SpawnAmount;
     [SerializeField] float SpawnRate;
 
     int SpawnCount;
@@ -24,7 +24,11 @@ public class EnemySpawner : MonoBehaviour
         // thank you so much for these comments mat ily
 
         // please get a room aisha and mat, thank you... - marcellus
-        GameManager.instance.gameGoalCount = SpawnAmount;
+
+        // what the kaka - a
+        //GameManager.instance.gameGoalCount = SpawnAmount;
+        SpawnAmount = SpawnPositions.Length - 1;
+        SpawnCount = 0;
     }
 
     // Update is called once per frame
@@ -37,17 +41,14 @@ public class EnemySpawner : MonoBehaviour
 
             if (SpawnCount < SpawnAmount && SpawnTimer >= SpawnRate)
             {
-                Debug.Log("spawn");
                 Spawn();
                 SpawnTimer = 0;
             }
             else if (SpawnCount >= SpawnAmount) {
                 StartSpawning = false;
-                Debug.Log("no more spawning");
             }
         }
         else if (!StartSpawning && SpawnCount >= SpawnAmount) {
-            Debug.Log("die");
             Destroy(this.gameObject);
         }
 
@@ -62,8 +63,7 @@ public class EnemySpawner : MonoBehaviour
     void Spawn()
     {
         //spawns the enemies in on certain positions
-        Instantiate(ObjectToSpawn, SpawnPositions[Random.Range(0,
-            SpawnPositions.Length)].transform.position, Quaternion.identity);
+        Instantiate(ObjectToSpawn, SpawnPositions[SpawnCount].transform.position, Quaternion.identity);
         
         //Keeps track of how many enemies that spawns in
         SpawnCount++;
