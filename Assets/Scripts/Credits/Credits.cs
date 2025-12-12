@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Credits : MonoBehaviour
 {
-    public float scrollSpeed = 40f;
+    public float scrollSpeed;
 
     private RectTransform rectTransform;
 
