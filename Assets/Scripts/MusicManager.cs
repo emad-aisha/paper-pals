@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
-    private static MusicManager instance;
+    public static MusicManager instance;
 
     private void Awake()
     {
@@ -20,6 +20,6 @@ public class MusicManager : MonoBehaviour
     public void StopMusic()
     {
         GetComponent<AudioSource>().Stop();
-        Destroy(gameObject); // Remove it permanently once real game starts
+        Destroy(gameObject); 
     }
 }
