@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 6110770988451488412}
   - component: {fileID: 602883073213455645}
   - component: {fileID: 4720582569044117371}
+  - component: {fileID: 2239406922204739768}
   m_Layer: 5
   m_Name: Option
   m_TagString: Untagged
@@ -341,6 +342,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2239406922204739768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003639757772545900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8b4fca14af1184299b4b2b46dc450c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 602883073213455645}
 --- !u!1 &1517403667551366208
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,6 +367,7 @@ GameObject:
   - component: {fileID: 2251826505695630274}
   - component: {fileID: 2117629502662923892}
   - component: {fileID: 4576211486535626280}
+  - component: {fileID: 7293378898165557614}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -534,6 +549,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7293378898165557614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517403667551366208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8b4fca14af1184299b4b2b46dc450c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 2117629502662923892}
 --- !u!1 &5561059561975724149
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,6 +574,7 @@ GameObject:
   - component: {fileID: 3389858703291530883}
   - component: {fileID: 8700243422774277349}
   - component: {fileID: 7424785779473942544}
+  - component: {fileID: 4762496768465442792}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -727,3 +756,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4762496768465442792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5561059561975724149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8b4fca14af1184299b4b2b46dc450c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 8700243422774277349}
