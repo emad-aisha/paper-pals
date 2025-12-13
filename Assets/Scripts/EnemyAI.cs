@@ -1,13 +1,20 @@
 using NUnit.Framework;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
 
-public class EnemyAI : MonoBehaviour, IDamage {
-    public enum EnemyType { ranged, melee, bull };
+public class EnemyAI : MonoBehaviour, IDamage
+{
+    public enum EnemyType { ranged, melee, bull, boss };
     [Header("Enemy Type")]
     [SerializeField] EnemyType enemyType;
+    
+    [Header("Boss")]
+    [SerializeField] float LeapDuration;
+    [SerializeField] float SlamVisibility;
+    [SerializeField] GameObject SlamArea;
 
     [Header("Loot Drops")]
     [SerializeField] GameObject LootDrops;
@@ -92,8 +99,13 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
     float normalSpeed;
 
+    //boss variables
+    float LeapTimer = 0f;
+    float TravelTime = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() {
+    void Start()
+    {
         GameManager.instance.AllEnemies.Add(this.gameObject);
         anim = GetComponentInChildren<Animator>();
 
@@ -107,10 +119,11 @@ public class EnemyAI : MonoBehaviour, IDamage {
         playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
 
         AgentAI.updateRotation = false;
-
+        //SlamArea.SetActive(false);
     }
 
-    void AttackPlayer() {
+    void AttackPlayer()
+    {
         attackTimer = 0f; // reset cooldown timer
 
         //Animation: Cat Attack
@@ -120,17 +133,21 @@ public class EnemyAI : MonoBehaviour, IDamage {
         // Try to get the player's damage interface
         IDamage dmg = GameManager.instance.player.GetComponent<IDamage>();
 
-        if (dmg != null) {
+        if (dmg != null)
+        {
             dmg.TakeDamage(contactDamage);
         }
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
+        LeapTimer += Time.deltaTime;//Boss Leap Attack Timer
         ShootTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
 
-        if (AgentAI.remainingDistance < 0.01f) {
+        if (AgentAI.remainingDistance < 0.01f)
+        {
             //increment the Roam timer
             RoamTimer += Time.deltaTime;
         }
@@ -139,14 +156,18 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
         HandleFlashlightDetection();
 
-        if (enemyType == EnemyType.ranged) {
-            if (canSeePlayer || CanSeePlayer()) {
+        if (enemyType == EnemyType.ranged)
+        {
+            if (canSeePlayer || CanSeePlayer())
+            {
                 timeSinceLastSeen = 0f;
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
             }
-            else {
+            else
+            {
                 timeSinceLastSeen += Time.deltaTime;
-                if (timeSinceLastSeen >= loseSightDelay) {
+                if (timeSinceLastSeen >= loseSightDelay)
+                {
                     CheckRoam();
                 }
             }
@@ -154,8 +175,10 @@ public class EnemyAI : MonoBehaviour, IDamage {
         }
 
 
-        if (enemyType == EnemyType.melee) {
-            if (canSeePlayer || CanSeePlayer()) {
+        if (enemyType == EnemyType.melee)
+        {
+            if (canSeePlayer || CanSeePlayer())
+            {
                 timeSinceLastSeen = 0f;
 
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
@@ -164,43 +187,52 @@ public class EnemyAI : MonoBehaviour, IDamage {
                 float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
                 // If close enough to attack, and cooldown is ready and EnemyType.melee
-                if (distance <= attackRange && attackTimer >= attackCooldown) {
+                if (distance <= attackRange && attackTimer >= attackCooldown)
+                {
                     AttackPlayer();
                 }
             }
-            else {
+            else
+            {
                 AgentAI.ResetPath();
                 timeSinceLastSeen += Time.deltaTime;
 
-                if (timeSinceLastSeen >= loseSightDelay) {
+                if (timeSinceLastSeen >= loseSightDelay)
+                {
                     //CheckRoam();
                 }
             }
 
             // Bull charge logic
-            if (enemyType == EnemyType.bull) {
-                if (canSeePlayer || CanSeePlayer()) {
+            if (enemyType == EnemyType.bull)
+            {
+                if (canSeePlayer || CanSeePlayer())
+                {
                     timeSinceLastSeen = 0f;
 
                     AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
                     float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-                    if (distance <= attackRange && attackTimer >= attackCooldown) {
+                    if (distance <= attackRange && attackTimer >= attackCooldown)
+                    {
                         AttackPlayer();
                     }
 
                     chargeTimer += Time.deltaTime;
-                    if (chargeTimer >= chargeCooldown) {
+                    if (chargeTimer >= chargeCooldown)
+                    {
                         StartCoroutine(BullCharge());
                         chargeTimer = 0f;
                     }
 
 
                 }
-                else {
+                else
+                {
                     AgentAI.ResetPath();
                     timeSinceLastSeen += Time.deltaTime;
-                    if (timeSinceLastSeen >= loseSightDelay) {
+                    if (timeSinceLastSeen >= loseSightDelay)
+                    {
                         //CheckRoam();
                     }
                     chargeTimer = 0f;
@@ -212,45 +244,61 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
             UpdateMovementAnimation();
         }
+
+        //boss leap attack
+        if (PlayerInTrigger && LeapTimer >= LeapDuration && enemyType == EnemyType.boss)
+        {
+            LeapFog();
+        }
+
     }
 
     //flashlight detection methods
 
-    bool IsPlayerLookingAtEnemy(Transform player) {
+    bool IsPlayerLookingAtEnemy(Transform player)
+    {
         Vector3 toEnemy = (transform.position - player.position).normalized;
         float dot = Vector3.Dot(player.forward, toEnemy);
         return dot >= lookDotThreshold;
     }
 
-    void HandleFlashlightDetection() {
+    void HandleFlashlightDetection()
+    {
         Transform player = GameManager.instance.player.transform;
         bool flashlightActive = GameManager.instance.hasFlashlight && GameManager.instance.controller.FlashlightOn;
         bool flashlightSeesPlayer = flashlightActive && IsPlayerLookingAtEnemy(player);
         bool withinTrigger = PlayerInTrigger;
 
-        if (flashlightSeesPlayer && withinTrigger) {
-            if (CanSeePlayer()) {
+        if (flashlightSeesPlayer && withinTrigger)
+        {
+            if (CanSeePlayer())
+            {
                 canSeePlayer = true;
                 timeSinceLastSeen = 0f;
             }
-            else {
+            else
+            {
                 canSeePlayer = false;
                 timeSinceLastSeen += Time.deltaTime;
             }
         }
-        else {
+        else
+        {
             canSeePlayer = false;
             timeSinceLastSeen += Time.deltaTime;
         }
     }
 
-    void CheckRoam() {
-        if (AgentAI.remainingDistance < 0.01f && RoamTimer >= RoamPauseTime) {
+    void CheckRoam()
+    {
+        if (AgentAI.remainingDistance < 0.01f && RoamTimer >= RoamPauseTime)
+        {
             Roam();
         }
     }
 
-    void Roam() {
+    void Roam()
+    {
         Debug.Log("Roam");
         //setting the Timer to 0
         RoamTimer = 0;
@@ -268,7 +316,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
             AgentAI.SetDestination(Hit.position);
     }
 
-    bool CanSeePlayer() {
+    bool CanSeePlayer()
+    {
         //calculate direction vector from the enemy to the player
         playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
 
@@ -279,13 +328,16 @@ public class EnemyAI : MonoBehaviour, IDamage {
         RaycastHit hit;
 
         //cast a ray from the enemy to the player to check for obstacles
-        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 30, ~IgnoreLayer)) {
-            if (AngleToPlayer <= FOV && hit.collider.CompareTag("Player")) {
+        if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 30, ~IgnoreLayer))
+        {
+            if (AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            {
 
                 //will look for player position and move towards it
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-                if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged) {
+                if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged)
+                {
                     Shoot();
                 }
 
@@ -295,7 +347,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
                 float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
                 // If close enough to attack, and cooldown is ready and EnemyType.melee
-                if (enemyType == EnemyType.melee && distance <= attackRange && attackTimer >= attackCooldown) {
+                if (enemyType == EnemyType.melee && distance <= attackRange && attackTimer >= attackCooldown)
+                {
                     AttackPlayer();
                 }
 
@@ -308,7 +361,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
         return false;
     }
 
-    void FaceTarget() {
+    void FaceTarget()
+    {
         // Update direction EVERY frame
         Vector3 targetPos = GameManager.instance.player.transform.position;
         playerDirection = targetPos - HeadPosition.position;
@@ -323,60 +377,71 @@ public class EnemyAI : MonoBehaviour, IDamage {
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, FaceTargetSpeed * Time.deltaTime);
     }
 
-    public void TakeDamage(int amount) {
+    public void TakeDamage(int amount)
+    {
         HP -= amount;
 
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
-
-        if (HP <= 0) {
-            Debug.Log("Drop ink");
+        LeapFog();
+        if (HP <= 0)
+        {
             Instantiate(LootDrops, transform.position, transform.rotation);
 
             Destroy(gameObject);
             GameManager.instance.gameGoalCounter++;
             GameManager.instance.UpdateKeysLeft();
         }
-        else {
+        else
+        {
             StartCoroutine(FlashRed());
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
             PlayerInTrigger = true;
         }
     }
 
-    private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Player")) {
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
             PlayerInTrigger = false;
         }
     }
 
-    IEnumerator FlashRed() {
+    IEnumerator FlashRed()
+    {
         Sprite.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         Sprite.material.color = OGColor;
     }
 
-    void Shoot() {
+    void Shoot()
+    {
         ShootTimer = 0;
 
         RaycastHit hit;
         float shootDistance = 100f; // or whatever range you want
 
         // Raycast from the shoot position forward
-        if (Physics.Raycast(ShootPos.position, transform.forward, out hit, shootDistance, ~IgnoreLayer)) {
+        if (Physics.Raycast(ShootPos.position, transform.forward, out hit, shootDistance, ~IgnoreLayer))
+        {
             // Damage player if hit
             IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null) {
+            if (dmg != null)
+            {
                 dmg.TakeDamage(contactDamage);
             }
 
         }
     }
 
-    IEnumerator BullCharge() {
+    IEnumerator BullCharge()
+    {
         chargeTimer = 0f;
 
         // Direction toward player at start
@@ -387,7 +452,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
         AgentAI.isStopped = true;
 
 
-        while (timer < accelerationTime) {
+        while (timer < accelerationTime)
+        {
             AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, timer / accelerationTime);
             timer += Time.deltaTime;
             yield return null;
@@ -395,7 +461,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
         // Maintain max speed for charge duration
         float chargeTime = 0f;
-        while (chargeTime < chargeDuration) {
+        while (chargeTime < chargeDuration)
+        {
             AgentAI.velocity = dir * chargeMaxSpeed;
             chargeTime += Time.deltaTime;
             yield return null;
@@ -411,7 +478,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
 
     [SerializeField] float BatDetectDistance;
-    void FlyingBehavior() {
+    void FlyingBehavior()
+    {
         Transform player = GameManager.instance.player.transform;
         Vector3 target = player.position;
 
@@ -429,13 +497,16 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
 
         //Move with NavMeshAgent if farther than flyDistance
-        if (flatDistance > flyDistance && flatDistance < BatDetectDistance) {
+        if (flatDistance > flyDistance && flatDistance < BatDetectDistance)
+        {
             AgentAI.SetDestination(new Vector3(player.position.x, transform.position.y, player.position.z));
         }
-        else if (flatDistance < BatDetectDistance) {
+        else if (flatDistance < BatDetectDistance)
+        {
             CheckRoam();
         }
-        else {
+        else
+        {
             //Stop agent near the player
             AgentAI.ResetPath();
         }
@@ -447,13 +518,15 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
 
 
-        if (ShootTimer >= ShootRate) {
+        if (ShootTimer >= ShootRate)
+        {
             Shoot();
         }
     }
 
 
-    public IEnumerator SwoopAttack() {
+    public IEnumerator SwoopAttack()
+    {
         isSwooping = true;
 
         Transform player = GameManager.instance.player.transform;
@@ -473,7 +546,8 @@ public class EnemyAI : MonoBehaviour, IDamage {
 
 
     //Walk Animation
-    void UpdateMovementAnimation() {
+    void UpdateMovementAnimation()
+    {
         if (anim == null || AgentAI == null)
             return;
 
@@ -481,6 +555,45 @@ public class EnemyAI : MonoBehaviour, IDamage {
         bool walking = speed > 0.05f;
 
         //anim.SetBool("catWalking", walking);
+    }
+
+    void LeapFog()
+    {
+        //TravelTime for the Leap Attack
+        TravelTime += Time.deltaTime;
+
+        float Duration = 0.5f;
+        float ZeroToOne = TravelTime / Duration;
+
+        int HoldsFive = 5;
+
+        //move to target
+        Vector3 A = transform.position;//from the boss position
+        Vector3 B = GameManager.instance.player.transform.position;//to the player position
+        Vector3 Pos = Vector3.Lerp(A, B, ZeroToOne); //position between A and B
+
+        //moves the boss in an arc
+        Vector3 ArcMotion = Vector3.up * HoldsFive * Mathf.Sin(ZeroToOne * 3.14f); //move in an arc
+
+        //make the boss leap
+        transform.position = Pos + ArcMotion;
+
+        //when the boss reaches the player position or "B"
+        if (ZeroToOne >= 1)
+        {
+            //reset timers 
+            LeapTimer = 0f;
+            TravelTime = 0f;
+
+            StartCoroutine(Slam()); 
+        }
+    }
+    IEnumerator Slam()
+    {
+        //Activate slam area and deactivate it after 1 second
+        SlamArea.SetActive(true);
+        yield return new WaitForSeconds(SlamVisibility);
+        SlamArea.SetActive(false);
     }
 }
 
