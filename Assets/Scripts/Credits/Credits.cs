@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Credits : MonoBehaviour
@@ -13,9 +14,19 @@ public class Credits : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         rectTransform.anchoredPosition += new Vector2(0, scrollSpeed * Time.deltaTime);
+        ReturnToMenu();
     }
+
+
+    void ReturnToMenu()
+    {
+        if (Input.GetKeyUp(KeyCode.M) || Input.GetKeyUp(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Main Menu");
+        }
+    }
+
 }

@@ -66,6 +66,7 @@ public class Intro : MonoBehaviour
         StartCoroutine(Fade(GameIcon, 1, 0, AnimationTime));
         StartCoroutine(Fade(TYMessage, 1, 0, AnimationTime));
         yield return new WaitForSeconds(AnimationTime);
+        SceneManager.LoadScene("Credits");
     }
 
     IEnumerator Fade(RawImage Icon, float Start, float Finish, float Duration)
