@@ -71,8 +71,6 @@ public class GameManager : MonoBehaviour
     public GameObject gunObject;
     public GameObject pencilObject;
 
-    public GameObject stickyNoteFinal;
-
     [Header("\n\nPublic variables")]
 
     [Header("Collectables")]
@@ -167,7 +165,7 @@ public class GameManager : MonoBehaviour
         MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
 
-        //LoadSave.instance.SetVolumeSettings();
+        
     }
 
 
@@ -198,8 +196,10 @@ public class GameManager : MonoBehaviour
             controller.MapToggle();
         }
 
+        //setting things from option/LoadSave
         invertY = LoadSave.instance.GetInvertYSettings();
-
+        //player.GetComponent<AudioSource>().volume = LoadSave.instance.GetSFXSettings().volume;
+        //LoadSave.instance.GetAudio(player.GetComponent<AudioSource>());
     }
 
     void SetEyedrops()
@@ -310,12 +310,10 @@ public class GameManager : MonoBehaviour
     {
         int keysLeft = totalKeys - ownedKeys;
 
-        if (keysLeft == 1 && SceneManager.GetActiveScene().name == "Level 3" && gameGoalCounter == gameGoalCount)
-            stickyNoteFinal.SetActive(true);
-        else if (keysLeft == 1 && SceneManager.GetActiveScene().name == "Level 3")
-            reminderText.text = "Defeat the enemies!";
-        else if (keysLeft != 0)
+        if (keysLeft != 0)
             reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
+        else if (keysLeft != 1)
+            reminderText.text = "You still need to get " + keysLeft.ToString() + " more key...";
         else
             reminderText.text = "You can escape now!";
     }
@@ -610,17 +608,18 @@ public class GameManager : MonoBehaviour
 
     public void DisplayTextSlider(float _Value)
     {
-        //controller.GetComponent<AudioSource>().volume = 100;
         //takes the value from the slider and displays it on top to the slider
-        MusicNumberDisplay.text = MusicSliderObj.value.ToString("F2");
+        MusicNumberDisplay.text = (MusicSliderObj.value *100).ToString("F0");
         LoadSave.instance.SetMusicSettings(MusicSliderObj);
 
+
         //takes the value from the slider and displays it on top to the slider
-        SFXNumberDisplay.text = SFXSliderObj.value.ToString("F2");
+        SFXNumberDisplay.text = (SFXSliderObj.value *100).ToString("F0");
         LoadSave.instance.SetSFXSettings(SFXSliderObj);
+
 
         //takes the value from the slider and displays it on top to the slider
         MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
-        LoadSave.instance.SetMouseSettings(MouseSensSliderObj);
+        LoadSave.instance.SetMouseSens(MouseSensSliderObj);
     }
 }
