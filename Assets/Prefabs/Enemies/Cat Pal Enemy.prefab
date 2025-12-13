@@ -217,7 +217,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -298,6 +298,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  LeapDuration: 0
+  SlamVisibility: 0
+  SlamArea: {fileID: 0}
   LootDrops: {fileID: 2035680272435083700, guid: bc628d4f13368244c81a35affa6050ea, type: 3}
   IgnoreLayer:
     serializedVersion: 2
@@ -455,7 +458,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 12
+  m_Radius: 13
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6359787184237760573
 GameObject:

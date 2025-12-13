@@ -55,6 +55,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 2
+  LeapDuration: 0
+  SlamVisibility: 0
+  SlamArea: {fileID: 0}
   LootDrops: {fileID: 4246376263991153931, guid: 63b532d0d9746af47881a49c344d1e0b, type: 3}
   IgnoreLayer:
     serializedVersion: 2
@@ -85,8 +88,8 @@ MonoBehaviour:
   HeadPosition: {fileID: 4065267489739246681}
   FOV: 45
   FaceTargetSpeed: 4
-  RoamDistance: 0
-  RoamPauseTime: 0
+  RoamDistance: 5
+  RoamPauseTime: 3
   baseDetectionDistance: 6
   flashlightMultiplier: 3
   lookMultiplier: 2
@@ -94,6 +97,7 @@ MonoBehaviour:
   loseSightDelay: 4
   lookDotThreshold: 0.7
   anim: {fileID: 0}
+  BatDetectDistance: 0
 --- !u!33 &7413830075673646942
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -427,7 +431,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

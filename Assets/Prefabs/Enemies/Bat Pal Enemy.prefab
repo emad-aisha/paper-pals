@@ -164,7 +164,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -400,6 +400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
+  LeapDuration: 0
+  SlamVisibility: 0
+  SlamArea: {fileID: 0}
   LootDrops: {fileID: 1181077760848269718, guid: 387778dd43469274f8be7aeb0c252eef, type: 3}
   IgnoreLayer:
     serializedVersion: 2
@@ -439,6 +442,7 @@ MonoBehaviour:
   loseSightDelay: 2
   lookDotThreshold: 0.85
   anim: {fileID: 0}
+  BatDetectDistance: 0
 --- !u!33 &7865710480378140534
 MeshFilter:
   m_ObjectHideFlags: 0

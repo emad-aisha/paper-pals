@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -504,7 +503,6 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Swing() {
-        //Debug.Log("swing");
         MeleeTimer = 0;
         aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
 

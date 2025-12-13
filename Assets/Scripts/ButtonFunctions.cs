@@ -1,27 +1,11 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
+
 public class ButtonFunctions : MonoBehaviour
 {
-   [SerializeField] TMP_Text Text;
-    Vector3 OGScale;
-    LoadSave loadSave;
-
     // TODO: add a button for, next level in Menu Win (it doesnt get shown in level 3)
-    // loads the next level and sets the appropriate variables for each level
-    // lvl1 - all = false
-    // lvl2 - flashlight = true
-    // lvl3 all = true
 
-    void Awake()
-    {
-        Text = GetComponent<TMP_Text>();
-        OGScale = Text.transform.localScale;
-    }
-
+    
     public void Resume()
     {
         GameManager.instance.UnpauseGame();

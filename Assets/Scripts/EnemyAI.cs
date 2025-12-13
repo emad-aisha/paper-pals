@@ -1,6 +1,4 @@
-using NUnit.Framework;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -158,7 +156,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (enemyType == EnemyType.ranged)
         {
-            if (canSeePlayer || CanSeePlayer())
+            if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
             {
                 timeSinceLastSeen = 0f;
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
@@ -177,7 +175,8 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         if (enemyType == EnemyType.melee)
         {
-            if (canSeePlayer || CanSeePlayer())
+
+            if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
             {
                 timeSinceLastSeen = 0f;
 
@@ -299,7 +298,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void Roam()
     {
-        Debug.Log("Roam");
         //setting the Timer to 0
         RoamTimer = 0;
         AgentAI.stoppingDistance = 0;

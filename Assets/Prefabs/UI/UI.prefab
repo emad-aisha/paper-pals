@@ -353,7 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07869fb5e4f792847b6c9ac19d0f1f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonFunctions
-  Text: {fileID: 0}
 --- !u!1 &766799411810242074
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,7 +996,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -8256,7 +8255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16fb710bb3c323a43add73e2bf2b468f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::gameManager
-  isTurnOffLighting: 0
+  isTurnOffLighting: 1
   Lighting: {fileID: 2350008248181176204}
   menuActive: {fileID: 0}
   menuPause: {fileID: 4777311254061538056}
@@ -10047,6 +10046,18 @@ PrefabInstance:
       propertyPath: m_Color.g
       value: 0.8553459
       objectReference: {fileID: 0}
+    - target: {fileID: 3028050058297177657, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8113208
+      objectReference: {fileID: 0}
+    - target: {fileID: 3028050058297177657, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8113208
+      objectReference: {fileID: 0}
+    - target: {fileID: 3028050058297177657, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8113208
+      objectReference: {fileID: 0}
     - target: {fileID: 3046015561065866951, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
       propertyPath: m_Name
       value: Player UI
@@ -10090,6 +10101,10 @@ PrefabInstance:
     - target: {fileID: 4022952437689565488, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
       propertyPath: m_SizeDelta.y
       value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687675888772716740, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
+      propertyPath: m_Name
+      value: C4
       objectReference: {fileID: 0}
     - target: {fileID: 5464326087922798243, guid: 5392d1ad79ae2d44091f9ced5834afdb, type: 3}
       propertyPath: m_Sprite

@@ -237,7 +237,7 @@ public class UIManager : MonoBehaviour {
         LoadSave.instance.IncrementLevelLoad();
         int levelToLoad = LoadSave.instance.GetLevelLoad();
 
-        Debug.Log(levelToLoad + " what the fatr");
+
         if (levelToLoad == 1) SceneManager.LoadScene("Level 1");
         if (levelToLoad == 2) SceneManager.LoadScene("Level 2");
         if (levelToLoad == 3) SceneManager.LoadScene("Level 3");
