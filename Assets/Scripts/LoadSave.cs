@@ -2,11 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadSave : MonoBehaviour
-{
+public class LoadSave : MonoBehaviour {
     public static LoadSave instance;
-
-    AudioSource audListen;
 
     double MusicValue;
     double SFXValue;
@@ -23,72 +20,43 @@ public class LoadSave : MonoBehaviour
     int heartsBought;
     int levelLoad;
 
-    void Awake()
-    {
-        if (instance == null)
-        {
+    void Awake() {
+        // simpleton logic
+        if (instance == null) {
             instance = this;
 
-            //Does not get destroyed on another scene
             DontDestroyOnLoad(this.gameObject);
         }
 
-        if (GameManager.instance != null)
-        {
-            audListen = GameManager.instance.controller.GetComponent<AudioSource>();
-        }
-        else
-        {
-            audListen = new AudioSource();
-        }
+        // Default values on start
 
-            // TODO: MAT - Set Default Values
+        // sounds
+        MusicValue = 0.2;
+        SFXValue = 0.5;
+        MouseValue = 300;
 
-            MusicValue = 0.0001;
-        SFXValue = 0.0001;
-        MouseValue = 0;
         isInvertedY = false;
 
+        // player stuff
         playerCoins = 0;
         playerAmmo = 0;
         playerWeapons = new List<WeaponStats>();
         playerTape = false;
         playerMap = false;
 
+        // misc
         heartsBought = 0;
         levelLoad = 0;
-
     }
 
     //setters
-    public void SetMusicSettings(Slider _sMusicValue)
-    {
-       MusicValue = _sMusicValue.value;
-    }
-    public void SetVolumeSettings()
-    {
-        //GameManager.instance.controller.GetComponent<AudioSource>().volume = GetSFXSettings().volume;
-    }
+    public void SetMusicSettings(Slider _MusicValue) { MusicValue = _MusicValue.value; }
+    public void SetSFXSettings(Slider _SFXValue) { SFXValue = _SFXValue.value; }
 
-    public void SetSFXSettings(Slider _sSFXValue)
-    {
-       //audListen.volume
-      SFXValue = _sSFXValue.value;
-    }
 
-    public void SetAudio(AudioSource Audio)
-    {
-        audListen = Audio;
-    }
+    public void SetMouseSens(Slider _sMouseValue) { MouseValue = _sMouseValue.value; }
+    public void SetInvertYSettings(bool _isInvertedY) { isInvertedY = _isInvertedY; }
 
-    public void SetMouseSettings(Slider _sMouseValue)
-    {
-        MouseValue = _sMouseValue.value;
-    }
-    public void SetInvertYSettings(bool _isInvertedY)
-    {
-        isInvertedY = _isInvertedY;
-    }
 
     // player shit
     public void SetPlayerCoins(int _playerCoins) {
@@ -96,88 +64,35 @@ public class LoadSave : MonoBehaviour
         playerCoins = _playerCoins;
     }
 
-    public void SetPlayerAmmo(int _playerAmmo) {
-        playerAmmo = _playerAmmo;
-    }
+    public void SetPlayerAmmo(int _playerAmmo) { playerAmmo = _playerAmmo; }
+    public void SetPlayerWeapons(List<WeaponStats> _playerWeapons) { playerWeapons = _playerWeapons; }
+    public void SetPlayerTape(bool _playerTape) { playerTape = _playerTape; }
+    public void SetPlayerMap(bool _playerMap) { playerMap = _playerMap; }
 
-    public void SetPlayerWeapons(List<WeaponStats> _playerWeapons) {
-        playerWeapons = _playerWeapons;
-    }
+    public void SetHeartsBought(int _heartsBought) { heartsBought = _heartsBought; }
 
-    public void SetPlayerTape(bool _playerTape) {
-        playerTape = _playerTape;
-    }
-
-    public void SetPlayerMap(bool _playerMap) {
-        playerMap = _playerMap;
-    }
-
-    public void SetHeartsBought(int _heartsBought) {
-        heartsBought = _heartsBought;
-    }
-
-    public void SetLevelLoad(int _levelLoad) {
-        levelLoad = _levelLoad;
-    }
+    public void SetLevelLoad(int _levelLoad) { levelLoad = _levelLoad; }
 
 
     //getters
-    public float GetMusicSettings()
-    {
-        return (float)MusicValue;
-    }
+    public float GetMusicVolume() { return (float)MusicValue; }
+    public float GetSFXVolume() { return (float)SFXValue; }
 
-    public float GetSFXSettings()
-    {
-        //SFXValue
-        return (float)SFXValue;
-    }
 
-    public AudioSource GetAudio()
-    {
-        return audListen;
-    }
-    public void AlterAudio()
-    {
-       audListen.volume = GetMusicSettings();
-    }
+    public float GetMouseValue() { return MouseValue; }
+    public float GetMouseSens() { return MouseValue; }
 
-    public float GetMouseSettings()
-    {
-        //Mouse Sensitivity
-        return MouseValue;
-    }
-    public bool GetInvertYSettings()
-    {
-        return isInvertedY;
-    }
+    public bool GetInvertYSettings() { return isInvertedY; }
 
-    //public float GetSFXSettings()
-    //{
-    //    //SFX Sensitivity
-    //    return SFXValue;
-    //}
 
     //player shit
-    public int GetPlayerCoins() {
-        return playerCoins;
-    }
+    public int GetPlayerCoins() { return playerCoins; }
+    public int GetPlayerAmmo() { return playerAmmo; }
+    public List<WeaponStats> GetPlayerWeapons() { return playerWeapons; }
 
-    public int GetPlayerAmmo() {
-        return playerAmmo;
-    }
+    public bool GetPlayerTape() { return playerTape; }
+    public bool GetPlayerMap() { return playerMap; }
 
-    public List<WeaponStats> GetPlayerWeapons() {
-        return playerWeapons;
-    }
-
-    public bool GetPlayerTape() {
-        return playerTape;
-    }
-
-    public bool GetPlayerMap() {
-        return playerMap;
-    }
 
     public int GetHeartsBought() {
         return heartsBought;
@@ -186,7 +101,6 @@ public class LoadSave : MonoBehaviour
     public int GetLevelLoad() {
         return levelLoad;
     }
-
 
     public void IncrementLevelLoad() {
         levelLoad++;

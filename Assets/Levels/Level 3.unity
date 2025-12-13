@@ -4006,12 +4006,12 @@ GameObject:
   m_Component:
   - component: {fileID: 140391355}
   m_Layer: 0
-  m_Name: Key Holder Final
+  m_Name: Key Holder (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &140391355
 Transform:
   m_ObjectHideFlags: 0
@@ -4882,14 +4882,6 @@ PrefabInstance:
     - target: {fileID: 5787204274972221550, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5853185099538493071, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
-      propertyPath: speed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5853185099538493071, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
-      propertyPath: mapSwitch
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7021778962833836625, guid: ad66a4042ddb8ca40a458765d7db1a8b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11784,17 +11776,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355478989}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &357273355 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1769322925972424722, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-  m_PrefabInstance: {fileID: 708784257}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &362653278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25352,10 +25333,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
-    - target: {fileID: 2350008248181176204, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3020494633501212398, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -25444,14 +25421,6 @@ PrefabInstance:
       propertyPath: exitCover
       value: 
       objectReference: {fileID: 1479656172}
-    - target: {fileID: 6194971248250408480, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: stickyNoteFinal
-      value: 
-      objectReference: {fileID: 140391354}
-    - target: {fileID: 6194971248250408480, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: Display_X_Button
-      value: 
-      objectReference: {fileID: 357273355}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
