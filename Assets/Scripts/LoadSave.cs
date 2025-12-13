@@ -15,14 +15,14 @@ public class LoadSave : MonoBehaviour
     bool isInvertedY;
 
     // player stuff
-    int playerCoins;
-    int playerAmmo;
-    List<WeaponStats> playerWeapons;
-    bool playerTape;
-    bool playerMap;
+    int playerCoins = 0;
+    int playerAmmo = 0;
+    List<WeaponStats> playerWeapons = new List<WeaponStats>();
+    bool playerTape = false;
+    bool playerMap = false;
 
-    int heartsBought;
-    int levelLoad;
+    int heartsBought = 0;
+    int levelLoad = 0;
 
     void Awake()
     {
@@ -45,15 +45,6 @@ public class LoadSave : MonoBehaviour
         SFXValue = 100;
         MouseValue = 0;
         isInvertedY = false;
-
-        playerCoins = 0;
-        playerAmmo = 0;
-        playerWeapons = new List<WeaponStats>();
-        playerTape = false;
-        playerMap = false;
-
-        heartsBought = 0;
-        levelLoad = 0;
     }
 
     //setters
@@ -83,7 +74,6 @@ public class LoadSave : MonoBehaviour
 
     // player shit
     public void SetPlayerCoins(int _playerCoins) {
-        if (_playerCoins > 999) _playerCoins = 999;
         playerCoins = _playerCoins;
     }
 
