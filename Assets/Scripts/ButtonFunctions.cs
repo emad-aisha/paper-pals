@@ -71,8 +71,6 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Exit()
     {
-        // TODO: i might have to get rid of this...
-        Destroy(LoadSave.instance);
         SceneManager.LoadScene("Main Menu");
     }
 
@@ -89,8 +87,10 @@ public class ButtonFunctions : MonoBehaviour
     public void Quit()
     {
 #if UNITY_EDITOR
+        Destroy(LoadSave.instance);
         UnityEditor.EditorApplication.isPlaying = false;
 #else
+    Destroy(LoadSave.instance);
         Application.Quit();
 #endif
     }

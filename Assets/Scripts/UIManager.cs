@@ -102,8 +102,12 @@ public class UIManager : MonoBehaviour {
             StartCoroutine(Talking());
         }
         
-        if (Input.GetKey(KeyCode.P) && Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.A)) {
-            SceneManager.LoadScene("Mat's Scene");
+        if (Input.GetKey(KeyCode.P)) {
+            int money = LoadSave.instance.GetPlayerCoins();
+            money += 50;
+            LoadSave.instance.SetPlayerCoins(money);
+            CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
+            SetCostColors();
         }
 
         //used to set the default values of the sliders for the options menu
@@ -364,9 +368,11 @@ public class UIManager : MonoBehaviour {
             int newCoins = oldCoins -= int.Parse(CostTexts[0].text);
             LoadSave.instance.SetPlayerCoins(newCoins);
 
+            
             UpdateCoins();
 
             haveTape = true;
+            LoadSave.instance.SetPlayerTape(haveTape);
             Tape.SetActive(haveTape);
 
             SetCostColors();
