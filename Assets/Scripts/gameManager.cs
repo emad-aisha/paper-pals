@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
 
-        //LoadSave.instance.SetVolumeSettings();
+        
     }
 
 
@@ -198,8 +198,10 @@ public class GameManager : MonoBehaviour
             controller.MapToggle();
         }
 
+        //setting things from option/LoadSave
         invertY = LoadSave.instance.GetInvertYSettings();
-
+        //player.GetComponent<AudioSource>().volume = LoadSave.instance.GetSFXSettings().volume;
+        //LoadSave.instance.GetAudio(player.GetComponent<AudioSource>());
     }
 
     void SetEyedrops()
@@ -610,13 +612,13 @@ public class GameManager : MonoBehaviour
 
     public void DisplayTextSlider(float _Value)
     {
-        //controller.GetComponent<AudioSource>().volume = 100;
         //takes the value from the slider and displays it on top to the slider
-        MusicNumberDisplay.text = MusicSliderObj.value.ToString("F2");
+        MusicNumberDisplay.text = (MusicSliderObj.value *100).ToString("F0");
         LoadSave.instance.SetMusicSettings(MusicSliderObj);
+        LoadSave.instance.AlterAudio();
 
         //takes the value from the slider and displays it on top to the slider
-        SFXNumberDisplay.text = SFXSliderObj.value.ToString("F2");
+        SFXNumberDisplay.text = (SFXSliderObj.value *100).ToString("F0");
         LoadSave.instance.SetSFXSettings(SFXSliderObj);
 
         //takes the value from the slider and displays it on top to the slider

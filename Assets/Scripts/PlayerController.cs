@@ -232,7 +232,8 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         }
 
-        //aud = LoadSave.instance.GetSFXSettings();
+        //aud.volume = LoadSave.instance.GetSFXSettings().volume;
+        aud = LoadSave.instance.GetAudio();
     }
 
     void Movement() {

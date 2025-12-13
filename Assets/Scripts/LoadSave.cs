@@ -8,8 +8,8 @@ public class LoadSave : MonoBehaviour
 
     AudioSource audListen;
 
-    float MusicValue;
-    float SFXValue;
+    double MusicValue;
+    double SFXValue;
     float MouseValue;
     bool isInvertedY;
 
@@ -37,11 +37,15 @@ public class LoadSave : MonoBehaviour
         {
             audListen = GameManager.instance.controller.GetComponent<AudioSource>();
         }
+        else
+        {
+            audListen = new AudioSource();
+        }
 
-        // TODO: MAT - Set Default Values
+            // TODO: MAT - Set Default Values
 
-        MusicValue = 100;
-        SFXValue = 100;
+            MusicValue = 0.0001;
+        SFXValue = 0.0001;
         MouseValue = 0;
         isInvertedY = false;
 
@@ -53,14 +57,13 @@ public class LoadSave : MonoBehaviour
 
         heartsBought = 0;
         levelLoad = 0;
+
     }
 
     //setters
     public void SetMusicSettings(Slider _sMusicValue)
     {
-        //MusicValue when it's created
-        MusicValue = _sMusicValue.value;
-        //MusicValue = float.Parse(_sMusicValue.value.ToString());
+       MusicValue = _sMusicValue.value;
     }
     public void SetVolumeSettings()
     {
@@ -69,8 +72,15 @@ public class LoadSave : MonoBehaviour
 
     public void SetSFXSettings(Slider _sSFXValue)
     {
-        SFXValue = _sSFXValue.value;
+       //audListen.volume
+      SFXValue = _sSFXValue.value;
     }
+
+    public void SetAudio(AudioSource Audio)
+    {
+        audListen = Audio;
+    }
+
     public void SetMouseSettings(Slider _sMouseValue)
     {
         MouseValue = _sMouseValue.value;
@@ -112,20 +122,26 @@ public class LoadSave : MonoBehaviour
 
 
     //getters
-    public void GetMusicSettings()
+    public float GetMusicSettings()
     {
-        //music is needed for this.....
-
-        //MusicValue
-        //MusicValue = int.Parse(sMusicValue.value.ToString());
-        //GameManager.instance.aud
+        return (float)MusicValue;
     }
-    //public AudioSource GetSFXSettings()
-    //{
-    //    //SFXValue
-    //    audListen.volume = SFXValue;
-    //    return audListen;
-    //}
+
+    public float GetSFXSettings()
+    {
+        //SFXValue
+        return (float)SFXValue;
+    }
+
+    public AudioSource GetAudio()
+    {
+        return audListen;
+    }
+    public void AlterAudio()
+    {
+       audListen.volume = GetMusicSettings();
+    }
+
     public float GetMouseSettings()
     {
         //Mouse Sensitivity
@@ -136,11 +152,11 @@ public class LoadSave : MonoBehaviour
         return isInvertedY;
     }
 
-    public float GetSFXSettings()
-    {
-        //SFX Sensitivity
-        return SFXValue;
-    }
+    //public float GetSFXSettings()
+    //{
+    //    //SFX Sensitivity
+    //    return SFXValue;
+    //}
 
     //player shit
     public int GetPlayerCoins() {
