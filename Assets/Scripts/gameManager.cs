@@ -149,15 +149,16 @@ public class GameManager : MonoBehaviour
         if (gunObject != null) gunObject.layer = 7;
         if (pencilObject != null) pencilObject.layer = 7;
 
-        
 
         SetAbilities();
         UpdateKeysLeft();
 
+        
         SetEyedrops();
-        SetWepons();
+        SetWeapons();
 
-        SetEyedrop();
+        UpdateCoins(LoadSave.instance.GetPlayerCoins());
+        UpdateAmmoCount(LoadSave.instance.GetPlayerAmmo());
 
         if (isTurnOffLighting) Destroy(Lighting);
 
@@ -167,7 +168,6 @@ public class GameManager : MonoBehaviour
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
 
         //LoadSave.instance.SetVolumeSettings();
-        
     }
 
 
@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
-     void SetWepons()
+     void SetWeapons()
     {
         Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
         for (int i = 0; i < Weapons.Count; i++)
@@ -442,31 +442,21 @@ public class GameManager : MonoBehaviour
         int phase = 0;
 
         if (percent < 0.25)
-        {
             phase = 1;
-        }
         else if (percent < 0.5)
-        {
             phase = 2;
-        }
         else if (percent < 0.75)
-        {
             phase = 3;
-        }
         else if (percent < 1)
-        {
             phase = 4;
-        }
 
-        for (int i = 0; i < EyedropPhases.Count; i++)
-        {
 
-            if (phase == i + 1)
-            {
+        for (int i = 0; i < EyedropPhases.Count; i++) {
+
+            if (phase == i) {
                 EyedropPhases[i].SetActive(true);
             }
-            else
-            {
+            else {
                 EyedropPhases[i].SetActive(false);
             }
         }
@@ -490,6 +480,13 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
+        SetEyedrop();
+        CoinCountText.text = TotalCoinsOwned.ToString("F0");
+    }
+
+    public void UpdateCoins(int amount) {
+        TotalCoinsOwned = amount;
 
         SetEyedrop();
         CoinCountText.text = TotalCoinsOwned.ToString("F0");

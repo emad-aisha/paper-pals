@@ -137,6 +137,10 @@ public class PlayerController : MonoBehaviour, IDamage {
         HaveTape = false;
         sprintCurr = sprintTimer;
         OGSpeed = speed;
+
+        if (LoadSave.instance.GetPlayerWeapons().Count > 0)
+            Weapons = LoadSave.instance.GetPlayerWeapons();
+
         if (Weapons.Count > 0)
         {
             ChangeItem();
@@ -154,10 +158,17 @@ public class PlayerController : MonoBehaviour, IDamage {
             GameManager.instance.ExtraHearts[1].SetActive(false);
         }
         else if (LoadSave.instance.GetHeartsBought() >= 2) {
-            MaxHP++;
+            MaxHP += 2;
             GameManager.instance.ExtraHearts[0].SetActive(true);
             GameManager.instance.ExtraHearts[1].SetActive(true);
         }
+
+        HaveTape = LoadSave.instance.GetPlayerTape();
+        if (HaveTape) GameManager.instance.TapeImage.SetActive(true);
+
+
+        hasMap = LoadSave.instance.GetPlayerMap();
+        if (hasMap) GameManager.instance.MapImage.SetActive(true);
 
         RespawnPlayer();
     }
