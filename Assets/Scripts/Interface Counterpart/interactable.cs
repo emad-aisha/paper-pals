@@ -26,7 +26,10 @@ public class Interactable : MonoBehaviour, IInteractable {
     public void Interact() {
         // TODO: change into a switch
         if (type == InterfaceType.HealingTape) {
-            if (SetTape()) return;
+            if (SetTape()) {
+                GameManager.instance.ShowTapeHint();
+                return; 
+            }
             GameManager.instance.TapeImage.SetActive(true);
             SetTape();
         }
@@ -71,9 +74,11 @@ public class Interactable : MonoBehaviour, IInteractable {
         }
         else if (type == InterfaceType.DoubleJump) {
             GameManager.instance.hasDoubleJump = true;
+            GameManager.instance.ShowDoubleJumpHint();
         }
         else if(type == InterfaceType.Dash){
            GameManager.instance.hasDash = true;
+            GameManager.instance.ShowDashHint();
         }
 
         if (type != InterfaceType.Trophy) Destroy(this.gameObject);

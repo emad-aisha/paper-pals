@@ -41,7 +41,12 @@ public class GameManager : MonoBehaviour {
     public GameObject FlashFrames;
     public GameObject LowHealth;
 
+    [Header("Reminders")]
     public GameObject FlashlightMessage;
+    public GameObject TapeMessage;
+    public GameObject DoubleJumpMessage;
+    public GameObject DashMessage;
+
     public GameObject crosshair;
 
     [Header("\nInventory")]
@@ -463,12 +468,28 @@ public class GameManager : MonoBehaviour {
 
     public void ShowFlashlightHint() {
         FlashlightMessage.SetActive(true);
-        StartCoroutine(HideFlashlightHintAfterDelay());
+        StartCoroutine(HideHint(FlashlightMessage));
     }
 
-    IEnumerator HideFlashlightHintAfterDelay() {
+    public void ShowTapeHint() {
+        TapeMessage.SetActive(true);
+        StartCoroutine(HideHint(TapeMessage));
+    }
+
+    public void ShowDoubleJumpHint() {
+        DoubleJumpMessage.SetActive(true);
+        StartCoroutine(HideHint(DoubleJumpMessage));
+    }
+
+    public void ShowDashHint() {
+        DashMessage.SetActive(true);
+        StartCoroutine(HideHint(DashMessage));
+    }
+
+
+    IEnumerator HideHint(GameObject menu) {
         yield return new WaitForSeconds(2f);
-        FlashlightMessage.SetActive(false);
+        menu.SetActive(false);
     }
 
     //option functions
