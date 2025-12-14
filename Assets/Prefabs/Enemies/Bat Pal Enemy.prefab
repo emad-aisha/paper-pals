@@ -409,6 +409,7 @@ MonoBehaviour:
     m_Bits: 512
   AgentAI: {fileID: 410625447462889529}
   Sprite: {fileID: 478239397356334502}
+  visual: {fileID: 0}
   flyHeight: 3
   flySpeed: 2
   flyAmplitude: 2
@@ -417,6 +418,10 @@ MonoBehaviour:
   swoopTrigger: {fileID: 56435702707888148}
   swoopSpeed: 10
   isSwooping: 0
+  followDistance: 0
+  shootDistance: 0
+  swoopDistance: 0
+  retreatDistance: 0
   HP: 10
   contactDamage: 1
   attackRange: 3
@@ -442,7 +447,6 @@ MonoBehaviour:
   loseSightDelay: 2
   lookDotThreshold: 0.85
   anim: {fileID: 0}
-  BatDetectDistance: 0
 --- !u!33 &7865710480378140534
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -659,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dccad51cb99edc4a8da077889597751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  batAI: {fileID: 1205130155578342452}
+  batAI: {fileID: 0}
 --- !u!4 &981129763127443586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6209457091142440212, guid: 7c645fd1a9b14954e9fbad28df46567a, type: 3}

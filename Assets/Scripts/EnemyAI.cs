@@ -23,6 +23,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] SpriteRenderer Sprite;
 
     [Header("Bat")]
+    [SerializeField] Transform visual;
     [SerializeField] float flyHeight;
     [SerializeField] float flySpeed;
     [SerializeField] float flyAmplitude;
@@ -32,6 +33,11 @@ public class EnemyAI : MonoBehaviour, IDamage
     private bool PlayerInSwoopZone;
     [SerializeField] private float swoopSpeed;
     public bool isSwooping = false;
+    [Header("Bat Ranges")]
+    [SerializeField] float followDistance;
+    [SerializeField] float shootDistance;
+    [SerializeField] float swoopDistance;
+    [SerializeField] float retreatDistance; 
 
     [Header("Health")]
     [SerializeField] int HP;
@@ -116,8 +122,13 @@ public class EnemyAI : MonoBehaviour, IDamage
         //calculate direction vector from the enemy to the player
         playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
 
-        AgentAI.updateRotation = false;
+
         //SlamArea.SetActive(false);
+
+        AgentAI.updatePosition = true;
+        AgentAI.updateRotation = false;
+        AgentAI.updateUpAxis = false;
+        AgentAI.baseOffset = flyHeight;
     }
 
     void AttackPlayer()
@@ -155,25 +166,26 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         FaceTarget();
 
-        HandleFlashlightDetection();
-
         if (enemyType == EnemyType.ranged)
         {
-            if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
-            {
-                timeSinceLastSeen = 0f;
-                AgentAI.SetDestination(GameManager.instance.player.transform.position);
-            }
-            else
-            {
-                timeSinceLastSeen += Time.deltaTime;
-                if (timeSinceLastSeen >= loseSightDelay)
-                {
-                    CheckRoam();
-                }
-            }
+            // Force the bat to always "see" the player
+            canSeePlayer = true;
+            PlayerInTrigger = true;
+
+            // Reset last-seen timer
+            timeSinceLastSeen = 0;
+
+            // Handle flying movement and attacks
             FlyingBehavior();
+
+            // Skip flashlight/detection logic entirely
+            AgentAI.nextPosition = transform.position;
+
+            return; // exit Update early for ranged enemy
         }
+
+        HandleFlashlightDetection();
+
 
 
         if (enemyType == EnemyType.melee || enemyType == EnemyType.boss)
@@ -311,46 +323,18 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     bool CanSeePlayer()
     {
-        //calculate direction vector from the enemy to the player
         playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
-
-        //Calculate the angle between the enemy's forward direction and the direction to the player
         AngleToPlayer = Vector3.Angle(playerDirection, transform.forward);
-        Debug.DrawRay(HeadPosition.position, playerDirection, Color.green);
 
         RaycastHit hit;
-
-        //cast a ray from the enemy to the player to check for obstacles
         if (Physics.Raycast(HeadPosition.position, playerDirection, out hit, 30, ~IgnoreLayer))
         {
             if (AngleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
-
-                //will look for player position and move towards it
-                AgentAI.SetDestination(GameManager.instance.player.transform.position);
-
-                if (ShootTimer >= ShootRate && enemyType == EnemyType.ranged)
-                {
-                    Shoot();
-                }
-
-
-
-                // Check distance between enemy and player
-                float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
-
-                // If close enough to attack, and cooldown is ready and EnemyType.melee
-                if (enemyType == EnemyType.melee && distance <= attackRange && attackTimer >= attackCooldown)
-                {
-                    AttackPlayer();
-                }
-
-                AgentAI.stoppingDistance = StoppingDistanceOG;
                 return true;
             }
-
         }
-        AgentAI.stoppingDistance = 0;
+
         return false;
     }
 
@@ -415,11 +399,13 @@ public class EnemyAI : MonoBehaviour, IDamage
     {
         ShootTimer = 0;
 
-        RaycastHit hit;
-        float shootDistance = 100f; // or whatever range you want
 
-        // Raycast from the shoot position forward
-        if (Physics.Raycast(ShootPos.position, transform.forward, out hit, shootDistance, ~IgnoreLayer))
+        Transform player = GameManager.instance.player.transform;
+        Vector3 dir = (player.position - ShootPos.position).normalized;
+
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ShootPos.position, dir, out hit, shootDistance, ~IgnoreLayer))
         {
             // Damage player if hit
             IDamage dmg = hit.collider.GetComponent<IDamage>();
@@ -468,73 +454,84 @@ public class EnemyAI : MonoBehaviour, IDamage
     }
 
 
-    [SerializeField] float BatDetectDistance;
+
     void FlyingBehavior()
     {
+        if (isSwooping)
+            return;
+
         Transform player = GameManager.instance.player.transform;
-        Vector3 target = player.position;
+        float distance = Vector3.Distance(transform.position, player.position);
 
-        // to not let the bat jump with the player
-        float hoverBase = 1.07f;
-
-
-        // Hover offset
-        target.y = hoverBase + flyHeight;
-        float hover = Mathf.Sin(Time.time * flyFrequency) * flyAmplitude;
-        target.y += hover;
-
-        Vector3 flatDirection = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
-        float flatDistance = flatDirection.magnitude;
-
-
-        //Move with NavMeshAgent if farther than flyDistance
-        if (flatDistance > flyDistance && flatDistance < BatDetectDistance)
+      
+        if (distance <= swoopDistance && !isSwooping)
         {
-            AgentAI.SetDestination(new Vector3(player.position.x, transform.position.y, player.position.z));
-        }
-        else if (flatDistance < BatDetectDistance)
-        {
-            CheckRoam();
-        }
-        else
-        {
-            //Stop agent near the player
-            AgentAI.ResetPath();
+            StartCoroutine(SwoopAttack());
+            return;
         }
 
-        // Adjust Y manually for hovering
-        Vector3 pos = transform.position;
-        pos.y = target.y;
-        transform.position = pos;
-
-
-
-        if (ShootTimer >= ShootRate)
+       
+        if (distance <= followDistance)
         {
-            Shoot();
+            FollowPlayer(player);
+
+            // Only shoot if not too close
+            if (distance <= shootDistance && ShootTimer >= ShootRate)
+            {
+                Shoot();
+            }
+            return;
         }
+        CheckRoam();
     }
 
+    void FollowPlayer(Transform player)
+    {
+        // Let the NavMeshAgent handle horizontal movement
+       
+        AgentAI.SetDestination(player.position);
 
+        // Apply hover only on Y-axis
+        Vector3 pos = transform.position;
+        pos.y = flyHeight + Mathf.Sin(Time.time * flyFrequency) * flyAmplitude;
+        transform.position = pos;
+    }
     public IEnumerator SwoopAttack()
     {
         isSwooping = true;
+        AgentAI.isStopped = true;
 
         Transform player = GameManager.instance.player.transform;
 
-        float originalShootTimer = ShootTimer;
-        ShootTimer = 0; // Reset shoot timer to prevent shooting during swoop
+        Vector3 start = transform.position;
+        Vector3 end = new Vector3(player.position.x,start.y,player.position.z);
 
-        Vector3 startPosition = transform.position;
-        Vector3 direction = (player.position - transform.position).normalized;
+        float duration = 1f;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float lerp = t / duration;
+
+            Vector3 pos = Vector3.Lerp(start, end, lerp);
+            pos.y += Mathf.Sin(lerp * Mathf.PI) * 2f;
+
+            transform.position = pos;
+            yield return null;
+        }
 
         AttackPlayer();
-        yield return new WaitForSeconds(1); // Pause briefly after attack
 
+        yield return new WaitForSeconds(0.3f);
+
+        Vector3 retreatDir = (start - end).normalized;
+        transform.position += retreatDir * retreatDistance;
+
+        AgentAI.ResetPath();
+        AgentAI.isStopped = false;
         isSwooping = false;
-        ShootTimer = originalShootTimer;
     }
-
 
     //Walk Animation
     void UpdateMovementAnimation()
