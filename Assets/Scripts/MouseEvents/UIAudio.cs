@@ -22,7 +22,7 @@ public class UIAudio : MonoBehaviour
         if (clickVol - clickDif >= 0) clickVol -= clickDif;
         else clickVol = 0;
 
-            hoverSource.volume = hoverVol;
+        hoverSource.volume = hoverVol;
         clickSource.volume = clickVol;
     }
 

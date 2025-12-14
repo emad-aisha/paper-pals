@@ -2,10 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
-{
-    // TODO: add a button for, next level in Menu Win (it doesnt get shown in level 3)
-
-    
+{   
     public void Resume()
     {
         GameManager.instance.UnpauseGame();
@@ -18,6 +15,10 @@ public class ButtonFunctions : MonoBehaviour
     }
 
     //option button function
+    public void MMOption() {
+        SceneManager.LoadScene("MMOption");
+    }
+
     public void Option()
     {
         GameManager.instance.OptionMenu();
