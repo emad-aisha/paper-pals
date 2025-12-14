@@ -8,9 +8,6 @@ using TMPro;
 public class UIManager : MonoBehaviour {
     public static UIManager instance;
 
-    enum Type { shop, options };
-
-    [SerializeField] Type type;
     [Header("Shop Dependencies")]
     // folders
     [SerializeField] Image PurchaseBkgrd;
@@ -80,24 +77,23 @@ public class UIManager : MonoBehaviour {
         if (Cursor.lockState == CursorLockMode.Locked) Cursor.lockState = CursorLockMode.None;
         if (Cursor.visible == false) Cursor.visible = true;
 
-        if (type == Type.shop) {
-            CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
-            AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
+        CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
+        AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
 
-            haveMap = LoadSave.instance.GetPlayerMap();
-            haveTape = LoadSave.instance.GetPlayerTape();
 
-            // Shop UI
-            SetCostColors();
-            UpdateHearts();
+        haveMap = LoadSave.instance.GetPlayerMap();
+        haveTape = LoadSave.instance.GetPlayerTape();
 
-            SetPurchasePositions();
-            SetEquipPositions();
-            SetInventory();
+        // Shop UI
+        SetCostColors();
+        UpdateHearts();
 
-            OnPurchasable();
-            StartCoroutine(StopTalking(5f));
-        }
+        SetPurchasePositions();
+        SetEquipPositions();
+        SetInventory();
+
+        OnPurchasable();
+        StartCoroutine(StopTalking(5f));
 
     }
 
@@ -105,24 +101,19 @@ public class UIManager : MonoBehaviour {
         if (!isTalking && !stopTalking) {
             StartCoroutine(Talking());
         }
-
-        if (type == Type.shop) {
-            if (Input.GetKey(KeyCode.P)) {
-                int money = LoadSave.instance.GetPlayerCoins();
-                money += 50;
-                LoadSave.instance.SetPlayerCoins(money);
-                CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
-                SetCostColors();
-            }
+        
+        if (Input.GetKey(KeyCode.P)) {
+            int money = LoadSave.instance.GetPlayerCoins();
+            money += 50;
+            LoadSave.instance.SetPlayerCoins(money);
+            CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
+            SetCostColors();
         }
 
         //used to set the default values of the sliders for the options menu
-        if (type == Type.options) {
-            mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-            mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-            mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-        }
-
+        if (mMusicSliderObj) mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        if (mSFXSliderObj) mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        if (mMouseSensSliderObj) mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
     }
 
 
@@ -372,7 +363,7 @@ public class UIManager : MonoBehaviour {
             int newCoins = oldCoins -= int.Parse(CostTexts[0].text);
             LoadSave.instance.SetPlayerCoins(newCoins);
 
-
+            
             UpdateCoins();
 
             haveTape = true;
@@ -393,7 +384,7 @@ public class UIManager : MonoBehaviour {
 
 
             if (LoadSave.instance.GetHeartsBought() == 2) {
-                PurchaseOptions[2].SetActive(false);
+                PurchaseOptions[2].SetActive(false); 
             }
 
             UpdateHearts();
@@ -444,7 +435,7 @@ public class UIManager : MonoBehaviour {
             SetCostColors();
         }
     }
-
+    
     public IEnumerator Talking() {
         isTalking = true;
         OpenMouth.SetActive(true);
@@ -461,7 +452,8 @@ public class UIManager : MonoBehaviour {
 
 
     // OPTION BUTTON FUNCTIONS
-    public void DisplayTextSlider(float _Value) {
+    public void DisplayTextSlider(float _Value)
+    {
         //controller.GetComponent<AudioSource>().volume = 100;
         //takes the value from the slider and displays it on top to the slider
         mMusicNumberDisplay.text = mMusicSliderObj.value.ToString("F2");
@@ -471,7 +463,7 @@ public class UIManager : MonoBehaviour {
         //takes the value from the slider and displays it on top to the slider
         mSFXNumberDisplay.text = mSFXSliderObj.value.ToString("F2");
         LoadSave.instance.SetSFXSettings(mSFXSliderObj);
-        Debug.Log("SFX Value: " + mSFXSliderObj.value.ToString("F2"));
+        Debug.Log("SFX Value: " + mSFXSliderObj.value.ToString("F2"));  
 
         //takes the value from the slider and displays it on top to the slider
         mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");

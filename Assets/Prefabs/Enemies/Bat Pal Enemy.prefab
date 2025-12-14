@@ -420,7 +420,7 @@ MonoBehaviour:
   HP: 10
   contactDamage: 1
   attackRange: 3
-  attackCooldown: 2
+  attackCooldown: 0.5
   chargeMaxSpeed: 0
   accelerationTime: 0
   chargeDuration: 0
@@ -441,8 +441,8 @@ MonoBehaviour:
   awayMultiplier: 0.75
   loseSightDelay: 2
   lookDotThreshold: 0.85
-  anim: {fileID: 7873822821711131411}
-  BatDetectDistance: 20
+  anim: {fileID: 0}
+  BatDetectDistance: 0
 --- !u!33 &7865710480378140534
 MeshFilter:
   m_ObjectHideFlags: 0

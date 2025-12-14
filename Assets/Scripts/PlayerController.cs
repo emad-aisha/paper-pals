@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour, IDamage
     float ThrowTimer;
 
 
+    // TODO: make this from another script I think?
     // inventory
     bool HaveTape;
     bool IsDead = false;
