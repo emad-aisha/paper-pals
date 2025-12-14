@@ -142,7 +142,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void AttackPlayer()
     {
-        attackTimer = 0f; // reset cooldown timer
+        attackTimer = 0; 
 
         //Animation: Cat Attack
         if (anim != null && enemyType == EnemyType.melee)
@@ -166,7 +166,8 @@ public class EnemyAI : MonoBehaviour, IDamage
         attackTimer += Time.deltaTime;
 
         // Always tick the charge timer up (unless reset)
-        if (chargeTimer < chargeCooldown) chargeTimer += Time.deltaTime;
+        if (chargeTimer < chargeCooldown) 
+            chargeTimer += Time.deltaTime;
 
         // Distance check
         float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
@@ -179,8 +180,6 @@ public class EnemyAI : MonoBehaviour, IDamage
        
             FaceTarget();
  
-
-        // --- 3. RANGED LOGIC ---
         if (enemyType == EnemyType.ranged)
         {
             canSeePlayer = true;
@@ -193,7 +192,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         HandleFlashlightDetection();
 
-        // --- 4. MELEE & BOSS LOGIC ---
         if (enemyType == EnemyType.melee || enemyType == EnemyType.boss)
         {
             if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
@@ -233,11 +231,10 @@ public class EnemyAI : MonoBehaviour, IDamage
                     AttackPlayer();
                 }
 
-                // --- THE CHARGE TRIGGER ---
-                // Trigger if: Close enough (15), Cooldown ready, and NOT already charging
+             
                 if (distance < 15 && chargeTimer >= chargeCooldown && !isCharging)
                 {
-                    // CRITICAL: Save the routine so we can stop it in OnCollisionEnter
+                 
                     chargeRoutine = StartCoroutine(BullCharge());
                 }
             }
@@ -252,7 +249,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             UpdateMovementAnimation();
         }
 
-        // --- 6. BOSS LEAP ---
+        //boss leap attack
         if (PlayerInTrigger && LeapTimer >= LeapDuration && enemyType == EnemyType.boss)
         {
             LeapFrog();
@@ -439,13 +436,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             windUpTimer += Time.deltaTime;
             yield return null;
         }
-
-
         yield return new WaitForSeconds(chargeWindUp);
-
-
-
-        // Calculate direction (Aiming at where player is NOW)
         Vector3 rawDir = (GameManager.instance.player.transform.position - transform.position);
         rawDir.y = 0;
 
@@ -476,7 +467,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         AgentAI.velocity = Vector3.zero;
         isCharging = false;
 
-        // Stop animation
+        
         if (anim != null) 
             anim.SetBool("bullCharge", false);
 
@@ -498,17 +489,13 @@ public class EnemyAI : MonoBehaviour, IDamage
                 dmg.TakeDamage(contactDamage);
             }
 
-            // 2. STOP THE CHARGE
             if (chargeRoutine != null) StopCoroutine(chargeRoutine);
-
-            // 3. RESET PHYSICS/LOGIC
             AgentAI.velocity = Vector3.zero;
             isCharging = false;
 
-            // --- ADD THIS LINE ---
-            // Without this, he keeps "running" in place after hitting you
+       
             if (anim != null) anim.SetBool("isCharging", false);
-            // ---------------------
+           
 
             AgentAI.speed = normalSpeed;
             AgentAI.ResetPath();
