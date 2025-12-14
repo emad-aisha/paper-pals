@@ -608,6 +608,20 @@ public class PlayerController : MonoBehaviour, IDamage
         GameObject enemy = GetClosestEnemy();
         if (enemy == null) return;
 
+        float distance = Vector3.Distance(transform.position, enemy.transform.position);
+
+        MeleeStats melee = (MeleeStats)Weapons[WeaponListPos];
+
+        float meleeRange = melee.MeleeRange;
+
+        if (distance > meleeRange)
+            return;
+
+        Vector3 EnemyDirection = (enemy.transform.position - transform.position).normalized;
+
+        if (Vector3.Dot(transform.forward, EnemyDirection) < 0.5f) // outside of fov (cant hit enemies u cant see)
+            return;
+
         IDamage dmg = enemy.GetComponent<IDamage>();
 
         if (dmg != null)
