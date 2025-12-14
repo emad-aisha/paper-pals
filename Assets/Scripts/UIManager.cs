@@ -71,7 +71,6 @@ public class UIManager : MonoBehaviour {
 
 
     void Awake() {
-
         if (instance == null) instance = this;
 
         if (Cursor.lockState == CursorLockMode.Locked) Cursor.lockState = CursorLockMode.None;
