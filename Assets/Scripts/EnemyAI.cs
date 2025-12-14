@@ -176,13 +176,9 @@ public class EnemyAI : MonoBehaviour, IDamage
             RoamTimer += Time.deltaTime;
         }
 
-        // --- 2. FACE TARGET FIX ---
-        // Only look at the player if we are NOT charging.
-        // If we are charging, we are locked in a straight line.
-        if (!isCharging)
-        {
+       
             FaceTarget();
-        }
+ 
 
         // --- 3. RANGED LOGIC ---
         if (enemyType == EnemyType.ranged)
@@ -218,7 +214,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             UpdateMovementAnimation();
         }
 
-        // --- 5. BULL LOGIC (Moved OUTSIDE of Melee block) ---
+       
         if (enemyType == EnemyType.bull)
         {
             if (canSeePlayer || CanSeePlayer())
@@ -431,19 +427,31 @@ public class EnemyAI : MonoBehaviour, IDamage
         AgentAI.velocity = Vector3.zero;
 
         
-        if (anim != null) 
+        if (anim != null)
+        {
             anim.SetTrigger("bullBuild");
+        }
 
-       
+        float windUpTimer = 0;
+        while (windUpTimer < chargeWindUp)
+        {
+            FaceTarget(); 
+            windUpTimer += Time.deltaTime;
+            yield return null;
+        }
+
+
         yield return new WaitForSeconds(chargeWindUp);
 
 
-        if (anim != null) 
-            anim.SetBool("bullCharge", true);
 
         // Calculate direction (Aiming at where player is NOW)
         Vector3 rawDir = (GameManager.instance.player.transform.position - transform.position);
         rawDir.y = 0;
+
+        if (anim != null)
+            anim.SetBool("bullCharge", true);
+
         Vector3 dir = rawDir.normalized;
         float timer = 0;
 
