@@ -52,6 +52,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int accelerationTime;
     [SerializeField] int chargeDuration;
     [SerializeField] int chargeCooldown;
+    [SerializeField] float chargeWindUp;
     private bool isCharging = false;
     private Coroutine chargeRoutine;
 
@@ -423,12 +424,18 @@ public class EnemyAI : MonoBehaviour, IDamage
         chargeTimer = 0;
 
         // Direction toward player at start
+        AgentAI.ResetPath();
+        AgentAI.velocity = Vector3.zero;
+
+        //Animation here: Bull Charge Windup
+        yield return new WaitForSeconds(chargeWindUp);
+        AgentAI.ResetPath();
+
+        //running animatin here:
         Vector3 rawDir = (GameManager.instance.player.transform.position - transform.position);
         rawDir.y = 0;
         Vector3 dir = rawDir.normalized;
         float timer = 0;
-
-        AgentAI.ResetPath();
 
         while (timer < accelerationTime)
         {
@@ -449,6 +456,10 @@ public class EnemyAI : MonoBehaviour, IDamage
         // Stop and resume normal AI
         AgentAI.velocity = Vector3.zero;
         isCharging = false;
+
+        //stop running animation:
+
+
         AgentAI.speed = normalSpeed;
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
     }
@@ -475,6 +486,9 @@ public class EnemyAI : MonoBehaviour, IDamage
             // 3. RESET PHYSICS/LOGIC
             AgentAI.velocity = Vector3.zero;
             isCharging = false;
+
+            //Stop charging animation here:
+
             AgentAI.speed = normalSpeed;
             AgentAI.ResetPath(); // Stop moving for a moment
         }
