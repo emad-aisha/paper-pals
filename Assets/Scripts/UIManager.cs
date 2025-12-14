@@ -128,6 +128,7 @@ public class UIManager : MonoBehaviour {
                 CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
                 SetCostColors();
             }
+            SetPurchasePositions();
         }
 
     }
@@ -154,11 +155,11 @@ public class UIManager : MonoBehaviour {
     }
 
     void SetPurchasePositions() {
-        int initial = 1205;
+        int initial = 1690;
 
         for (int i = 0; i < PurchaseOptions.Count; i++) {
             float xValue = PurchaseOptions[i].transform.position.x;
-            int height = 62;
+            int height = 300;
 
             float yValue = i * height;
 
@@ -367,14 +368,13 @@ public class UIManager : MonoBehaviour {
             if (haveMap) Map.SetActive(true);
 
             PurchaseOptions[3].SetActive(false);
-            //MoveItemsUp();
             SetCostColors();
         }
 
     }
 
     public void OnBuyTape() {
-        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[0].text)) {
+        if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[0].text) && haveTape == false) {
             int oldCoins = LoadSave.instance.GetPlayerCoins();
             int newCoins = oldCoins -= int.Parse(CostTexts[0].text);
             LoadSave.instance.SetPlayerCoins(newCoins);
@@ -432,7 +432,6 @@ public class UIManager : MonoBehaviour {
 
             EquipOptions[1].SetActive(true);
             PurchaseOptions[4].SetActive(false);
-            //MoveItemsUp();
             SetCostColors();
         }
     }
@@ -447,7 +446,6 @@ public class UIManager : MonoBehaviour {
 
             EquipOptions[2].SetActive(true);
             PurchaseOptions[5].SetActive(false);
-            //MoveItemsUp();
             SetCostColors();
         }
     }

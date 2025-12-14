@@ -547,7 +547,7 @@ public class GameManager : MonoBehaviour {
 
 
         //takes the value from the slider and displays it on top to the slider
-        MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
+        MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F0");
         LoadSave.instance.SetMouseSens(MouseSensSliderObj);
     }
 
