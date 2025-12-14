@@ -52,6 +52,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int accelerationTime;
     [SerializeField] int chargeDuration;
     [SerializeField] int chargeCooldown;
+    private bool isCharging = false;
+    [SerializeField] float chargeWindUp;
+    private Coroutine chargeRoutine;
 
     [Header("Shooter")]
     [SerializeField] Transform ShootPos;
@@ -119,16 +122,22 @@ public class EnemyAI : MonoBehaviour, IDamage
         StoppingDistanceOG = AgentAI.stoppingDistance;
         StartPosition = transform.position;
 
-        //calculate direction vector from the enemy to the player
-        playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
+        // Calculate direction vector from the enemy to the player
+        if (HeadPosition != null)
+        {
+            playerDirection = GameManager.instance.player.transform.position - HeadPosition.position;
+        }
 
-
-        //SlamArea.SetActive(false);
-
+        // NavMesh standard setup
         AgentAI.updatePosition = true;
         AgentAI.updateRotation = false;
         AgentAI.updateUpAxis = false;
-        AgentAI.baseOffset = flyHeight;
+
+        if (enemyType == EnemyType.ranged)
+        {
+            AgentAI.baseOffset = flyHeight; // Bats float up
+        }
+       
     }
 
     void AttackPlayer()
@@ -151,54 +160,51 @@ public class EnemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        LeapTimer += Time.deltaTime;//Boss Leap Attack Timer
+        // --- 1. TIMERS ---
+        LeapTimer += Time.deltaTime;
         ShootTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
 
-        // Check distance between enemy and player
+        // Always tick the charge timer up (unless reset)
+        if (chargeTimer < chargeCooldown) chargeTimer += Time.deltaTime;
+
+        // Distance check
         float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
         if (AgentAI.remainingDistance < 0.01f)
         {
-            //increment the Roam timer
             RoamTimer += Time.deltaTime;
         }
 
-        FaceTarget();
+        // --- 2. FACE TARGET FIX ---
+        // Only look at the player if we are NOT charging.
+        // If we are charging, we are locked in a straight line.
+        if (!isCharging)
+        {
+            FaceTarget();
+        }
 
+        // --- 3. RANGED LOGIC ---
         if (enemyType == EnemyType.ranged)
         {
-            // Force the bat to always "see" the player
             canSeePlayer = true;
             PlayerInTrigger = true;
-
-            // Reset last-seen timer
             timeSinceLastSeen = 0;
-
-            // Handle flying movement and attacks
             FlyingBehavior();
-
-            // Skip flashlight/detection logic entirely
             AgentAI.nextPosition = transform.position;
-
-            return; // exit Update early for ranged enemy
+            return;
         }
 
         HandleFlashlightDetection();
 
-
-
+        // --- 4. MELEE & BOSS LOGIC ---
         if (enemyType == EnemyType.melee || enemyType == EnemyType.boss)
         {
-
             if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
             {
                 timeSinceLastSeen = 0f;
-
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-
-                // If close enough to attack, and cooldown is ready and EnemyType.melee
                 if (distance <= attackRange && attackTimer >= attackCooldown)
                 {
                     AttackPlayer();
@@ -208,51 +214,49 @@ public class EnemyAI : MonoBehaviour, IDamage
             {
                 AgentAI.ResetPath();
                 timeSinceLastSeen += Time.deltaTime;
-
-                if (timeSinceLastSeen >= loseSightDelay)
-                {
-                    //CheckRoam();
-                }
-            }
-
-            // Bull charge logic
-            if (enemyType == EnemyType.bull)
-            {
-                if (canSeePlayer || CanSeePlayer())
-                {
-                    timeSinceLastSeen = 0f;
-
-                    AgentAI.SetDestination(GameManager.instance.player.transform.position);
-
-                    if (distance <= attackRange && attackTimer >= attackCooldown)
-                    {
-                        AttackPlayer();
-                    }
-
-                    chargeTimer += Time.deltaTime;
-                    if (chargeTimer >= chargeCooldown)
-                    {
-                        StartCoroutine(BullCharge());
-                        chargeTimer = 0f;
-                    }
-
-
-                }
-                else
-                {
-                    AgentAI.ResetPath();
-                    timeSinceLastSeen += Time.deltaTime;
-                    if (timeSinceLastSeen >= loseSightDelay)
-                    {
-                        //CheckRoam();
-                    }
-                    chargeTimer = 0f;
-                }
             }
             UpdateMovementAnimation();
         }
 
-        //boss leap attack
+        // --- 5. BULL LOGIC (Moved OUTSIDE of Melee block) ---
+        if (enemyType == EnemyType.bull)
+        {
+            if (canSeePlayer || CanSeePlayer())
+            {
+                timeSinceLastSeen = 0f;
+
+                // Only use NavMesh movement if NOT currently charging
+                if (!isCharging)
+                {
+                    AgentAI.SetDestination(GameManager.instance.player.transform.position);
+                }
+
+                // Normal Attack (if close)
+                if (distance <= attackRange && attackTimer >= attackCooldown && !isCharging)
+                {
+                    AttackPlayer();
+                }
+
+                // --- THE CHARGE TRIGGER ---
+                // Trigger if: Close enough (15), Cooldown ready, and NOT already charging
+                if (distance < 15 && chargeTimer >= chargeCooldown && !isCharging)
+                {
+                    // CRITICAL: Save the routine so we can stop it in OnCollisionEnter
+                    chargeRoutine = StartCoroutine(BullCharge());
+                }
+            }
+            else
+            {
+                // Lost sight logic
+                if (!isCharging) AgentAI.ResetPath();
+
+                timeSinceLastSeen += Time.deltaTime;
+                chargeTimer = 0f; // Optional: reset charge if he loses you? Up to you.
+            }
+            UpdateMovementAnimation();
+        }
+
+        // --- 6. BOSS LEAP ---
         if (PlayerInTrigger && LeapTimer >= LeapDuration && enemyType == EnemyType.boss)
         {
             LeapFrog();
@@ -419,16 +423,31 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     IEnumerator BullCharge()
     {
-        chargeTimer = 0f;
+        isCharging = true;
+        chargeTimer = 0;
 
-        // Direction toward player at start
-        Vector3 dir = (GameManager.instance.player.transform.position - transform.position).normalized;
-        float timer = 0f;
+       
+        AgentAI.ResetPath(); // Stop moving
+        AgentAI.velocity = Vector3.zero;
 
-        // Temporarily stop pathfinding so we can move manually
-        AgentAI.isStopped = true;
+        
+        if (anim != null) 
+            anim.SetTrigger("bullBuild");
+
+       
+        yield return new WaitForSeconds(chargeWindUp);
 
 
+        if (anim != null) 
+            anim.SetBool("isCharge", true);
+
+        // Calculate direction (Aiming at where player is NOW)
+        Vector3 rawDir = (GameManager.instance.player.transform.position - transform.position);
+        rawDir.y = 0;
+        Vector3 dir = rawDir.normalized;
+        float timer = 0;
+
+        // Acceleration Loop
         while (timer < accelerationTime)
         {
             AgentAI.velocity = dir * Mathf.Lerp(AgentAI.speed, chargeMaxSpeed, timer / accelerationTime);
@@ -436,8 +455,8 @@ public class EnemyAI : MonoBehaviour, IDamage
             yield return null;
         }
 
-        // Maintain max speed for charge duration
-        float chargeTime = 0f;
+        // Max Speed Loop
+        float chargeTime = 0;
         while (chargeTime < chargeDuration)
         {
             AgentAI.velocity = dir * chargeMaxSpeed;
@@ -445,15 +464,48 @@ public class EnemyAI : MonoBehaviour, IDamage
             yield return null;
         }
 
-        // Stop and resume normal AI
+       
         AgentAI.velocity = Vector3.zero;
-        AgentAI.isStopped = false;
+        isCharging = false;
+
+        // Stop animation
+        if (anim != null) 
+            anim.SetBool("BullCharge", false);
+
         AgentAI.speed = normalSpeed;
-        AgentAI.ResetPath();
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        // Check if we hit the player AND we are currently charging
+        if (enemyType == EnemyType.bull && isCharging && collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("BULL HIT PLAYER!");
 
+            IDamage dmg = collision.gameObject.GetComponentInParent<IDamage>();
+
+            if (dmg != null)
+            {
+                dmg.TakeDamage(contactDamage);
+            }
+
+            // 2. STOP THE CHARGE
+            if (chargeRoutine != null) StopCoroutine(chargeRoutine);
+
+            // 3. RESET PHYSICS/LOGIC
+            AgentAI.velocity = Vector3.zero;
+            isCharging = false;
+
+            // --- ADD THIS LINE ---
+            // Without this, he keeps "running" in place after hitting you
+            if (anim != null) anim.SetBool("isCharging", false);
+            // ---------------------
+
+            AgentAI.speed = normalSpeed;
+            AgentAI.ResetPath();
+        }
+    }
 
     void FlyingBehavior()
     {
