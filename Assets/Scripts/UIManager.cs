@@ -106,12 +106,12 @@ public class UIManager : MonoBehaviour {
                 mDisplay_X_Button.text = "( )";
             }
 
+            SetSliders();
+
             // set the sliders
             mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
             mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-            mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-
-            SetSliders();
+            mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);   
         }
     }
 
@@ -128,14 +128,6 @@ public class UIManager : MonoBehaviour {
                 CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
                 SetCostColors();
             }
-        }
-
-        //used to set the default values of the sliders for the options menu
-
-        if (type == Type.options) {
-            if (mMusicSliderObj) mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-            if (mSFXSliderObj) mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-            if (mMouseSensSliderObj) mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         }
 
     }
@@ -495,16 +487,13 @@ public class UIManager : MonoBehaviour {
     public void SetSliders() {
         mMusicSliderObj.value = LoadSave.instance.GetMusicVolume();
         mMusicNumberDisplay.text = (mMusicSliderObj.value * 100).ToString("F0");
-        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
 
 
         mSFXSliderObj.value = LoadSave.instance.GetSFXVolume();
         mSFXNumberDisplay.text = (mSFXSliderObj.value * 100).ToString("F0");
-        LoadSave.instance.SetSFXSettings(mSFXSliderObj);
 
 
         mMouseSensSliderObj.value = LoadSave.instance.GetMouseSens();
         mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
-        LoadSave.instance.SetMouseSens(mMouseSensSliderObj);
     }
 }

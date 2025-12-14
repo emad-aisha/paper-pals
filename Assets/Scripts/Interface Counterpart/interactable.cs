@@ -33,7 +33,7 @@ public class Interactable : MonoBehaviour, IInteractable {
         else if (type == InterfaceType.Ammo) {
             GameManager.instance.UpdateAmmoCount(amount);
 
-            //TODO: this doesnt work
+            // this doesnt work
             //WeaponStats CurrentWeapon = Player.GetCurrentWeapon();
 
             //if (CurrentWeapon != null && CurrentWeapon.type == WeaponType.Gun)
