@@ -480,7 +480,7 @@ public class UIManager : MonoBehaviour {
 
 
         //takes the value from the slider and displays it on top to the slider
-        mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
+        mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F0");
         LoadSave.instance.SetMouseSens(mMouseSensSliderObj);
     }
 
@@ -494,6 +494,6 @@ public class UIManager : MonoBehaviour {
 
 
         mMouseSensSliderObj.value = LoadSave.instance.GetMouseSens();
-        mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
+        mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F0");
     }
 }

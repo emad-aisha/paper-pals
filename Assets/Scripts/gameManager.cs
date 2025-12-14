@@ -156,17 +156,14 @@ public class GameManager : MonoBehaviour {
 
         if (isTurnOffLighting) Destroy(Lighting);
 
+
+        UpdateTextSliders();
+        ShowInvert();
+
         //used to set the default values of the sliders for the options menu
         MusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-
-
-        MusicSliderObj.value = LoadSave.instance.GetMusicVolume();
-        SFXSliderObj.value = LoadSave.instance.GetSFXVolume();
-        MouseSensSliderObj.value = LoadSave.instance.GetMouseSens();
-        UpdateTextSliders();
-        ShowInvert();
     }
 
 
@@ -480,6 +477,7 @@ public class GameManager : MonoBehaviour {
         }
         else {
             menuActive.SetActive(false);
+            menuVOLOption.SetActive(true);
             menuOption.SetActive(true);
             PauseGame();
         }
@@ -488,13 +486,13 @@ public class GameManager : MonoBehaviour {
         //if you're in the Mouse MiniOptions
         if (menuMouseOption) {
             menuMouseOption.SetActive(false);
+
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
         }
         //if you're in the VOL MiniOptions
         else if (menuVOLOption) {
-            menuVOLOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
@@ -555,15 +553,14 @@ public class GameManager : MonoBehaviour {
 
     public void UpdateTextSliders() {
         //takes the value from the slider and displays it on top to the slider
+        MusicSliderObj.value = LoadSave.instance.GetMusicVolume();
         MusicNumberDisplay.text = (MusicSliderObj.value * 100).ToString("F0");
-        LoadSave.instance.SetMusicSettings(MusicSliderObj);
 
+        SFXSliderObj.value = LoadSave.instance.GetSFXVolume();
         SFXNumberDisplay.text = (SFXSliderObj.value * 100).ToString("F0");
-        LoadSave.instance.SetSFXSettings(SFXSliderObj);
 
-
-        MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
-        LoadSave.instance.SetMouseSens(MouseSensSliderObj);
+        MouseSensSliderObj.value = LoadSave.instance.GetMouseSens();
+        MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F0");
     }
 
     public void UpdateInvert() {

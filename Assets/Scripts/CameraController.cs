@@ -22,8 +22,8 @@ public class CameraController : MonoBehaviour
         if (!GameManager.instance.isPaused)
         {
             // get input
-            float mouseX = Input.GetAxis("Mouse X") * (Sens + LoadSave.instance.GetMouseSens()) * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * (Sens + LoadSave.instance.GetMouseSens()) * Time.deltaTime;
+            float mouseX = Input.GetAxis("Mouse X") * LoadSave.instance.GetMouseSens() * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * LoadSave.instance.GetMouseSens() * Time.deltaTime;
 
             // use the invertY 
             if (LoadSave.instance.GetInvertYSettings())
