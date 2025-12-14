@@ -8,7 +8,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     public enum EnemyType { ranged, melee, bull, boss };
     [Header("Enemy Type")]
     [SerializeField] EnemyType enemyType;
-    
+
     [Header("Boss")]
     [SerializeField] float LeapDuration;
     [SerializeField] float SlamVisibility;
@@ -144,6 +144,9 @@ public class EnemyAI : MonoBehaviour, IDamage
         ShootTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
 
+        // Check distance between enemy and player
+        float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
+
         if (AgentAI.remainingDistance < 0.01f)
         {
             //increment the Roam timer
@@ -173,7 +176,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
 
-        if (enemyType == EnemyType.melee)
+        if (enemyType == EnemyType.melee || enemyType == EnemyType.boss)
         {
 
             if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
@@ -182,8 +185,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-                // Check distance between enemy and player
-                float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
                 // If close enough to attack, and cooldown is ready and EnemyType.melee
                 if (distance <= attackRange && attackTimer >= attackCooldown)
@@ -211,7 +212,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
                     AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-                    float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
                     if (distance <= attackRange && attackTimer >= attackCooldown)
                     {
                         AttackPlayer();
@@ -236,20 +236,15 @@ public class EnemyAI : MonoBehaviour, IDamage
                     }
                     chargeTimer = 0f;
                 }
-
-
             }
-
-
             UpdateMovementAnimation();
         }
 
         //boss leap attack
         if (PlayerInTrigger && LeapTimer >= LeapDuration && enemyType == EnemyType.boss)
         {
-            LeapFog();
+            LeapFrog();
         }
-
     }
 
     //flashlight detection methods
@@ -380,7 +375,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         HP -= amount;
 
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
-        LeapFog();
+
         if (HP <= 0)
         {
             Instantiate(LootDrops, transform.position, transform.rotation);
@@ -553,15 +548,15 @@ public class EnemyAI : MonoBehaviour, IDamage
         //anim.SetBool("catWalking", walking);
     }
 
-    void LeapFog()
+    void LeapFrog()
     {
         //TravelTime for the Leap Attack
         TravelTime += Time.deltaTime;
 
-        float Duration = 0.5f;
+        float Duration = 0.5f;//0.5f;
         float ZeroToOne = TravelTime / Duration;
 
-        int HoldsFive = 5;
+        int JumpHeight = 5;
 
         //move to target
         Vector3 A = transform.position;//from the boss position
@@ -569,7 +564,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         Vector3 Pos = Vector3.Lerp(A, B, ZeroToOne); //position between A and B
 
         //moves the boss in an arc
-        Vector3 ArcMotion = Vector3.up * HoldsFive * Mathf.Sin(ZeroToOne * 3.14f); //move in an arc
+        Vector3 ArcMotion = Vector3.up * JumpHeight * Mathf.Sin(ZeroToOne * 3.14f);
 
         //make the boss leap
         transform.position = Pos + ArcMotion;
@@ -581,12 +576,12 @@ public class EnemyAI : MonoBehaviour, IDamage
             LeapTimer = 0f;
             TravelTime = 0f;
 
-            StartCoroutine(Slam()); 
+            StartCoroutine(Slam());
         }
     }
     IEnumerator Slam()
     {
-        //Activate slam area and deactivate it after 1 second
+        //Activate slam area and deactivate it 
         SlamArea.SetActive(true);
         yield return new WaitForSeconds(SlamVisibility);
         SlamArea.SetActive(false);
