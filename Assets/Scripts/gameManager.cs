@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
 
@@ -123,12 +122,9 @@ public class GameManager : MonoBehaviour
 
     // private variables
     float originalTimeScale = 1f;
-    public int gameGoalCount = 0;
-    public int gameGoalCounter;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
+    void Awake() {
         if (instance == null) instance = this;
 
         originalTimeScale = Time.timeScale;
@@ -151,7 +147,7 @@ public class GameManager : MonoBehaviour
         SetAbilities();
         UpdateKeysLeft();
 
-        
+
         SetEyedrops();
         SetWeapons();
 
@@ -162,37 +158,36 @@ public class GameManager : MonoBehaviour
 
         //used to set the default values of the sliders for the options menu
         MusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-        MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
 
-        
+
+        MusicSliderObj.value = LoadSave.instance.GetMusicVolume();
+        SFXSliderObj.value = LoadSave.instance.GetSFXVolume();
+        MouseSensSliderObj.value = LoadSave.instance.GetMouseSens();
+        UpdateTextSliders();
+        ShowInvert();
     }
 
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetButtonDown("Cancel"))
-        {
-            if (menuActive == null && !menuOption.activeSelf)
-            {
+    void Update() {
+        if (Input.GetButtonDown("Cancel")) {
+            if (menuActive == null && !menuOption.activeSelf) {
                 PauseGame();
                 menuActive = menuPause;
                 menuActive.SetActive(true);
             }
-            else if (menuActive == menuPause && !menuOption.activeSelf)
-            {
+            else if (menuActive == menuPause && !menuOption.activeSelf) {
                 UnpauseGame();
             }
         }
 
-        if (Input.GetButtonDown("Flashlight") && hasFlashlight)
-        {
+        if (Input.GetButtonDown("Flashlight") && hasFlashlight) {
             controller.FlashlightToggle();
         }
 
-        if (Input.GetButtonDown("Map"))
-        {
+        if (Input.GetButtonDown("Map")) {
             controller.MapToggle();
         }
 
@@ -202,20 +197,16 @@ public class GameManager : MonoBehaviour
         //LoadSave.instance.GetAudio(player.GetComponent<AudioSource>());
     }
 
-    void SetEyedrops()
-    {
+    void SetEyedrops() {
         List<GameObject> temp = new List<GameObject>();
         temp.AddRange(GameObject.FindGameObjectsWithTag("Eyedrop"));
 
-        for (int i = 0; i < temp.Count; i++)
-        {
-            for (int j = 0; j < temp.Count; j++)
-            {
+        for (int i = 0; i < temp.Count; i++) {
+            for (int j = 0; j < temp.Count; j++) {
                 string name = temp[j].name;
                 int eyedropOrder = int.Parse(name.Substring(7, 1));
 
-                if (eyedropOrder == i + 1)
-                {
+                if (eyedropOrder == i + 1) {
                     EyedropPhases.Add(temp[j]);
                     break;
                 }
@@ -223,25 +214,21 @@ public class GameManager : MonoBehaviour
         }
 
     }
-     void SetWeapons()
-    {
+    void SetWeapons() {
         Weapons.AddRange(GameObject.FindGameObjectsWithTag("Weapon"));
-        for (int i = 0; i < Weapons.Count; i++)
-        {
+        for (int i = 0; i < Weapons.Count; i++) {
             Weapons[i].SetActive(false);
         }
-    } 
+    }
 
-    public void PauseGame()
-    {
+    public void PauseGame() {
         isPaused = true;
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public void UnpauseGame()
-    {
+    public void UnpauseGame() {
         isPaused = false;
         Time.timeScale = originalTimeScale;
         Cursor.visible = false;
@@ -251,41 +238,32 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
-    public void SetAbilities()
-    {
+    public void SetAbilities() {
         string currLevelName = SceneManager.GetActiveScene().name;
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
         string tutorial = "The Map";
 
-
-        // TODO: dont set weapons hee, do it in save load
         if (currLevelName == tutorial) {
             hasFlashlight = false;
             hasDoubleJump = false;
             hasDash = false;
         }
-        else if (currLevelName == levelOne)
-        {
+        else if (currLevelName == levelOne) {
             hasFlashlight = false;
             hasDoubleJump = false;
             hasDash = false;
         }
-        else if (currLevelName == levelTwo)
-        {
+        else if (currLevelName == levelTwo) {
             hasFlashlight = true;
             hasDoubleJump = false;
             hasDash = true;
-            controller.GetWeaponStats(pencil);
         }
-        else if (currLevelName == levelThree)
-        {
+        else if (currLevelName == levelThree) {
             hasFlashlight = true;
             hasDoubleJump = true;
             hasDash = true;
-            controller.GetWeaponStats(pencil);
-            controller.GetWeaponStats(gun);
         }
         else if (currLevelName == "Aisha's Scene") {
             hasFlashlight = true;
@@ -296,18 +274,16 @@ public class GameManager : MonoBehaviour
             TotalAmmoOwned = gun.AmmoCurr;
             UpdateAmmoCount(0);
         }
-        else
-        {
+        else {
             hasFlashlight = true;
             hasDoubleJump = true;
             hasDash = true;
-           // controller.GetWeaponStats(pencil);
+            // controller.GetWeaponStats(pencil);
             // controller.GetWeaponStats(gun);
         }
     }
 
-    public void UpdateKeysLeft()
-    {
+    public void UpdateKeysLeft() {
         int keysLeft = totalKeys - ownedKeys;
 
         if (keysLeft != 0)
@@ -318,27 +294,23 @@ public class GameManager : MonoBehaviour
             reminderText.text = "You can escape now!";
     }
 
-    public void KeyCheck()
-    {
+    public void KeyCheck() {
         UpdateKeysLeft();
         StartCoroutine(ReminderText());
 
-        if (ownedKeys == totalKeys)
-        {
+        if (ownedKeys == totalKeys) {
             Destroy(exitCover);
         }
 
     }
 
-    public IEnumerator ReminderText()
-    {
+    public IEnumerator ReminderText() {
         reminderMenu.SetActive(true);
         yield return new WaitForSeconds(5);
         reminderMenu.SetActive(false);
     }
 
-    public void LoadNextLevel(int levelToLoad)
-    {
+    public void LoadNextLevel(int levelToLoad) {
         string currLevelName = SceneManager.GetActiveScene().name;
 
         string TutorialLevel = "The Map";
@@ -353,49 +325,38 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if (currLevelName == shop || currLevelName == "Mat's Scene")
-        {
+        if (currLevelName == shop || currLevelName == "Mat's Scene") {
             if (levelToLoad == 1) SceneManager.LoadScene(levelOne);
             if (levelToLoad == 2) SceneManager.LoadScene(levelTwo);
             if (levelToLoad == 3) SceneManager.LoadScene(levelThree);
             if (levelToLoad == 4) SceneManager.LoadScene(levelFour);
         }
 
-        if (currLevelName == levelFour){
+        if (currLevelName == levelFour) {
             Win();
         }
     }
 
-    public void Win()
-    {
+    public void Win() {
         PauseGame();
         menuActive = menuWin;
         menuActive.SetActive(true);
     }
 
-    public void WinTrophy(int amount)
-    {
-        gameGoalCount += amount;
-
-        if (gameGoalCount == 1)
-        {
-            PauseGame();
-            menuActive = menuWin;
-            menuActive.SetActive(true);
-        }
+    public void WinTrophy() {
+        PauseGame();
+        menuActive = menuWin;
+        menuActive.SetActive(true);
     }
 
-    public void Defeat()
-    {
+    public void Defeat() {
         PauseGame();
         menuActive = menuLose;
         menuActive.SetActive(true);
     }
 
-    public void Dialogue()
-    {
-        if (menuActive == null)
-        {
+    public void Dialogue() {
+        if (menuActive == null) {
             Time.timeScale = 0;
             menuActive = menuDialogue;
             menuActive.SetActive(true);
@@ -403,10 +364,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndDialogue()
-    {
-        if (menuActive == menuDialogue)
-        {
+    public void EndDialogue() {
+        if (menuActive == menuDialogue) {
             isDialogueActive = false;
             Time.timeScale = originalTimeScale;
             menuActive.SetActive(false);
@@ -414,28 +373,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void InteractOn()
-    {
-        if (interactActive == null)
-        {
+    public void InteractOn() {
+        if (interactActive == null) {
             isInteractOn = true;
             interactActive = Interactable;
             interactActive.SetActive(true);
         }
     }
 
-    public void InteractOff()
-    {
-        if (interactActive != null)
-        {
+    public void InteractOff() {
+        if (interactActive != null) {
             isInteractOn = false;
             interactActive.SetActive(false);
             interactActive = null;
         }
     }
 
-    void SetEyedrop()
-    {
+    void SetEyedrop() {
         float percent = ((float)CoinsCounter / CoinsMax);
         int phase = 0;
 
@@ -460,20 +414,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateCoinCount(int ammount)
-    {
-        if (CoinsCounter < CoinsMax)
-        {
+    public void UpdateCoinCount(int ammount) {
+        if (CoinsCounter < CoinsMax) {
             CoinsCounter += ammount;
             LoadSave.instance.SetPlayerCoins(CoinsCounter);
         }
 
-        if (CoinsCounter >= CoinsMax)
-        {
+        if (CoinsCounter >= CoinsMax) {
             CoinsCounter -= CoinsMax;
 
-            if (TotalCoinsOwned < 999)
-            {
+            if (TotalCoinsOwned < 999) {
                 TotalCoinsOwned += 1;
             }
         }
@@ -491,8 +441,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void UpdateAmmoCount(int amount)
-    {
+    public void UpdateAmmoCount(int amount) {
         // Stored ammo only
         TotalAmmoOwned = Mathf.Clamp(TotalAmmoOwned + amount, 0, 999);
 
@@ -500,14 +449,12 @@ public class GameManager : MonoBehaviour
         AmmoCountText.text = TotalAmmoOwned.ToString();
     }
 
-    public void UpdateTotal(GunStats weaponInfo)
-    {
+    public void UpdateTotal(GunStats weaponInfo) {
         AmmoAndExtra = TotalAmmoOwned + weaponInfo.AmmoCurr;
         //AmmoCountText.text = AmmoAndExtra.ToString("F0");
     }
 
-    public void UpdateAmmoCount(int amount, GunStats weaponInfo)
-    {
+    public void UpdateAmmoCount(int amount, GunStats weaponInfo) {
         // Apply to stored ammo only
         UpdateAmmoCount(amount);
         // Then refresh UI using the clip info
@@ -515,111 +462,129 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ShowFlashlightHint()
-    {
+    public void ShowFlashlightHint() {
         FlashlightMessage.SetActive(true);
         StartCoroutine(HideFlashlightHintAfterDelay());
     }
 
-    IEnumerator HideFlashlightHintAfterDelay()
-    {
+    IEnumerator HideFlashlightHintAfterDelay() {
         yield return new WaitForSeconds(2f);
         FlashlightMessage.SetActive(false);
     }
 
     //option functions
-    public void OptionMenu()
-    {
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu"))
-        {
+    public void OptionMenu() {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Main Menu")) {
             SceneManager.LoadScene("MMOption");
             //menuOption.SetActive(true);
         }
-        else
-        {
+        else {
             menuActive.SetActive(false);
             menuOption.SetActive(true);
             PauseGame();
         }
     }
-    public void ExitOptionMenu()
-    {
+    public void ExitOptionMenu() {
         //if you're in the Mouse MiniOptions
-        if (menuMouseOption)
-        {
+        if (menuMouseOption) {
             menuMouseOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
         }
         //if you're in the VOL MiniOptions
-        else if (menuVOLOption)
-        {
+        else if (menuVOLOption) {
             menuVOLOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
         }
         //if you're in the main menu option scene
-        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
-        {
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption")) {
             SceneManager.LoadScene("Main Menu");
             //SceneManager.Equals("Main Menu", SceneManager.GetActiveScene());
             //menuOption.SetActive(false);
         }
         //if you're in the regular option menu (volume will be active on default)
-        else
-        {
+        else {
             menuVOLOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
         }
     }
-    public void VolOptionMenu()
-    {
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
-        {
+    public void VolOptionMenu() {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption")) {
             menuMouseOption.SetActive(false);
             menuVOLOption.SetActive(true);
         }
-        else
-        {
+        else {
             menuMouseOption.SetActive(false);
             menuVOLOption.SetActive(true);
             PauseGame();
         }
     }
 
-    public void MouseOptionMenu()
-    {
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
-        {
+    public void MouseOptionMenu() {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption")) {
             menuVOLOption.SetActive(false);
             menuMouseOption.SetActive(true);
         }
-        else
-        {
+        else {
             menuVOLOption.SetActive(false);
             menuMouseOption.SetActive(true);
             PauseGame();
         }
     }
 
-    public void DisplayTextSlider(float _Value)
-    {
+    public void DisplayTextSlider(float _Value) {
         //takes the value from the slider and displays it on top to the slider
-        MusicNumberDisplay.text = (MusicSliderObj.value *100).ToString("F0");
+        MusicNumberDisplay.text = (MusicSliderObj.value * 100).ToString("F0");
         LoadSave.instance.SetMusicSettings(MusicSliderObj);
 
 
         //takes the value from the slider and displays it on top to the slider
-        SFXNumberDisplay.text = (SFXSliderObj.value *100).ToString("F0");
+        SFXNumberDisplay.text = (SFXSliderObj.value * 100).ToString("F0");
         LoadSave.instance.SetSFXSettings(SFXSliderObj);
 
 
         //takes the value from the slider and displays it on top to the slider
         MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
         LoadSave.instance.SetMouseSens(MouseSensSliderObj);
+    }
+
+    public void UpdateTextSliders() {
+        //takes the value from the slider and displays it on top to the slider
+        MusicNumberDisplay.text = (MusicSliderObj.value * 100).ToString("F0");
+        LoadSave.instance.SetMusicSettings(MusicSliderObj);
+
+        SFXNumberDisplay.text = (SFXSliderObj.value * 100).ToString("F0");
+        LoadSave.instance.SetSFXSettings(SFXSliderObj);
+
+
+        MouseSensNumberDisplay.text = MouseSensSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMouseSens(MouseSensSliderObj);
+    }
+
+    public void UpdateInvert() {
+        if (!invertY) {
+            LoadSave.instance.SetInvertYSettings(true);
+            Display_X_Button.text = "(X)";
+        }
+        else {
+            //if it's on turn it off
+            LoadSave.instance.SetInvertYSettings(false);
+            Display_X_Button.text = "( )";
+        }
+        invertY = LoadSave.instance.GetInvertYSettings();
+    }
+
+    public void ShowInvert() {
+        if (invertY) {
+            Display_X_Button.text = "(X)";
+        }
+        else {
+            Display_X_Button.text = "( )";
+        }
     }
 }

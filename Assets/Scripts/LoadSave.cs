@@ -78,8 +78,6 @@ public class LoadSave : MonoBehaviour {
     public float GetMusicVolume() { return (float)MusicValue; }
     public float GetSFXVolume() { return (float)SFXValue; }
 
-
-    public float GetMouseValue() { return MouseValue; }
     public float GetMouseSens() { return MouseValue; }
 
     public bool GetInvertYSettings() { return isInvertedY; }

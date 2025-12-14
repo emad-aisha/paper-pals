@@ -124,7 +124,6 @@ public class UIManager : MonoBehaviour {
 
     void SetCostColors() {
         for (int i = 0; i < CostTexts.Count; i++) {
-            // TODO: set this once save is properly made
             int cost = int.Parse(CostTexts[i].text);
 
 
@@ -271,7 +270,6 @@ public class UIManager : MonoBehaviour {
     }
 
     // equiping UNFINISHED
-    // TODO: save system to call inventory
     public void OnPencilEquip() {
         // make sure this doesnt put multiple
         for (int i = 1; i < 3; i++) {
@@ -339,10 +337,7 @@ public class UIManager : MonoBehaviour {
         SetInventory();
     }
 
-    // buying Items UNFINISHED
-    // check if you have the item
-    // add it to save
-    // TODO: save these to LoadSave
+    // buying Items
     public void OnBuyMap() {
         if (LoadSave.instance.GetPlayerCoins() >= int.Parse(CostTexts[3].text)) {
             int oldCoins = LoadSave.instance.GetPlayerCoins();
@@ -467,12 +462,12 @@ public class UIManager : MonoBehaviour {
 
         //takes the value from the slider and displays it on top to the slider
         mSFXNumberDisplay.text = mSFXSliderObj.value.ToString("F2");
-        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
+        LoadSave.instance.SetSFXSettings(mSFXSliderObj);
         Debug.Log("SFX Value: " + mSFXSliderObj.value.ToString("F2"));  
 
         //takes the value from the slider and displays it on top to the slider
         mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
-        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
+        LoadSave.instance.SetMouseSens(mMouseSensSliderObj);
         Debug.Log("Mouse Sensitivity Value: " + mMouseSensSliderObj.value.ToString("F2"));
     }
 }

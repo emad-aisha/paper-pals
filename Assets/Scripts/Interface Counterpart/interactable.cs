@@ -46,7 +46,7 @@ public class Interactable : MonoBehaviour, IInteractable {
             GameManager.instance.UpdateCoinCount(amount);
         }
         else if (type == InterfaceType.Trophy) {
-            GameManager.instance.WinTrophy(0);
+            GameManager.instance.WinTrophy();
         }
         else if (type == InterfaceType.Weapon) {
             Player.GetWeaponStats(weaponStats);

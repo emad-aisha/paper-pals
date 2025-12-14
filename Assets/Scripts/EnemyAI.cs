@@ -386,8 +386,6 @@ public class EnemyAI : MonoBehaviour, IDamage
             Instantiate(LootDrops, transform.position, transform.rotation);
 
             Destroy(gameObject);
-            GameManager.instance.gameGoalCounter++;
-            GameManager.instance.UpdateKeysLeft();
         }
         else
         {
