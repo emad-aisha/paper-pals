@@ -1668,13 +1668,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 994193890274406944, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103785471009565834, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1245010787052289098, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
       propertyPath: m_Name
       value: UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 2350008248181176204, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3020494633501212398, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
       propertyPath: m_Pivot.x
