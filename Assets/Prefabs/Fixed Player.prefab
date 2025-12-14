@@ -256,6 +256,7 @@ GameObject:
   - component: {fileID: 5732693409398770829}
   - component: {fileID: 1841052741564047239}
   - component: {fileID: 7667562140629992768}
+  - component: {fileID: 4847186835615675203}
   m_Layer: 0
   m_Name: WeaponModel
   m_TagString: Untagged
@@ -331,6 +332,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &4847186835615675203
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881467763999452236}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5af0871419404694199ba679c95c5bfc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2124250871285267663
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,14 +432,21 @@ MonoBehaviour:
   jumpSpeed: 15
   maxJumps: 2
   gravity: 35
+  dashForce: 0
+  dashDuration: 0
+  dashCooldown: 0
   Damage: 0
   ShootDistance: 150
   FireRate: 0.5
   MeleeSpeed: 0
   TickDamage: 0
+  playerShootPos: {fileID: 0}
+  playerBullet: {fileID: 0}
+  bulletToCamera: 0
   ThrowDistance: 0
-  MeleeHitbox: {fileID: 0}
+  MeleeHitbox: {fileID: 5548284922982542721}
   DamageOverTime: 0
+  Enemies: []
   FOVChange: 10
   FOVChangeSpeed: 2
   flashlightSwitch: {fileID: 2694960053247425063}
@@ -439,6 +469,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e93cfd3c742db0145821e1d800109f22, type: 3}
   - {fileID: 8300000, guid: 14266bda9014eaf4b9f1f86bc6576a48, type: 3}
   audHurtVol: 0.5
+  anim: {fileID: 4847186835615675203}
   IFrames: 2
 --- !u!33 &362095207713673357
 MeshFilter:
@@ -940,7 +971,6 @@ MonoBehaviour:
   Sens: 300
   LockVertMin: -90
   LockVertMax: 90
-  invertY: 0
 --- !u!20 &5540878449538039453
 Camera:
   m_ObjectHideFlags: 0
@@ -1231,6 +1261,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
+--- !u!1 &5548284922982542721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5868139047506323493, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
+  m_PrefabInstance: {fileID: 2130386116295067044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7924126040046404166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
