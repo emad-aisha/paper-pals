@@ -410,9 +410,9 @@ MonoBehaviour:
   AgentAI: {fileID: 410625447462889529}
   Sprite: {fileID: 478239397356334502}
   visual: {fileID: 0}
-  flyHeight: 3
+  flyHeight: 2
   flySpeed: 2
-  flyAmplitude: 2
+  flyAmplitude: 0.1
   flyFrequency: 2
   flyDistance: 3
   swoopTrigger: {fileID: 56435702707888148}
@@ -576,7 +576,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5981814019727193967, guid: 7c645fd1a9b14954e9fbad28df46567a, type: 3}
       propertyPath: m_Radius
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5981814019727193967, guid: 7c645fd1a9b14954e9fbad28df46567a, type: 3}
       propertyPath: m_IsTrigger
@@ -663,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dccad51cb99edc4a8da077889597751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  batAI: {fileID: 0}
+  batAI: {fileID: 1205130155578342452}
 --- !u!4 &981129763127443586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6209457091142440212, guid: 7c645fd1a9b14954e9fbad28df46567a, type: 3}

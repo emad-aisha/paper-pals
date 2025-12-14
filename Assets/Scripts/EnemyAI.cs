@@ -498,8 +498,13 @@ public class EnemyAI : MonoBehaviour, IDamage
     }
     public IEnumerator SwoopAttack()
     {
+      
         isSwooping = true;
         AgentAI.isStopped = true;
+
+        //Animation: Bat Attack
+        if (anim != null)
+            anim.SetTrigger("batAttack");
 
         Transform player = GameManager.instance.player.transform;
 
