@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ButtonFunctions : MonoBehaviour
 {
-    // TODO: add a button for, next level in Menu Win (it doesnt get shown in level 3)
+    [Header("Main Menu UI Stuff")]
+    [SerializeField] GameObject VolMenu;
+    [SerializeField] GameObject MouseMenu;
+    [SerializeField] TMP_Text InvertDisplay;
 
-    
     public void Resume()
     {
         GameManager.instance.UnpauseGame();
@@ -18,6 +21,37 @@ public class ButtonFunctions : MonoBehaviour
     }
 
     //option button function
+    public void MMOption() {
+        SceneManager.LoadScene("MMOption");
+    }
+
+    public void MMOptionVol() {
+        VolMenu.SetActive(true);
+        MouseMenu.SetActive(false);
+    }
+
+    public void MMOptionMouse() {
+        VolMenu.SetActive(false);
+        MouseMenu.SetActive(true);
+    }
+
+    public void MMOptionExit() {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    public void MMOptionInvert() {
+        if (!LoadSave.instance.GetInvertYSettings()) {
+            LoadSave.instance.SetInvertYSettings(true);
+            InvertDisplay.text = "(X)";
+        }
+        else {
+            LoadSave.instance.SetInvertYSettings(false);
+            InvertDisplay.text = "( )";
+        }
+    }
+
+
+
     public void Option()
     {
         GameManager.instance.OptionMenu();

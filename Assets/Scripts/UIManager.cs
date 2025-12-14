@@ -8,6 +8,9 @@ using TMPro;
 public class UIManager : MonoBehaviour {
     public static UIManager instance;
 
+    enum Type { shop, options };
+    [SerializeField] Type type;
+
     [Header("Shop Dependencies")]
     // folders
     [SerializeField] Image PurchaseBkgrd;
@@ -55,9 +58,6 @@ public class UIManager : MonoBehaviour {
 
 
     [Header("\n\nOption Dependencies")]
-    [SerializeField] GameObject MinMenuMouse;
-    [SerializeField] GameObject MinMenuVol;
-
     [SerializeField] Slider mMusicSliderObj;
     [SerializeField] TMP_Text mMusicNumberDisplay;
 
@@ -77,43 +77,68 @@ public class UIManager : MonoBehaviour {
         if (Cursor.lockState == CursorLockMode.Locked) Cursor.lockState = CursorLockMode.None;
         if (Cursor.visible == false) Cursor.visible = true;
 
-        CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
-        AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
+        if (type == Type.shop) {
+            CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
+            AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
 
 
-        haveMap = LoadSave.instance.GetPlayerMap();
-        haveTape = LoadSave.instance.GetPlayerTape();
+            haveMap = LoadSave.instance.GetPlayerMap();
+            haveTape = LoadSave.instance.GetPlayerTape();
 
-        // Shop UI
-        SetCostColors();
-        UpdateHearts();
+            // Shop UI
+            SetCostColors();
+            UpdateHearts();
 
-        SetPurchasePositions();
-        SetEquipPositions();
-        SetInventory();
+            SetPurchasePositions();
+            SetEquipPositions();
+            SetInventory();
 
-        OnPurchasable();
-        StartCoroutine(StopTalking(5f));
+            OnPurchasable();
+            StartCoroutine(StopTalking(5f));
+        }
 
+
+        if (type == Type.options) {
+            // set the button
+            if (LoadSave.instance.GetInvertYSettings()) {
+                mDisplay_X_Button.text = "(X)";
+            }
+            else {
+                mDisplay_X_Button.text = "( )";
+            }
+
+            // set the sliders
+            mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+            mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+            mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+
+            SetSliders();
+        }
     }
 
     void Update() {
-        if (!isTalking && !stopTalking) {
-            StartCoroutine(Talking());
-        }
-        
-        if (Input.GetKey(KeyCode.P)) {
-            int money = LoadSave.instance.GetPlayerCoins();
-            money += 50;
-            LoadSave.instance.SetPlayerCoins(money);
-            CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
-            SetCostColors();
+
+        if (type == Type.shop) {
+            if (!isTalking && !stopTalking) {
+                StartCoroutine(Talking());
+            }
+            if (Input.GetKey(KeyCode.P)) {
+                int money = LoadSave.instance.GetPlayerCoins();
+                money += 50;
+                LoadSave.instance.SetPlayerCoins(money);
+                CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
+                SetCostColors();
+            }
         }
 
         //used to set the default values of the sliders for the options menu
-        if (mMusicSliderObj) mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-        if (mSFXSliderObj) mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
-        if (mMouseSensSliderObj) mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+
+        if (type == Type.options) {
+            if (mMusicSliderObj) mMusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+            if (mSFXSliderObj) mSFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+            if (mMouseSensSliderObj) mMouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+        }
+
     }
 
 
@@ -363,7 +388,7 @@ public class UIManager : MonoBehaviour {
             int newCoins = oldCoins -= int.Parse(CostTexts[0].text);
             LoadSave.instance.SetPlayerCoins(newCoins);
 
-            
+
             UpdateCoins();
 
             haveTape = true;
@@ -384,7 +409,7 @@ public class UIManager : MonoBehaviour {
 
 
             if (LoadSave.instance.GetHeartsBought() == 2) {
-                PurchaseOptions[2].SetActive(false); 
+                PurchaseOptions[2].SetActive(false);
             }
 
             UpdateHearts();
@@ -435,7 +460,7 @@ public class UIManager : MonoBehaviour {
             SetCostColors();
         }
     }
-    
+
     public IEnumerator Talking() {
         isTalking = true;
         OpenMouth.SetActive(true);
@@ -452,22 +477,35 @@ public class UIManager : MonoBehaviour {
 
 
     // OPTION BUTTON FUNCTIONS
-    public void DisplayTextSlider(float _Value)
-    {
-        //controller.GetComponent<AudioSource>().volume = 100;
+    public void DisplayTextSlider(float _Value) {
         //takes the value from the slider and displays it on top to the slider
-        mMusicNumberDisplay.text = mMusicSliderObj.value.ToString("F2");
+        mMusicNumberDisplay.text = (mMusicSliderObj.value * 100).ToString("F0");
         LoadSave.instance.SetMusicSettings(mMusicSliderObj);
-        Debug.Log("Music Value: " + mMusicSliderObj.value.ToString("F2"));
+
 
         //takes the value from the slider and displays it on top to the slider
-        mSFXNumberDisplay.text = mSFXSliderObj.value.ToString("F2");
+        mSFXNumberDisplay.text = (mSFXSliderObj.value * 100).ToString("F0");
         LoadSave.instance.SetSFXSettings(mSFXSliderObj);
-        Debug.Log("SFX Value: " + mSFXSliderObj.value.ToString("F2"));  
+
 
         //takes the value from the slider and displays it on top to the slider
         mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
         LoadSave.instance.SetMouseSens(mMouseSensSliderObj);
-        Debug.Log("Mouse Sensitivity Value: " + mMouseSensSliderObj.value.ToString("F2"));
+    }
+
+    public void SetSliders() {
+        mMusicSliderObj.value = LoadSave.instance.GetMusicVolume();
+        mMusicNumberDisplay.text = (mMusicSliderObj.value * 100).ToString("F0");
+        LoadSave.instance.SetMusicSettings(mMusicSliderObj);
+
+
+        mSFXSliderObj.value = LoadSave.instance.GetSFXVolume();
+        mSFXNumberDisplay.text = (mSFXSliderObj.value * 100).ToString("F0");
+        LoadSave.instance.SetSFXSettings(mSFXSliderObj);
+
+
+        mMouseSensSliderObj.value = LoadSave.instance.GetMouseSens();
+        mMouseSensNumberDisplay.text = mMouseSensSliderObj.value.ToString("F2");
+        LoadSave.instance.SetMouseSens(mMouseSensSliderObj);
     }
 }
