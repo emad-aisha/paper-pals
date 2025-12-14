@@ -3304,7 +3304,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds
+      value: falling
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: Loop
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -3315,8 +3331,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 821942046}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 63.1305
+      value: 64.6305
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6315,7 +6343,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds (1)
+      value: strike
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: Loop
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -6326,12 +6370,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 821942046}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 50
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.3805
+      value: 21.380505
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6339,7 +6391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 78.58067
+      value: 77.080666
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11142,7 +11194,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1514849765298535869}
   - {fileID: 506420533}
   - {fileID: 988935218}
   m_Father: {fileID: 0}
@@ -13436,23 +13487,23 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1827179181}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 143723829986386017, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
       propertyPath: m_Name
-      value: Ambient Sound
+      value: Music
       objectReference: {fileID: 0}
     - target: {fileID: 7149494971842515978, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4552994
+      value: 33.5748
       objectReference: {fileID: 0}
     - target: {fileID: 7149494971842515978, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 147.20638
+      value: 9.397232
       objectReference: {fileID: 0}
     - target: {fileID: 7149494971842515978, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.86447
+      value: 13.783798
       objectReference: {fileID: 0}
     - target: {fileID: 7149494971842515978, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13487,11 +13538,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
---- !u!4 &1514849765298535869 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7149494971842515978, guid: e66f6e64dc1653547bcf9d6b7c040cf1, type: 3}
-  m_PrefabInstance: {fileID: 1514849765298535868}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8980246799017293340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13567,3 +13613,4 @@ SceneRoots:
   - {fileID: 2132582430}
   - {fileID: 712388071}
   - {fileID: 1827179181}
+  - {fileID: 1514849765298535868}

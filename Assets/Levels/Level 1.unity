@@ -1063,7 +1063,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds
+      value: Strike
+      objectReference: {fileID: 0}
+    - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: Loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -1073,9 +1101,25 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 400653012}
+    - target: {fileID: 5242121007172224049, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: offset
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.41976
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1083,7 +1127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 58.2986
+      value: 54.7986
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2311,7 +2355,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds (2)
+      value: Ambience
+      objectReference: {fileID: 0}
+    - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 170
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -2321,13 +2385,25 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 400653012}
+    - target: {fileID: 5242121007172224049, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: offset
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 150
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 56.91976
+      value: 56.919754
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2335,7 +2411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.5485992
+      value: 5.5485992
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2521,7 +2597,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds (4)
+      value: Strike 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: Loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -2531,9 +2631,21 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 400653012}
+    - target: {fileID: 5242121007172224049, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: offset
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 30
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2813,7 +2925,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds (3)
+      value: Cue
+      objectReference: {fileID: 0}
+    - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: Loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -2823,9 +2959,21 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 400653012}
+    - target: {fileID: 5242121007172224049, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: offset
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 120
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3969,6 +4117,10 @@ PrefabInstance:
       propertyPath: pencilObject
       value: 
       objectReference: {fileID: 960214173}
+    - target: {fileID: 7805925971089602787, guid: 436c96f035a23ae46b4fe3042759e5ba, type: 3}
+      propertyPath: m_Color.a
+      value: 0.3529412
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5589,7 +5741,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Name
-      value: Ambient Sounds (1)
+      value: Ambient 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 156543519939354750, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410136785811660921, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Size.z
+      value: 170
+      objectReference: {fileID: 0}
+    - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5128714409586094797, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_Resource
@@ -5599,13 +5771,21 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 400653012}
+    - target: {fileID: 5242121007172224049, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: offset
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 170
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8033448852856828822, guid: db3a51f72a2a2334897822f040f2572a, type: 3}
       propertyPath: m_LocalPosition.x

@@ -549,10 +549,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         isSwooping = true;
         AgentAI.isStopped = true;
 
-        //Animation: Bat Attack
-        if (anim != null)
-            anim.SetTrigger("batAttack");
-
         Transform player = GameManager.instance.player.transform;
 
         Vector3 start = transform.position;
@@ -560,6 +556,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         float duration = 1f;
         float t = 0f;
+
+        //Animation: Bat Attack
+        if (anim != null)
+            anim.SetTrigger("batAttack");
 
         while (t < duration)
         {

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 
 public class GameManager : MonoBehaviour {
@@ -37,8 +38,9 @@ public class GameManager : MonoBehaviour {
     public List<GameObject> Weapons;
     public List<GameObject> EyedropPhases;
     public Image SprintBar;
-    public GameObject flashRed;
     public GameObject FlashFrames;
+    public GameObject LowHealth;
+
     public GameObject FlashlightMessage;
     public GameObject crosshair;
 

@@ -88,8 +88,6 @@ public class UIManager : MonoBehaviour {
             SetCostColors();
             UpdateHearts();
 
-            SetPurchasePositions();
-            SetEquipPositions();
             SetInventory();
 
             OnPurchasable();
@@ -128,7 +126,6 @@ public class UIManager : MonoBehaviour {
                 CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
                 SetCostColors();
             }
-            SetPurchasePositions();
         }
 
     }
@@ -154,30 +151,6 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    void SetPurchasePositions() {
-        int initial = 1690;
-
-        for (int i = 0; i < PurchaseOptions.Count; i++) {
-            float xValue = PurchaseOptions[i].transform.position.x;
-            int height = 300;
-
-            float yValue = i * height;
-
-            PurchaseOptions[i].transform.position = new Vector3(xValue, initial - yValue, 0);
-        }
-    }
-
-    void SetEquipPositions() {
-        float initial = 1175;
-        for (int i = 0; i < EquipOptions.Count; i++) {
-            float xValue = EquipOptions[i].transform.position.x;
-            int height = 125;
-
-            float yValue = -i * height;
-
-            EquipOptions[i].transform.position = new Vector3(xValue, initial + yValue, 0);
-        }
-    }
 
     void UpdateHearts() {
         if (LoadSave.instance.GetHeartsBought() == 0) {
