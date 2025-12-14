@@ -87,6 +87,9 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] AudioClip[] audHurt;
     [SerializeField] float audHurtVol;
 
+    [Header("Animation")]
+    [SerializeField] Animator anim;
+
 
     // private variables
     // movement
@@ -593,6 +596,10 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Swing()
     {
+        //Animation: Melee Attack
+        if (anim != null)
+            anim.SetTrigger("pencilAttack");
+
         ClearEnemies();
         MeleeTimer = 0;
         aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
