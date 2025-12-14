@@ -289,7 +289,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         Jump();
         controller.Move(jumpVelocity * Time.deltaTime);
         if (Weapons.Count > 0) {
-            if (Input.GetButton("Fire1")) {
+            if (Input.GetButtonDown("Fire1")) {
 
                 if (Weapons[WeaponListPos].Throwable && ThrowTimer >= Weapons[WeaponListPos].ThrowSpeed) {
                     Throw();
@@ -535,13 +535,17 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Swing() {
-        //Animation: Melee Attack
-        if (anim != null)
-            anim.SetTrigger("pencilAttack");
+        
 
         ClearEnemies();
         MeleeTimer = 0;
         aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
+
+
+        //Animation: Melee Attack
+        if (anim != null)
+            anim.SetTrigger("pencilAttack");
+
         if (Enemies.Count == 0) return;
 
         GameObject enemy = GetClosestEnemy();
@@ -692,7 +696,6 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void ChangeItem() {
-
         WeaponStats Weapon = Weapons[WeaponListPos];
         EquippedWeapon = Weapon.Model;
         Damage = Weapon.GetDamage();
@@ -751,6 +754,9 @@ public class PlayerController : MonoBehaviour, IDamage {
             GameManager.instance.TotalAmmo.text = 10.ToString();
             GameManager.instance.AmmoMenu.SetActive(true);
         }
+
+        anim.ResetTrigger("pencilAttack");
+
 
         // sets inventory image
         for (int i = 0; i < GameManager.instance.Weapons.Count; i++) {

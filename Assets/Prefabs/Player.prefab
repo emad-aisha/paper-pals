@@ -525,7 +525,7 @@ MonoBehaviour:
   playerBullet: {fileID: 4431192231594648550, guid: c5ec891ac79ad6e4d8a58d3e9980fe9b, type: 3}
   bulletToCamera: 300
   ThrowDistance: 0
-  MeleeHitbox: {fileID: 0}
+  MeleeHitbox: {fileID: 8485038658499552287}
   DamageOverTime: 0
   Enemies: []
   FOVChange: 10
@@ -1277,6 +1277,11 @@ PrefabInstance:
 --- !u!4 &6109054484769835992 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8099864963605235682, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
+  m_PrefabInstance: {fileID: 2643394089103658042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8485038658499552287 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5868139047506323493, guid: cb6167ea077edb14ea46fb21fcea205a, type: 3}
   m_PrefabInstance: {fileID: 2643394089103658042}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7796175742419782686
