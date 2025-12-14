@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] float followDistance;
     [SerializeField] float shootDistance;
     [SerializeField] float swoopDistance;
-    [SerializeField] float retreatDistance;
+    [SerializeField] float retreatDistance; 
 
     [Header("Health")]
     [SerializeField] int HP;
@@ -52,8 +52,6 @@ public class EnemyAI : MonoBehaviour, IDamage
     [SerializeField] int accelerationTime;
     [SerializeField] int chargeDuration;
     [SerializeField] int chargeCooldown;
-    private bool isCharging = false;
-    private Coroutine chargeRoutine;
 
     [Header("Shooter")]
     [SerializeField] Transform ShootPos;
@@ -127,19 +125,10 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         //SlamArea.SetActive(false);
 
-        if (enemyType == EnemyType.ranged) // Bat
-        {
-            AgentAI.updatePosition = true;    // Agent moves in XZ
-            AgentAI.updateRotation = false;   // Rotate manually with FaceTarget()
-            AgentAI.updateUpAxis = false;     // Disable automatic Y alignment
-            AgentAI.baseOffset = flyHeight;   // Hover height
-        }
-        else if (enemyType == EnemyType.bull || enemyType == EnemyType.melee || enemyType == EnemyType.boss)
-        {
-            AgentAI.updatePosition = true;
-            AgentAI.updateRotation = true;
-            AgentAI.updateUpAxis = true;
-        }
+        AgentAI.updatePosition = true;
+        AgentAI.updateRotation = false;
+        AgentAI.updateUpAxis = false;
+        AgentAI.baseOffset = flyHeight;
     }
 
     void AttackPlayer()
@@ -199,12 +188,12 @@ public class EnemyAI : MonoBehaviour, IDamage
 
 
 
-        if (enemyType == EnemyType.melee || enemyType == EnemyType.boss || enemyType == EnemyType.bull)
+        if (enemyType == EnemyType.melee || enemyType == EnemyType.boss)
         {
 
             if (canSeePlayer || CanSeePlayer() || PlayerInTrigger)
             {
-                timeSinceLastSeen = 0;
+                timeSinceLastSeen = 0f;
 
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
@@ -222,31 +211,42 @@ public class EnemyAI : MonoBehaviour, IDamage
 
                 if (timeSinceLastSeen >= loseSightDelay)
                 {
-                    CheckRoam();
+                    //CheckRoam();
                 }
             }
 
             // Bull charge logic
             if (enemyType == EnemyType.bull)
             {
-               
                 if (canSeePlayer || CanSeePlayer())
                 {
-                    chargeTimer += Time.deltaTime;
-                    if (chargeTimer >= chargeCooldown)
-                    {
-                        StartCoroutine(BullCharge());
-                        chargeTimer = 0;
-                    }
-                 
+                    timeSinceLastSeen = 0f;
+
+                    AgentAI.SetDestination(GameManager.instance.player.transform.position);
+
                     if (distance <= attackRange && attackTimer >= attackCooldown)
                     {
                         AttackPlayer();
                     }
+
+                    chargeTimer += Time.deltaTime;
+                    if (chargeTimer >= chargeCooldown)
+                    {
+                        StartCoroutine(BullCharge());
+                        chargeTimer = 0f;
+                    }
+
+
                 }
                 else
                 {
-                    chargeTimer = 0;
+                    AgentAI.ResetPath();
+                    timeSinceLastSeen += Time.deltaTime;
+                    if (timeSinceLastSeen >= loseSightDelay)
+                    {
+                        //CheckRoam();
+                    }
+                    chargeTimer = 0f;
                 }
             }
             UpdateMovementAnimation();
@@ -419,16 +419,15 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     IEnumerator BullCharge()
     {
-        isCharging = true;
-        chargeTimer = 0;
+        chargeTimer = 0f;
 
         // Direction toward player at start
-        Vector3 rawDir = (GameManager.instance.player.transform.position - transform.position);
-        rawDir.y = 0;
-        Vector3 dir = rawDir.normalized;
-        float timer = 0;
+        Vector3 dir = (GameManager.instance.player.transform.position - transform.position).normalized;
+        float timer = 0f;
 
-        AgentAI.ResetPath();
+        // Temporarily stop pathfinding so we can move manually
+        AgentAI.isStopped = true;
+
 
         while (timer < accelerationTime)
         {
@@ -438,7 +437,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
         // Maintain max speed for charge duration
-        float chargeTime = 0;
+        float chargeTime = 0f;
         while (chargeTime < chargeDuration)
         {
             AgentAI.velocity = dir * chargeMaxSpeed;
@@ -448,39 +447,11 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         // Stop and resume normal AI
         AgentAI.velocity = Vector3.zero;
-        isCharging = false;
+        AgentAI.isStopped = false;
         AgentAI.speed = normalSpeed;
+        AgentAI.ResetPath();
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
     }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        // Check if we hit the player AND we are currently charging
-        if (enemyType == EnemyType.bull && isCharging && collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("BULL HIT PLAYER!");
-
-            IDamage dmg = collision.gameObject.GetComponentInParent<IDamage>();
-
-            if (dmg != null)
-            {
-                dmg.TakeDamage(contactDamage);
-            }
-
-
-            // 2. STOP THE CHARGE (Optional but recommended)
-            // This stops the Bull from sliding through the player after hitting them
-            if (chargeRoutine != null) StopCoroutine(chargeRoutine);
-
-            // 3. RESET PHYSICS/LOGIC
-            AgentAI.velocity = Vector3.zero;
-            isCharging = false;
-            AgentAI.speed = normalSpeed;
-            AgentAI.ResetPath(); // Stop moving for a moment
-        }
-    }
-
-
 
 
 
