@@ -439,7 +439,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
 
         if (anim != null) 
-            anim.SetBool("isCharge", true);
+            anim.SetBool("bullCharge", true);
 
         // Calculate direction (Aiming at where player is NOW)
         Vector3 rawDir = (GameManager.instance.player.transform.position - transform.position);
@@ -470,7 +470,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         // Stop animation
         if (anim != null) 
-            anim.SetBool("BullCharge", false);
+            anim.SetBool("bullCharge", false);
 
         AgentAI.speed = normalSpeed;
         AgentAI.SetDestination(GameManager.instance.player.transform.position);
