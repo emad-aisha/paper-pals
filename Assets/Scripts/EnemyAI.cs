@@ -504,20 +504,7 @@ public class EnemyAI : MonoBehaviour, IDamage
             AgentAI.ResetPath();
         }
 
-        if (enemyType == EnemyType.ranged && isSwooping && collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("BAT HIT PLAYER!");
-
-            IDamage dmg = collision.gameObject.GetComponent<IDamage>();
-            if (dmg == null) dmg = collision.gameObject.GetComponentInParent<IDamage>();
-
-            if (dmg != null)
-            {
-                dmg.TakeDamage(contactDamage); 
-            }
-
-         
-        }
+      
     }
 
     void FlyingBehavior()
@@ -563,27 +550,37 @@ public class EnemyAI : MonoBehaviour, IDamage
     }
     public IEnumerator SwoopAttack()
     {
-      
         isSwooping = true;
         AgentAI.isStopped = true;
 
-     
-
         Vector3 start = transform.position;
         Vector3 playerPos = GameManager.instance.player.transform.position;
+
+        // 1. Calculate Direction
         Vector3 dirToPlayer = (playerPos - start);
-        dirToPlayer.y = 0;
+        dirToPlayer.y = 0; // Ignore height for the math
 
+        // 2. Calculate Distance (The Fix)
         float realDistance = dirToPlayer.magnitude;
-        float moveDistance = Mathf.Min(realDistance, attackRange + 2);
-        Vector3 end = start + (dirToPlayer.normalized * swoopDistance);
 
-        float duration = 1f;
+        // We use your 'attackRange' plus a buffer, OR a hard cap.
+        // This ensures we fly TO the player, not 0 units and not 500 units.
+        float moveDistance = Mathf.Min(realDistance, attackRange + 5f);
+
+        // FIX: We use 'moveDistance' here! Not 'swoopDistance'.
+        Vector3 end = start + (dirToPlayer.normalized * moveDistance);
+
+        // 3. Set Speed (Adjust '20f' to make it faster/slower)
+        float swoopSpeed = 20f;
+        float duration = moveDistance / swoopSpeed;
         float t = 0f;
 
-        //Animation: Bat Attack
-        if (anim != null)
-            anim.SetTrigger("batAttack");
+        // Safety: prevent divide by zero if distance is tiny
+        if (duration < 0.1f) duration = 0.5f;
+
+        bool hasHit = false; // Ensures we only hit once per swoop
+
+        if (anim != null) anim.SetTrigger("batAttack");
 
         while (t < duration)
         {
@@ -591,20 +588,42 @@ public class EnemyAI : MonoBehaviour, IDamage
             float lerp = t / duration;
 
             Vector3 pos = Vector3.Lerp(start, end, lerp);
-            pos.y -= Mathf.Sin(lerp * Mathf.PI) * 2;
 
-            if(GetComponent<Rigidbody>())
-                GetComponent<Rigidbody>().MovePosition(pos);
-            else
-            { 
-                transform.position = pos; 
+            // The Dip: Adjust '2.0f' if you want a deeper/shallower curve
+            pos.y -= Mathf.Sin(lerp * Mathf.PI) * 2.0f;
+
+            // MOVEMENT: Force the transform. No Rigidbodies needed.
+            transform.position = pos;
+
+            // --- HIT DETECTION (The "It Just Works" Check) ---
+            if (!hasHit)
+            {
+                // 1. INCREASE RADIUS: Changed 1.5f -> 3.0f to make it easier to hit
+                float dist = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
+
+                if (dist < 3.0f)
+                {
+                    Debug.Log("BAT HIT PLAYER!");
+
+                    // 2. DIRECT DAMAGE: Don't trust AttackPlayer(), do it manually here
+                    IDamage dmg = GameManager.instance.player.GetComponent<IDamage>();
+
+                    if (dmg != null)
+                    {
+                        dmg.TakeDamage(contactDamage);
+                    }
+
+                    hasHit = true;  // Mark as hit so we don't kill the player in 1 frame
+                }
             }
-           
+            // -------------------------------------------------
+
             yield return null;
         }
 
         yield return new WaitForSeconds(0.3f);
 
+        // Retreat Logic
         Vector3 retreatDir = (start - end).normalized;
         transform.position += retreatDir * retreatDistance;
 
