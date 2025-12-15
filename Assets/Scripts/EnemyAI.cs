@@ -539,7 +539,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
     void FollowPlayer(Transform player)
     {
-        // Let the NavMeshAgent handle horizontal movement
+   
        
         AgentAI.SetDestination(player.position);
 
@@ -548,6 +548,8 @@ public class EnemyAI : MonoBehaviour, IDamage
         pos.y = flyHeight + Mathf.Sin(Time.time * flyFrequency) * flyAmplitude;
         transform.position = pos;
     }
+
+
     public IEnumerator SwoopAttack()
     {
         isSwooping = true;
@@ -556,21 +558,16 @@ public class EnemyAI : MonoBehaviour, IDamage
         Vector3 start = transform.position;
         Vector3 playerPos = GameManager.instance.player.transform.position;
 
-        // 1. Calculate Direction
+    
         Vector3 dirToPlayer = (playerPos - start);
-        dirToPlayer.y = 0; // Ignore height for the math
+        dirToPlayer.y = 0;
 
-        // 2. Calculate Distance (The Fix)
         float realDistance = dirToPlayer.magnitude;
-
-        // We use your 'attackRange' plus a buffer, OR a hard cap.
-        // This ensures we fly TO the player, not 0 units and not 500 units.
         float moveDistance = Mathf.Min(realDistance, attackRange + 5f);
 
-        // FIX: We use 'moveDistance' here! Not 'swoopDistance'.
+        
         Vector3 end = start + (dirToPlayer.normalized * moveDistance);
 
-        // 3. Set Speed (Adjust '20f' to make it faster/slower)
         float swoopSpeed = 20f;
         float duration = moveDistance / swoopSpeed;
         float t = 0f;
@@ -588,35 +585,30 @@ public class EnemyAI : MonoBehaviour, IDamage
             float lerp = t / duration;
 
             Vector3 pos = Vector3.Lerp(start, end, lerp);
-
-            // The Dip: Adjust '2.0f' if you want a deeper/shallower curve
             pos.y -= Mathf.Sin(lerp * Mathf.PI) * 2.0f;
 
-            // MOVEMENT: Force the transform. No Rigidbodies needed.
             transform.position = pos;
 
-            // --- HIT DETECTION (The "It Just Works" Check) ---
+        
             if (!hasHit)
             {
-                // 1. INCREASE RADIUS: Changed 1.5f -> 3.0f to make it easier to hit
-                float dist = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
+              
+            float dist = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
 
-                if (dist < 3.0f)
+             if (dist < 3.0f)
                 {
                     Debug.Log("BAT HIT PLAYER!");
 
-                    // 2. DIRECT DAMAGE: Don't trust AttackPlayer(), do it manually here
+ 
                     IDamage dmg = GameManager.instance.player.GetComponent<IDamage>();
-
                     if (dmg != null)
                     {
                         dmg.TakeDamage(contactDamage);
                     }
-
-                    hasHit = true;  // Mark as hit so we don't kill the player in 1 frame
+                    hasHit = true; 
                 }
             }
-            // -------------------------------------------------
+           
 
             yield return null;
         }

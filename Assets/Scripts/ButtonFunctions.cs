@@ -98,6 +98,19 @@ public class ButtonFunctions : MonoBehaviour
         GameManager.instance.UnpauseGame();
     }
 
+    public void LoadCredits()
+    {
+        // 1. Reset time (in case the Win screen paused it)
+        Time.timeScale = 1.0f;
+
+        // 2. Unlock Mouse
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        // 3. Load Scene
+        SceneManager.LoadScene("Outro");
+    }
+
     public void Quit()
     {
 #if UNITY_EDITOR
