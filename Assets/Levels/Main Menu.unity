@@ -171,8 +171,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -657,6 +657,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuBG
       objectReference: {fileID: 0}
+    - target: {fileID: 1913072015421011892, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913072015421011892, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.36200002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913072015421011892, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913072015421011892, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.36200002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913072015421011892, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1913072015421011892, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 2239406922204739768, guid: a7102c49179864544b8137693f7b23c9, type: 3}
       propertyPath: uiAudio
       value: 
@@ -740,6 +764,30 @@ PrefabInstance:
     - target: {fileID: 2412120211755283156, guid: a7102c49179864544b8137693f7b23c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3413918458140171083, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3413918458140171083, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.27400002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3413918458140171083, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3413918458140171083, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.27400002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3413918458140171083, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3413918458140171083, guid: a7102c49179864544b8137693f7b23c9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 4576211486535626280, guid: a7102c49179864544b8137693f7b23c9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

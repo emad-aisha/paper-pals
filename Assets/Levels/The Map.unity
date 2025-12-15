@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -2100,6 +2100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda4bc5348d52d64f960ce701a1df956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOffset: 0
 --- !u!4 &2058316151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6597543742866615156, guid: 4b7cdafb13f50df499eef934f9700637, type: 3}
