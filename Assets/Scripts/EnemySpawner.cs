@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
 
         // what the kaka - a
         //GameManager.instance.gameGoalCount = SpawnAmount;
-        SpawnAmount = SpawnPositions.Length - 1;
+        SpawnAmount = SpawnPositions.Length;
         SpawnCount = 0;
     }
 

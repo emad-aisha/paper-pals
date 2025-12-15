@@ -89,6 +89,9 @@ public class UIManager : MonoBehaviour {
             UpdateHearts();
 
             SetInventory();
+            SetEquipSave();
+
+            SetTapeMap();
 
             OnPurchasable();
             StartCoroutine(StopTalking(5f));
@@ -119,7 +122,7 @@ public class UIManager : MonoBehaviour {
             if (!isTalking && !stopTalking) {
                 StartCoroutine(Talking());
             }
-            if (Input.GetKey(KeyCode.P)) {
+            if (Input.GetKey(KeyCode.P) && false) {
                 int money = LoadSave.instance.GetPlayerCoins();
                 money += 50;
                 LoadSave.instance.SetPlayerCoins(money);
@@ -132,6 +135,30 @@ public class UIManager : MonoBehaviour {
 
 
     // SHOP FUNCTIONS
+
+    void SetTapeMap() {
+        if (LoadSave.instance.GetPlayerTape()) {
+            Tape.SetActive(true);
+            haveTape = true;
+        }
+
+        if (LoadSave.instance.GetPlayerMap()) {
+            Map.SetActive(true);
+            haveMap = true;
+
+            PurchaseOptions[3].SetActive(false);
+        }
+    }
+
+    void SetEquipSave() {
+        if (LoadSave.instance.GetBoghtStapler()) {
+            EquipOptions[1].SetActive(true);
+        }
+
+        if (LoadSave.instance.GetBoughtC4()) {
+            EquipOptions[2].SetActive(true);
+        }
+    }
 
     // call these functions on Start() and OnButton()
     // call SetPositon OnBuy()
@@ -401,6 +428,8 @@ public class UIManager : MonoBehaviour {
             int newCoins = oldCoins -= int.Parse(CostTexts[4].text);
             LoadSave.instance.SetPlayerCoins(newCoins);
 
+            LoadSave.instance.SetBoughtStapler(true);
+
             UpdateCoins();
 
             EquipOptions[1].SetActive(true);
@@ -414,6 +443,8 @@ public class UIManager : MonoBehaviour {
             int oldCoins = LoadSave.instance.GetPlayerCoins();
             int newCoins = oldCoins -= int.Parse(CostTexts[5].text);
             LoadSave.instance.SetPlayerCoins(newCoins);
+
+            LoadSave.instance.SetBoughtC4(true);
 
             UpdateCoins();
 
