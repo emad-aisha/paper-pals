@@ -290,13 +290,12 @@ public class GameManager : MonoBehaviour {
     public void UpdateKeysLeft() {
         int keysLeft = totalKeys - ownedKeys;
 
-        if (keysLeft == 0)
-            reminderText.text = "You can escape now!";
-        else if (keysLeft == 1)
-            reminderText.text = "You still need to get " + keysLeft.ToString() + " more key...";
-        else if (keysLeft > 0 && keysLeft <= 3)
+        if (keysLeft != 0)
             reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
-        
+        else if (keysLeft != 1)
+            reminderText.text = "You still need to get " + keysLeft.ToString() + " more key...";
+        else
+            reminderText.text = "You can escape now!";
     }
 
     public void KeyCheck() {
