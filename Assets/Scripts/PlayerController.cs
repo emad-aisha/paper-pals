@@ -567,7 +567,8 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         IDamage dmg = enemy.GetComponent<IDamage>();
 
-        if (dmg != null) {
+        if (dmg != null)
+        {
             dmg.TakeDamage(Weapons[WeaponListPos].GetDamage());
             Debug.Log("hit");
         }

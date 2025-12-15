@@ -489,16 +489,34 @@ public class EnemyAI : MonoBehaviour, IDamage
                 dmg.TakeDamage(contactDamage);
             }
 
-            if (chargeRoutine != null) StopCoroutine(chargeRoutine);
-            AgentAI.velocity = Vector3.zero;
-            isCharging = false;
-
+            if (chargeRoutine != null)
+            {
+                StopCoroutine(chargeRoutine);
+                AgentAI.velocity = Vector3.zero;
+                isCharging = false;
+            }
        
-            if (anim != null) anim.SetBool("isCharging", false);
+            if (anim != null) 
+                anim.SetBool("isCharging", false);
            
 
             AgentAI.speed = normalSpeed;
             AgentAI.ResetPath();
+        }
+
+        if (enemyType == EnemyType.ranged && isSwooping && collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("BAT HIT PLAYER!");
+
+            IDamage dmg = collision.gameObject.GetComponent<IDamage>();
+            if (dmg == null) dmg = collision.gameObject.GetComponentInParent<IDamage>();
+
+            if (dmg != null)
+            {
+                dmg.TakeDamage(contactDamage); 
+            }
+
+         
         }
     }
 
@@ -549,10 +567,16 @@ public class EnemyAI : MonoBehaviour, IDamage
         isSwooping = true;
         AgentAI.isStopped = true;
 
-        Transform player = GameManager.instance.player.transform;
+     
 
         Vector3 start = transform.position;
-        Vector3 end = new Vector3(player.position.x,start.y,player.position.z);
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirToPlayer = (playerPos - start);
+        dirToPlayer.y = 0;
+
+        float realDistance = dirToPlayer.magnitude;
+        float moveDistance = Mathf.Min(realDistance, attackRange + 2);
+        Vector3 end = start + (dirToPlayer.normalized * swoopDistance);
 
         float duration = 1f;
         float t = 0f;
@@ -567,13 +591,17 @@ public class EnemyAI : MonoBehaviour, IDamage
             float lerp = t / duration;
 
             Vector3 pos = Vector3.Lerp(start, end, lerp);
-            pos.y += Mathf.Sin(lerp * Mathf.PI) * 2f;
+            pos.y -= Mathf.Sin(lerp * Mathf.PI) * 2;
 
-            transform.position = pos;
+            if(GetComponent<Rigidbody>())
+                GetComponent<Rigidbody>().MovePosition(pos);
+            else
+            { 
+                transform.position = pos; 
+            }
+           
             yield return null;
         }
-
-        AttackPlayer();
 
         yield return new WaitForSeconds(0.3f);
 

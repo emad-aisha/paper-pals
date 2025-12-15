@@ -138,7 +138,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   AgentAI: {fileID: 3626317182603459106}
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 4239574743501271547}
+  visual: {fileID: 0}
   flyHeight: 0
   flySpeed: 0
   flyAmplitude: 0
@@ -147,6 +148,10 @@ MonoBehaviour:
   swoopTrigger: {fileID: 0}
   swoopSpeed: 0
   isSwooping: 0
+  followDistance: 0
+  shootDistance: 0
+  swoopDistance: 0
+  retreatDistance: 0
   HP: 70
   contactDamage: 1
   attackRange: 3
@@ -155,6 +160,7 @@ MonoBehaviour:
   accelerationTime: 0
   chargeDuration: 0
   chargeCooldown: 0
+  chargeWindUp: 0
   ShootPos: {fileID: 0}
   Bullet: {fileID: 0}
   ShootRate: 0
@@ -172,7 +178,6 @@ MonoBehaviour:
   loseSightDelay: 0
   lookDotThreshold: 0
   anim: {fileID: 0}
-  BatDetectDistance: 0
 --- !u!195 &3626317182603459106
 NavMeshAgent:
   m_ObjectHideFlags: 0
