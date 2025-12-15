@@ -17,6 +17,9 @@ public class LoadSave : MonoBehaviour {
     bool playerTape;
     bool playerMap;
 
+    bool boughtStapler;
+    bool boughtC4;
+
     int heartsBought;
     int levelLoad;
 
@@ -44,10 +47,21 @@ public class LoadSave : MonoBehaviour {
         playerTape = false;
         playerMap = false;
 
+        boughtStapler = false;
+        boughtC4 = false;
+
+
         // misc
         heartsBought = 0;
         levelLoad = 0;
     }
+
+
+    public bool GetBoghtStapler() {  return boughtStapler; }
+    public void SetBoughtStapler(bool set) { boughtStapler = set; }
+
+    public bool GetBoughtC4() {  return boughtC4; }
+    public void SetBoughtC4(bool set) { boughtC4 = set; }
 
     //setters
     public void SetMusicSettings(Slider _MusicValue) { MusicValue = _MusicValue.value; }
