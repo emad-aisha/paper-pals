@@ -422,7 +422,6 @@ public class GameManager : MonoBehaviour {
     public void UpdateCoinCount(int ammount) {
         if (CoinsCounter < CoinsMax) {
             CoinsCounter += ammount;
-            LoadSave.instance.SetPlayerCoins(CoinsCounter);
         }
 
         if (CoinsCounter >= CoinsMax) {
@@ -436,6 +435,7 @@ public class GameManager : MonoBehaviour {
 
         SetEyedrop();
         CoinCountText.text = TotalCoinsOwned.ToString("F0");
+        LoadSave.instance.SetPlayerCoins(TotalCoinsOwned);
     }
 
     public void UpdateCoins(int amount) {
@@ -443,6 +443,7 @@ public class GameManager : MonoBehaviour {
 
         SetEyedrop();
         CoinCountText.text = TotalCoinsOwned.ToString("F0");
+        LoadSave.instance.SetPlayerCoins(TotalCoinsOwned);
     }
 
 

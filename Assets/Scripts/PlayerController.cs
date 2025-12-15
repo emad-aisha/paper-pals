@@ -257,6 +257,8 @@ public class PlayerController : MonoBehaviour, IDamage {
             return;
         }
 
+        MeleeTimer += Time.deltaTime;
+
         // jump physics
         if (controller.isGrounded) {
             if (moveDir.normalized.magnitude > 0.3f && !isPlayingStep) {
