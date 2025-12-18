@@ -154,8 +154,7 @@ public class GameManager : MonoBehaviour
 
 
         SetAbilities();
-        UpdateKeysLeft();
-
+        KeyCheck(true);
 
         SetEyedrops();
         SetWeapons();
@@ -165,7 +164,7 @@ public class GameManager : MonoBehaviour
 
         if (isTurnOffLighting) Destroy(Lighting);
 
-
+        
         UpdateTextSliders();
         ShowInvert();
 
@@ -310,22 +309,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateKeysLeft()
+    public void UpdateKeysLeft(bool initial = false)
     {
         int keysLeft = totalKeys - ownedKeys;
+
+        if (initial) {
+            reminderText.text = "Collect 3 sticky notes to escape.";
+            return;
+        }
 
         if (keysLeft == 0)
             reminderText.text = "You can escape now!";
         else if (keysLeft == 1)
-            reminderText.text = "You still need to get " + keysLeft.ToString() + " more key...";
+            reminderText.text = "You still need to get " + keysLeft.ToString() + " more sticky note...";
         else if (keysLeft > 0 && keysLeft <= 3)
-            reminderText.text = "You still need to get " + keysLeft.ToString() + " more keys...";
+            reminderText.text = "You still need to get " + keysLeft.ToString() + " more sticky notes...";
 
     }
 
-    public void KeyCheck()
+    public void KeyCheck(bool initial = false)
     {
-        UpdateKeysLeft();
+        UpdateKeysLeft(initial);
         StartCoroutine(ReminderText());
 
         if (ownedKeys == totalKeys)

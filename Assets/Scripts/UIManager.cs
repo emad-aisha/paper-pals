@@ -47,6 +47,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] WeaponStats Gun;
     [SerializeField] WeaponStats C4;
 
+
     // private
     // saves
     bool haveMap = false;
@@ -79,7 +80,6 @@ public class UIManager : MonoBehaviour {
         if (type == Type.shop) {
             CoinAmount.text = LoadSave.instance.GetPlayerCoins().ToString();
             AmmoAmount.text = LoadSave.instance.GetPlayerAmmo().ToString();
-
 
             haveMap = LoadSave.instance.GetPlayerMap();
             haveTape = LoadSave.instance.GetPlayerTape();
@@ -265,12 +265,15 @@ public class UIManager : MonoBehaviour {
         PurchaseMenu.SetActive(true);
         EquipMenu.SetActive(false);
 
+        Color gray = new Color(0.4f, 0.4f, 0.4f);
+
         // set colors
         PurchaseBkgrd.color = Color.gray;
         PurchaseText.color = Color.white;
 
-        EquipBkgrd.color = Color.black;
-        EquipText.color = Color.gray;
+
+        EquipBkgrd.color = gray;
+        EquipText.color = Color.black;
     }
 
     public void OnEquipable() {
@@ -278,9 +281,11 @@ public class UIManager : MonoBehaviour {
         PurchaseMenu.SetActive(false);
         EquipMenu.SetActive(true);
 
+        Color gray = new Color(0.4f, 0.4f, 0.4f);
+
         // set colors
-        PurchaseBkgrd.color = Color.black;
-        PurchaseText.color = Color.gray;
+        PurchaseBkgrd.color = gray;
+        PurchaseText.color = Color.black;
 
         EquipBkgrd.color = Color.gray;
         EquipText.color = Color.white;
@@ -430,6 +435,10 @@ public class UIManager : MonoBehaviour {
 
             LoadSave.instance.SetBoughtStapler(true);
 
+            if (LoadSave.instance.GetPlayerWeapons().Count < 2)
+                LoadSave.instance.AddPlayerWeapon(Gun);
+            SetInventory();
+
             UpdateCoins();
 
             EquipOptions[1].SetActive(true);
@@ -445,6 +454,10 @@ public class UIManager : MonoBehaviour {
             LoadSave.instance.SetPlayerCoins(newCoins);
 
             LoadSave.instance.SetBoughtC4(true);
+
+            if (LoadSave.instance.GetPlayerWeapons().Count < 2)
+                LoadSave.instance.AddPlayerWeapon(C4);
+            SetInventory();
 
             UpdateCoins();
 

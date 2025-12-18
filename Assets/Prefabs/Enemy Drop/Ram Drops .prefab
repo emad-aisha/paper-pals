@@ -42,13 +42,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3063766064821393310}
     m_Modifications:
+    - target: {fileID: 1001266895757535493, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4359616227200027427, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: m_Name
       value: Ink Med Temp (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Size.x
+      value: 0.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: m_Size.y
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Size.z
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Center.y
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6560951199930060908, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,6 +109,10 @@ PrefabInstance:
     - target: {fileID: 7133880718397664679, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: amount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694435430139003825, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Size.z
+      value: 1.53
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -160,9 +180,29 @@ PrefabInstance:
       propertyPath: amount
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1615924668412048396, guid: 07bd35ff65d49af469903ede65491ab8, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690380159710332644, guid: 07bd35ff65d49af469903ede65491ab8, type: 3}
+      propertyPath: m_Size.x
+      value: 0.99
+      objectReference: {fileID: 0}
     - target: {fileID: 5690380159710332644, guid: 07bd35ff65d49af469903ede65491ab8, type: 3}
       propertyPath: m_Size.y
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690380159710332644, guid: 07bd35ff65d49af469903ede65491ab8, type: 3}
+      propertyPath: m_Size.z
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690380159710332644, guid: 07bd35ff65d49af469903ede65491ab8, type: 3}
+      propertyPath: m_Center.y
+      value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910112869709232293, guid: 07bd35ff65d49af469903ede65491ab8, type: 3}
+      propertyPath: m_Size.z
+      value: 2.64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -182,13 +222,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3063766064821393310}
     m_Modifications:
+    - target: {fileID: 1001266895757535493, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4359616227200027427, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: m_Name
       value: Ink Med Temp (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: m_Size.y
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Size.z
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400847898107578438, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Center.y
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6560951199930060908, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -233,6 +285,10 @@ PrefabInstance:
     - target: {fileID: 7133880718397664679, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
       propertyPath: amount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694435430139003825, guid: 0afbdf140f10cdb40be574c05f4662f7, type: 3}
+      propertyPath: m_Size.z
+      value: 1.44
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -803,6 +803,8 @@ public class PlayerController : MonoBehaviour, IDamage {
                 Destroy(GameManager.instance.AllEnemies[i]);
             }
 
+        sprintCurr = sprintTimer;
+
         isInvincible = false;
         IsDead = false;
         DisableIFrames();
