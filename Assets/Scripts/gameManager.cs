@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
     public bool hasDoubleJump;
     public bool hasDash;
 
-    public int totalKeys = 3;
+    [SerializeField] public int totalKeys;
     public int ownedKeys = 0;
 
 
@@ -242,6 +242,10 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        if (mapMenu.activeSelf == true) {
+            controller.MapToggle();
+        }
+
         isPaused = true;
         Time.timeScale = 0;
         Cursor.visible = true;
@@ -315,17 +319,17 @@ public class GameManager : MonoBehaviour
     {
         int keysLeft = totalKeys - ownedKeys;
 
-        if (initial) {
-            reminderText.text = "Collect 3 sticky notes to escape.";
+        if (initial && SceneManager.GetActiveScene().name == "Level 1") {
+            reminderText.text = "Collect " + totalKeys + " sticky notes to escape.";
             return;
         }
 
         if (keysLeft == 0)
             reminderText.text = "You can escape now!";
         else if (keysLeft == 1)
-            reminderText.text = "You still need to get " + keysLeft.ToString() + " more sticky note...";
+            reminderText.text = "You still need to get " + keysLeft + " more sticky note...";
         else if (keysLeft > 0 && keysLeft <= 3)
-            reminderText.text = "You still need to get " + keysLeft.ToString() + " more sticky notes...";
+            reminderText.text = "You still need to get " + keysLeft + " more sticky notes...";
 
     }
 

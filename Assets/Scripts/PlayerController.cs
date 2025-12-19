@@ -276,11 +276,11 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         // movement
         moveDir = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
-        if (isSprinting) {
-            speed = finalSpeed;
-        }
-        else if (GameManager.instance.mapMenu.activeSelf) {
+        if (GameManager.instance.mapMenu.activeSelf) {
             speed = SlowedSpeed;
+        }
+        else if (isSprinting) {
+            speed = finalSpeed;
         }
         else {
             speed = OGSpeed;
@@ -291,7 +291,7 @@ public class PlayerController : MonoBehaviour, IDamage {
         Jump();
         controller.Move(jumpVelocity * Time.deltaTime);
         if (Weapons.Count > 0) {
-            if (Input.GetButtonDown("Fire1")) {
+            if (Input.GetButtonDown("Fire1") && !mapOn) {
 
                 if (Weapons[WeaponListPos].Throwable && ThrowTimer >= Weapons[WeaponListPos].ThrowSpeed) {
                     Throw();
@@ -804,6 +804,8 @@ public class PlayerController : MonoBehaviour, IDamage {
             }
 
         sprintCurr = sprintTimer;
+
+        GameManager.instance.LowHealth.SetActive(false);
 
         isInvincible = false;
         IsDead = false;

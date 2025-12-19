@@ -153,10 +153,12 @@ public class UIManager : MonoBehaviour {
     void SetEquipSave() {
         if (LoadSave.instance.GetBoghtStapler()) {
             EquipOptions[1].SetActive(true);
+            PurchaseOptions[4].SetActive(false);
         }
 
         if (LoadSave.instance.GetBoughtC4()) {
             EquipOptions[2].SetActive(true);
+            PurchaseOptions[5].SetActive(false);
         }
     }
 
