@@ -3,7 +3,6 @@ using UnityEngine;
 public class AtmosphereSound : MonoBehaviour
 {
     public Collider Area;
-    public GameObject Player;
     private AudioSource Source;
 
     bool Played;
@@ -21,10 +20,10 @@ public class AtmosphereSound : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == Player)
+        if (other.gameObject == GameManager.instance.player)
         {
             if (!Source.isPlaying) { 
-                Debug.Log("Ambeince: " + this.gameObject.name);
+                Debug.Log("Sound: " + this.gameObject.name);
                 Source.Play();
                 Played = true;
             }
@@ -32,7 +31,7 @@ public class AtmosphereSound : MonoBehaviour
     }
 
     void OnTriggerExit(Collider other) {
-        if (other.gameObject == Player) {
+        if (other.gameObject == GameManager.instance.player) {
             if (Source.isPlaying && Source.loop) {
                 Source.Stop();
                 Played = false;
