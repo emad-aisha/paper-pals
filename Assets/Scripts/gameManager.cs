@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
     public GameObject TapeMessage;
     public GameObject DoubleJumpMessage;
     public GameObject DashMessage;
+    public GameObject jumpMessage;
+    public GameObject jumpTrigger;
 
     public GameObject crosshair;
 
@@ -550,8 +552,14 @@ public class GameManager : MonoBehaviour
         StartCoroutine(HideHint(DashMessage));
     }
 
+ 
 
-    IEnumerator HideHint(GameObject menu)
+    public void StartHideHint(GameObject hintUI)
+    {
+       StartCoroutine(HideHint(hintUI));
+    }
+
+    public IEnumerator HideHint(GameObject menu)
     {
         yield return new WaitForSeconds(2f);
         menu.SetActive(false);
