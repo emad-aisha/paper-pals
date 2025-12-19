@@ -89,6 +89,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Exit()
     {
+        LoadSave.instance.ResetSettings();
         SceneManager.LoadScene("Main Menu");
     }
 

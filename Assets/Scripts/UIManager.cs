@@ -252,14 +252,14 @@ public class UIManager : MonoBehaviour {
 
     // SHOP BUTTON FUNCTIONS
     public void OnNextLevel() {
-        LoadSave.instance.IncrementLevelLoad();
         int levelToLoad = LoadSave.instance.GetLevelLoad();
 
 
         if (levelToLoad == 1) SceneManager.LoadScene("Level 1");
-        if (levelToLoad == 2) SceneManager.LoadScene("Level 2");
-        if (levelToLoad == 3) SceneManager.LoadScene("Level 3");
-        if (levelToLoad == 4) SceneManager.LoadScene("Level 4");
+        else if (levelToLoad == 2) SceneManager.LoadScene("Level 2");
+        else if (levelToLoad == 3) SceneManager.LoadScene("Level 3");
+        else if (levelToLoad == 4) SceneManager.LoadScene("Level 4");
+        
     }
 
     public void OnPurchasable() {

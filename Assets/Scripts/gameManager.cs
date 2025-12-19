@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
     public GameObject reminderMenu;
     public TMP_Text reminderText;
 
+    public GameObject shop;
+
     [Header("Level specific")]
     public GunStats gun;
     public MeleeStats pencil;
@@ -149,6 +151,8 @@ public class GameManager : MonoBehaviour
 
         exit = GameObject.FindWithTag("Exit");
         exitCover = GameObject.FindWithTag("Exit Cover");
+
+        shop = GameObject.FindWithTag("Shop");
 
 
         if (gunObject != null) gunObject.layer = 7;
@@ -319,6 +323,9 @@ public class GameManager : MonoBehaviour
     {
         int keysLeft = totalKeys - ownedKeys;
 
+        if (initial && SceneManager.GetActiveScene().name == "Level 0" || SceneManager.GetActiveScene().name == "The Map") {
+            return;
+        }
         if (initial && SceneManager.GetActiveScene().name == "Level 1") {
             reminderText.text = "Collect " + totalKeys + " sticky notes to escape.";
             return;
@@ -335,6 +342,10 @@ public class GameManager : MonoBehaviour
 
     public void KeyCheck(bool initial = false)
     {
+        if (initial && SceneManager.GetActiveScene().name == "Level 0" || SceneManager.GetActiveScene().name == "The Map") {
+            return;
+        }
+
         UpdateKeysLeft(initial);
         StartCoroutine(ReminderText());
 
@@ -344,6 +355,8 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+
 
     public IEnumerator ReminderText()
     {

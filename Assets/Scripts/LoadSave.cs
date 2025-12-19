@@ -56,6 +56,30 @@ public class LoadSave : MonoBehaviour {
         levelLoad = 0;
     }
 
+    public void ResetSettings() {
+
+        // sounds
+        MusicValue = 0.2;
+        SFXValue = 0.5;
+        MouseValue = 300;
+
+        isInvertedY = false;
+
+        // player stuff
+        playerCoins = 0;
+        playerAmmo = 0;
+        playerWeapons = new List<WeaponStats>();
+        playerTape = false;
+        playerMap = false;
+
+        boughtStapler = false;
+        boughtC4 = false;
+
+
+        // misc
+        heartsBought = 0;
+        levelLoad = 0;
+    }
 
     public bool GetBoghtStapler() {  return boughtStapler; }
     public void SetBoughtStapler(bool set) { boughtStapler = set; }
@@ -116,6 +140,7 @@ public class LoadSave : MonoBehaviour {
 
     public void IncrementLevelLoad() {
         levelLoad++;
+        if (levelLoad > 4) levelLoad = 4;
     }
 
     public void AddPlayerWeapon(WeaponStats weapon) {
