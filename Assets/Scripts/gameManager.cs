@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text characterText;
     public bool isDialogueActive;
 
+    public GameObject disclaimerMenu;
+    public TMP_Text disclaimerText;
+
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
     public List<GameObject> Hearts;
@@ -178,6 +181,25 @@ public class GameManager : MonoBehaviour
         MusicSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         SFXSliderObj.onValueChanged.AddListener(DisplayTextSlider);
         MouseSensSliderObj.onValueChanged.AddListener(DisplayTextSlider);
+
+
+        // sets the level to load
+        string currLevel = SceneManager.GetActiveScene().name;
+        string level0 = "Level 0";
+        string tutorial = "The Map";
+
+        string level1 = "Level 1";
+        string level2 = "Level 2";
+        string level3 = "Level 3";
+        string level4 = "Level 4";
+
+        if (currLevel == tutorial || currLevel == level0) LoadSave.instance.SetLevelLoad(0);
+        if (currLevel == level1) LoadSave.instance.SetLevelLoad(1);
+        if (currLevel == level2) LoadSave.instance.SetLevelLoad(2);
+        if (currLevel == level3) LoadSave.instance.SetLevelLoad(3);
+        if (currLevel == level4) LoadSave.instance.SetLevelLoad(4);
+
+        Debug.Log("level to load is level " + LoadSave.instance.GetLevelLoad());
     }
 
 
@@ -369,20 +391,23 @@ public class GameManager : MonoBehaviour
     {
         string currLevelName = SceneManager.GetActiveScene().name;
 
+        // Todo: get rid of this line
         string TutorialLevel = "The Map";
+        string levelzero = "Level 0";
+
         string shop = "Shop";
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
         string levelFour = "Level 4";
 
-        if (currLevelName == TutorialLevel || currLevelName == levelOne || currLevelName == levelTwo || currLevelName == levelThree)
+        if (currLevelName == TutorialLevel || currLevelName == levelzero || currLevelName == levelOne || currLevelName == levelTwo || currLevelName == levelThree)
         {
             SceneManager.LoadScene(shop);
         }
 
 
-        if (currLevelName == shop || currLevelName == "Mat's Scene")
+        if (currLevelName == shop)
         {
             if (levelToLoad == 1) SceneManager.LoadScene(levelOne);
             if (levelToLoad == 2) SceneManager.LoadScene(levelTwo);
@@ -464,28 +489,27 @@ public class GameManager : MonoBehaviour
         float percent = ((float)CoinsCounter / CoinsMax);
         int phase = 0;
 
-        if (percent < 0.25)
+        if (percent == 0)
+            phase = 0;
+        else if (percent < 0.25)
             phase = 1;
         else if (percent < 0.5)
             phase = 2;
         else if (percent < 0.75)
             phase = 3;
-        else if (percent < 1)
+        else if (percent == 1)
             phase = 4;
 
 
-        for (int i = 0; i < EyedropPhases.Count; i++)
-        {
+        for (int i = 0; i < EyedropPhases.Count; i++) {
 
-            if (phase == i)
-            {
-                EyedropPhases[i].SetActive(true);
+                if (phase == i) {
+                    EyedropPhases[i].SetActive(true);
+                }
+                else {
+                    EyedropPhases[i].SetActive(false);
+                }
             }
-            else
-            {
-                EyedropPhases[i].SetActive(false);
-            }
-        }
     }
 
     public void UpdateCoinCount(int ammount)
