@@ -572,7 +572,6 @@ public class PlayerController : MonoBehaviour, IDamage {
         if (dmg != null)
         {
             dmg.TakeDamage(Weapons[WeaponListPos].GetDamage());
-            Debug.Log("hit");
         }
     }
 

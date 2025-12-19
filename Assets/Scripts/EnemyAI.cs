@@ -480,7 +480,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         // Check if we hit the player AND we are currently charging
         if (enemyType == EnemyType.bull && isCharging && collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("BULL HIT PLAYER!");
 
             IDamage dmg = collision.gameObject.GetComponentInParent<IDamage>();
 
@@ -597,8 +596,6 @@ public class EnemyAI : MonoBehaviour, IDamage
 
              if (dist < 3.0f)
                 {
-                    Debug.Log("BAT HIT PLAYER!");
-
  
                     IDamage dmg = GameManager.instance.player.GetComponent<IDamage>();
                     if (dmg != null)

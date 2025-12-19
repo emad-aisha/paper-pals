@@ -7,16 +7,13 @@ public class GoalTrigger : MonoBehaviour
     [SerializeField] Type type;
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("trigger");
-        Debug.Log(other);
-
         if (other.CompareTag("Player")) {
-            Debug.Log("compared");
             if (type == Type.exitCover) {
                 GameManager.instance.KeyCheck();
             }
             if (type == Type.exit) {
                 LoadSave.instance.IncrementLevelLoad();
+                Debug.Log("level to load: " + LoadSave.instance.GetLevelLoad());
                 GameManager.instance.LoadNextLevel(LoadSave.instance.GetLevelLoad());
             }
             if (type == Type.shop) {
