@@ -15,7 +15,8 @@ public class dialogueTrigger : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        SetDialogue();
+        if (other == GameManager.instance.player)
+            SetDialogue();
     }
 
     public void SetDialogue() {

@@ -198,8 +198,6 @@ public class GameManager : MonoBehaviour
         if (currLevel == level2) LoadSave.instance.SetLevelLoad(2);
         if (currLevel == level3) LoadSave.instance.SetLevelLoad(3);
         if (currLevel == level4) LoadSave.instance.SetLevelLoad(4);
-
-        Debug.Log("level to load is level " + LoadSave.instance.GetLevelLoad());
     }
 
 

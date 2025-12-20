@@ -89,6 +89,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     [Header("Animation")]
     [SerializeField] Animator anim;
 
+    [SerializeField] isGrounded feet;
 
     // private variables
     // movement
@@ -384,7 +385,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Jump() {
-        if (Input.GetButtonDown("Jump") && jumpCount == 0) {
+        if (Input.GetButtonDown("Jump") && jumpCount == 0 && feet.GetGrounded()) {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
             aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
