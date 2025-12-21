@@ -24,9 +24,6 @@ public class ButtonFunctions : MonoBehaviour
     //option button function
     public void MMOption() {
         SceneManager.LoadScene("MMOption");
-        VolMenu.SetActive(true);
-        InfoMenu.SetActive(false);
-        MouseMenu.SetActive(false);
     }
 
     public void MMOptionVol() {
