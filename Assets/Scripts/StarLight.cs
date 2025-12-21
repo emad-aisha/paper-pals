@@ -9,7 +9,7 @@ public class CloudLightTrigger : MonoBehaviour
 
     private void Start()
     {
-        if(Light == null)
+        if(Light != null)
         {
             Light.SetActive(false);
         }
