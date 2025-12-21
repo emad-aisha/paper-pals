@@ -121,7 +121,7 @@ public class ButtonFunctions : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         // 3. Load Scene
-        SceneManager.LoadScene("Outro");
+        SceneManager.LoadScene("Credits");
     }
 
     public void Quit()
