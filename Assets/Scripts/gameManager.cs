@@ -226,8 +226,6 @@ public class GameManager : MonoBehaviour
 
         //setting things from option/LoadSave
         invertY = LoadSave.instance.GetInvertYSettings();
-        //player.GetComponent<AudioSource>().volume = LoadSave.instance.GetSFXSettings().volume;
-        //LoadSave.instance.GetAudio(player.GetComponent<AudioSource>());
     }
 
     void SetEyedrops()
@@ -345,16 +343,6 @@ public class GameManager : MonoBehaviour
     public void UpdateKeysLeft(bool initial = false)
     {
         int keysLeft = totalKeys - ownedKeys;
-
-        if (initial && SceneManager.GetActiveScene().name == "Level 0" || SceneManager.GetActiveScene().name == "The Map") {
-            return;
-        }
-
-        // this might not need to be used
-        if (initial && SceneManager.GetActiveScene().name == "Level 1") {
-            reminderText.text = "Collect " + totalKeys + " sticky notes to escape.";
-            return;
-        }
 
         if (keysLeft == 0)
             reminderText.text = "You can escape now!";

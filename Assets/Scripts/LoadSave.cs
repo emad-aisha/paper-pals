@@ -49,7 +49,7 @@ public class LoadSave : MonoBehaviour {
         playerAmmo = 0;
         playerWeapons = new List<WeaponStats>();
         playerTape = false;
-        playerMap = true;
+        playerMap = false;
 
         boughtStapler = false;
         boughtC4 = false;

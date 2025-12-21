@@ -24,7 +24,8 @@ public class Interactable : MonoBehaviour, IInteractable {
     [SerializeField] InterfaceType type;
     [SerializeField] int amount;
     public WeaponStats weaponStats;
-    [SerializeField] GameObject light;
+    [SerializeField] GameObject pointLight;
+    [SerializeField] GameObject pointLight2;
 
     public void Interact()
     {
@@ -108,12 +109,14 @@ public class Interactable : MonoBehaviour, IInteractable {
     }
 
     IEnumerator Remidner() {
-        light.SetActive(true);
+        pointLight.SetActive(true);
+        pointLight2.SetActive(true);
         GameManager.instance.reminderText.text = "Checkpoint Got!";
         GameManager.instance.reminderMenu.SetActive(true);
         yield return new WaitForSeconds(2);
         GameManager.instance.reminderMenu.SetActive(false);
-        light.SetActive(false);
+        pointLight.SetActive(false);
+        pointLight2.SetActive(false);
     }
 
     // for money
