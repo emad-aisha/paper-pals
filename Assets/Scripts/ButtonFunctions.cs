@@ -7,6 +7,7 @@ public class ButtonFunctions : MonoBehaviour
     [Header("Main Menu UI Stuff")]
     [SerializeField] GameObject VolMenu;
     [SerializeField] GameObject MouseMenu;
+    [SerializeField] GameObject InfoMenu;
     [SerializeField] TMP_Text InvertDisplay;
 
     public void Resume()
@@ -23,17 +24,28 @@ public class ButtonFunctions : MonoBehaviour
     //option button function
     public void MMOption() {
         SceneManager.LoadScene("MMOption");
+        VolMenu.SetActive(true);
+        InfoMenu.SetActive(false);
+        MouseMenu.SetActive(false);
     }
 
     public void MMOptionVol() {
         VolMenu.SetActive(true);
         MouseMenu.SetActive(false);
+        InfoMenu.SetActive(false);
     }
 
     public void MMOptionMouse() {
         VolMenu.SetActive(false);
+        InfoMenu.SetActive(false);
         MouseMenu.SetActive(true);
     }
+    public void MMOptionInfo() {
+        VolMenu.SetActive(false);
+        MouseMenu.SetActive(false);
+        InfoMenu.SetActive(true);
+    }
+    
 
     public void MMOptionExit() {
         SceneManager.LoadScene("Main Menu");
@@ -72,7 +84,10 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.UpdateInvert();
     }
-
+    public void OptionInfo()
+    {
+        GameManager.instance.InfoOptionMenu();
+    }
 
     public void Play()
     {

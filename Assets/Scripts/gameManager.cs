@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuOption;
     [SerializeField] GameObject menuVOLOption;
     [SerializeField] GameObject menuMouseOption;
+    [SerializeField] GameObject menuInfoOption;
     public GameObject mapMenu;
 
     [Header("Dialogue")]
@@ -639,7 +640,7 @@ public class GameManager : MonoBehaviour
         if (menuMouseOption)
         {
             menuMouseOption.SetActive(false);
-
+            menuInfoOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
@@ -647,6 +648,7 @@ public class GameManager : MonoBehaviour
         //if you're in the VOL MiniOptions
         else if (menuVOLOption)
         {
+            menuInfoOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
             PauseGame();
@@ -661,6 +663,7 @@ public class GameManager : MonoBehaviour
         //if you're in the regular option menu (volume will be active on default)
         else
         {
+            menuInfoOption.SetActive(false);
             menuVOLOption.SetActive(false);
             menuOption.SetActive(false);
             menuActive.SetActive(true);
@@ -671,26 +674,48 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
         {
+            menuInfoOption.SetActive(false);
             menuMouseOption.SetActive(false);
             menuVOLOption.SetActive(true);
         }
         else
         {
+            menuInfoOption.SetActive(false);
             menuMouseOption.SetActive(false);
             menuVOLOption.SetActive(true);
             PauseGame();
         }
     }
 
+    public void InfoOptionMenu()
+    {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
+        {
+            //menuMouseOption.SetActive(false);
+            //menuVOLOption.SetActive(true);
+        }
+        else
+        {
+            menuVOLOption.SetActive(false);
+            menuMouseOption.SetActive(false);
+            menuInfoOption.SetActive(true);
+            PauseGame();
+        }
+    }
+    //menuInfoOption
+
+
     public void MouseOptionMenu()
     {
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MMOption"))
         {
+            menuInfoOption.SetActive(false);
             menuVOLOption.SetActive(false);
             menuMouseOption.SetActive(true);
         }
         else
         {
+            menuInfoOption.SetActive(false);
             menuVOLOption.SetActive(false);
             menuMouseOption.SetActive(true);
             PauseGame();
