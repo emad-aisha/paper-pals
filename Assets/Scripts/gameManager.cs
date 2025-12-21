@@ -352,6 +352,8 @@ public class GameManager : MonoBehaviour
         if (initial && SceneManager.GetActiveScene().name == "Level 0" || SceneManager.GetActiveScene().name == "The Map") {
             return;
         }
+
+        // this might not need to be used
         if (initial && SceneManager.GetActiveScene().name == "Level 1") {
             reminderText.text = "Collect " + totalKeys + " sticky notes to escape.";
             return;
@@ -360,9 +362,9 @@ public class GameManager : MonoBehaviour
         if (keysLeft == 0)
             reminderText.text = "You can escape now!";
         else if (keysLeft == 1)
-            reminderText.text = "You still need to get " + keysLeft + " more sticky note...";
+            reminderText.text = "You still need " + keysLeft + " more sticky note...";
         else if (keysLeft > 0 && keysLeft <= 3)
-            reminderText.text = "You still need to get " + keysLeft + " more sticky notes...";
+            reminderText.text = "You still need " + keysLeft + " more sticky notes...";
 
     }
 

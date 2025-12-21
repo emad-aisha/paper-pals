@@ -390,7 +390,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             jumpCount++;
             aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
         }
-        else if (Input.GetButtonDown("Jump") && jumpCount < maxJumps && GameManager.instance.hasDoubleJump) {
+        else if (Input.GetButtonDown("Jump") && jumpCount != 0 && jumpCount < maxJumps && GameManager.instance.hasDoubleJump) {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
         }

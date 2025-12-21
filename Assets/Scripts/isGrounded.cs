@@ -7,19 +7,27 @@ public class isGrounded : MonoBehaviour
     private void Start() {
         grounded = false;
     }
-
     public bool GetGrounded() { return grounded;}
 
-    private void OnTriggerEnter(Collider other) { 
-        if (other != GameManager.instance.player) {
+    private void OnTriggerStay(Collider other) {
+        if (other.name != "Player" && other.isTrigger == false)
             grounded = true;
-        }
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other != GameManager.instance.player) {
+        if (other.name != "Player" && other.isTrigger == false) {
+            Debug.Log("stopped touching: " + other);
             grounded = false;
         }
     }
+
+    /*
+    private void OnTriggerEnter(Collider other) { 
+        if (other.name != "Player" && other.isTrigger == false) {
+            Debug.Log("touched: " + other);
+            grounded = true;
+        }
+    }
+    */
 
 }
