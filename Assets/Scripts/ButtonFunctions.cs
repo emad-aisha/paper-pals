@@ -96,7 +96,7 @@ public class ButtonFunctions : MonoBehaviour
         }
 
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene("The Map");
+        SceneManager.LoadScene("Level 0");
     }
 
     public void Exit()

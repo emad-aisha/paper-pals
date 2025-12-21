@@ -13,7 +13,7 @@ public class GoalTrigger : MonoBehaviour
             }
             if (type == Type.exit) {
                 LoadSave.instance.IncrementLevelLoad();
-                Debug.Log("level to load: " + LoadSave.instance.GetLevelLoad());
+                //Debug.Log("level to load: " + LoadSave.instance.GetLevelLoad());
                 GameManager.instance.LoadNextLevel(LoadSave.instance.GetLevelLoad());
             }
             if (type == Type.shop) {

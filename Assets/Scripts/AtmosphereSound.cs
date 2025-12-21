@@ -23,7 +23,7 @@ public class AtmosphereSound : MonoBehaviour
         if (other.gameObject == GameManager.instance.player)
         {
             if (!Source.isPlaying) { 
-                Debug.Log("Sound: " + this.gameObject.name);
+                //Debug.Log("Sound: " + this.gameObject.name);
                 Source.Play();
                 Played = true;
             }
