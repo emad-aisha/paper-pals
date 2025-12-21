@@ -32,8 +32,6 @@ public class GameManager : MonoBehaviour
     public TMP_Text characterText;
     public bool isDialogueActive;
 
-    public GameObject disclaimerMenu;
-    public TMP_Text disclaimerText;
 
     [Header("\nPlayer UI")]
     [SerializeField] GameObject Interactable;
@@ -46,13 +44,20 @@ public class GameManager : MonoBehaviour
     public GameObject LowHealth;
 
     [Header("Reminders")]
-    public GameObject FlashlightMessage;
-    public GameObject TapeMessage;
-    public GameObject DoubleJumpMessage;
-    public GameObject DashMessage;
-    public GameObject jumpMessage;
-    public GameObject jumpTrigger;
+    //public GameObject FlashlightMessage;
+    //public GameObject TapeMessage;
+    //public GameObject DoubleJumpMessage;
+    //public GameObject DashMessage;
+    //public GameObject jumpMessage;
+    //public GameObject jumpTrigger;
+    
+    //public GameObject disclaimerMenu;
+    //public TMP_Text disclaimerText;
 
+    public GameObject reminderMenu;
+    public TMP_Text reminderText;
+
+    [Header("")]
     public GameObject crosshair;
 
     [Header("\nInventory")]
@@ -73,8 +78,8 @@ public class GameManager : MonoBehaviour
     [Header("Trophy Stuff")]
     public GameObject exit;
     public GameObject exitCover;
-    public GameObject reminderMenu;
-    public TMP_Text reminderText;
+    //public GameObject reminderMenu;
+    //public TMP_Text reminderText;
 
     public GameObject shop;
 
@@ -569,26 +574,34 @@ public class GameManager : MonoBehaviour
 
     public void ShowFlashlightHint()
     {
-        FlashlightMessage.SetActive(true);
-        StartCoroutine(HideHint(FlashlightMessage));
+        reminderText.text = "Press 'F' to use the flashlight";
+
+        reminderMenu.SetActive(true);
+        StartCoroutine(HideHint(reminderMenu));
     }
 
     public void ShowTapeHint()
     {
-        TapeMessage.SetActive(true);
-        StartCoroutine(HideHint(TapeMessage));
+        reminderText.text = "You can only hold 1 tape";
+
+        reminderMenu.SetActive(true);
+        StartCoroutine(HideHint(reminderMenu));
     }
 
     public void ShowDoubleJumpHint()
     {
-        DoubleJumpMessage.SetActive(true);
-        StartCoroutine(HideHint(DoubleJumpMessage));
+        reminderText.text = "You can now double jump";
+
+        reminderMenu.SetActive(true);
+        StartCoroutine(HideHint(reminderMenu));
     }
 
     public void ShowDashHint()
     {
-        DashMessage.SetActive(true);
-        StartCoroutine(HideHint(DashMessage));
+        reminderText.text = "Press 'C' to dash";
+
+        reminderMenu.SetActive(true);
+        StartCoroutine(HideHint(reminderMenu));
     }
 
  

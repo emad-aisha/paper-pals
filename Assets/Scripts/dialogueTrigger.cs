@@ -1,32 +1,34 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 
 public class dialogueTrigger : MonoBehaviour
 {
-    [Header("Menus")]
-    [SerializeField] string text;
 
-    public bool isExhausted;
+    GameObject disclaimerMenu;
+    TMP_Text disclaimerText;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() {
+    private void Start() {
+        disclaimerMenu = GameManager.instance.reminderMenu;
+        disclaimerText = GameManager.instance.reminderText;
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other == GameManager.instance.player)
-            SetDialogue();
+        //awful way to do this but idc :grin:
+        if (other.name == "Player") {
+            StartCoroutine(ShowDialogue());
+        }
     }
 
-    public void SetDialogue() {
-        GameManager.instance.disclaimerText.SetText(text);
-        StartCoroutine(ShowDialogue());
+    void Set() {
+        disclaimerText.text = "This'll send you to the shop";
     }
 
     IEnumerator ShowDialogue() {
-        GameManager.instance.disclaimerMenu.SetActive(true);
+        Set();
+        disclaimerMenu.SetActive(true);
         yield return new WaitForSeconds(2);
-        GameManager.instance.disclaimerMenu.SetActive(false);
+        disclaimerMenu.SetActive(false);
     }
 }
