@@ -299,9 +299,12 @@ public class GameManager : MonoBehaviour
         string levelOne = "Level 1";
         string levelTwo = "Level 2";
         string levelThree = "Level 3";
+        string levelFour = "Level 4";
         string tutorial = "The Map";
+        string levelZero = "Level 0";
 
-        if (currLevelName == tutorial)
+        // is this needed?
+        if (currLevelName == tutorial || currLevelName == levelZero)
         {
             hasFlashlight = false;
             hasDoubleJump = false;
@@ -317,10 +320,15 @@ public class GameManager : MonoBehaviour
         {
             hasFlashlight = true;
             hasDoubleJump = false;
-            hasDash = true;
+            hasDash = false;
         }
         else if (currLevelName == levelThree)
         {
+            hasFlashlight = true;
+            hasDoubleJump = true;
+            hasDash = false;
+        }
+        else if (currLevelName == levelFour) {
             hasFlashlight = true;
             hasDoubleJump = true;
             hasDash = true;
