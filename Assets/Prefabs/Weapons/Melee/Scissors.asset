@@ -15,9 +15,18 @@ MonoBehaviour:
   type: 0
   Model: {fileID: 1676625864700028, guid: 4eda41d20c3564ad789494e2a0e9babb, type: 3}
   HitFX: {fileID: 0}
+  AOE: 0
+  Throwable: 0
+  ThrowDistance: 1
+  ThrowForce: 0
+  ThrowUpwardForce: 0
+  ThrowSpeed: 0
   Volume: 0
   Anim: {fileID: 0}
   Damage: 3
   SwingSpeed: 0.25
+  MeleeRange: 0.1
   TickDamage: 0
+  SwingSound: []
+  ShootSoundVol: 0
   DamageOverTime: 0

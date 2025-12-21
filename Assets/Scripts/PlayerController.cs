@@ -419,6 +419,9 @@ public class PlayerController : MonoBehaviour, IDamage {
 
                 aud.PlayOneShot(Weapons[WeaponListPos].GetAudio(), Weapons[WeaponListPos].Volume);
 
+                if (anim != null)
+                    anim.SetTrigger("gunFire");
+
                 Vector3 camDir = GameManager.instance.mainCamera.transform.forward;
                 Vector3 gunDir = playerShootPos.forward;
                 Vector3 shootDir = Vector3.Lerp(gunDir, camDir, bulletToCamera).normalized;
