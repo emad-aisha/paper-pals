@@ -1,34 +1,39 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CloudLightTrigger : MonoBehaviour
 {
     public GameObject Light;  
-    private int objectsInside = 0;
+    private HashSet<GameObject> trackedObjects = new HashSet<GameObject>();
+    private readonly HashSet<string> validTags = new HashSet<string> { "Player", "Enemy" };
 
     private void Start()
     {
-        Light.SetActive(false);
+        if(Light == null)
+        {
+            Light.SetActive(false);
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        if (validTags.Contains(other.tag) && trackedObjects.Add(other.gameObject))
         {
-            objectsInside++;
-            Light.SetActive(true);
+            if(Light != null)
+            {
+                Light.SetActive(true);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        if (validTags.Contains(other.tag) && trackedObjects.Remove(other.gameObject))
         {
-            objectsInside--;
-
-            if (objectsInside <= 0)
+            if(trackedObjects.Count == 0 && Light != null)
             {
                 Light.SetActive(false);
-                objectsInside = 0;
             }
         }
     }
