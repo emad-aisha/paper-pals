@@ -32,28 +32,7 @@ public class LoadSave : MonoBehaviour {
         }
 
         // Default values on start
-
-        // sounds
-        MusicValue = 0.2;
-        SFXValue = 0.5;
-        MouseValue = 300;
-
-        isInvertedY = false;
-
-        // player stuff
-        playerCoins = 0;
-        playerAmmo = 0;
-        playerWeapons = new List<WeaponStats>();
-        playerTape = false;
-        playerMap = true;
-
-        boughtStapler = false;
-        boughtC4 = false;
-
-
-        // misc
-        heartsBought = 0;
-        levelLoad = 0;
+        ResetSettings();
     }
 
     public void ResetSettings() {
@@ -70,7 +49,7 @@ public class LoadSave : MonoBehaviour {
         playerAmmo = 0;
         playerWeapons = new List<WeaponStats>();
         playerTape = false;
-        playerMap = false;
+        playerMap = true;
 
         boughtStapler = false;
         boughtC4 = false;

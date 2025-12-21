@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable {
@@ -23,7 +24,7 @@ public class Interactable : MonoBehaviour, IInteractable {
     [SerializeField] InterfaceType type;
     [SerializeField] int amount;
     public WeaponStats weaponStats;
-    [SerializeField] Renderer model;
+    [SerializeField] GameObject light;
 
     public void Interact()
     {
@@ -99,16 +100,23 @@ public class Interactable : MonoBehaviour, IInteractable {
 
     void ActivateCheckpoint()
     {
+        StartCoroutine(Remidner());
         if (GameManager.instance.playerSpawnPos.transform.position != transform.position)
         {
             GameManager.instance.playerSpawnPos.transform.position = transform.position;
-
-            // Optional visual feedback
-            if (model != null)
-                model.material.color = Color.green;
         }
     }
 
+    IEnumerator Remidner() {
+        light.SetActive(true);
+        GameManager.instance.reminderText.text = "Checkpoint Got!";
+        GameManager.instance.reminderMenu.SetActive(true);
+        yield return new WaitForSeconds(2);
+        GameManager.instance.reminderMenu.SetActive(false);
+        light.SetActive(false);
+    }
+
+    // for money
     private void OnTriggerEnter(Collider other)
     {
         // Currency auto-pickup ONLY

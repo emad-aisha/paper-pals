@@ -219,7 +219,7 @@ public class GameManager : MonoBehaviour
             controller.FlashlightToggle();
         }
 
-        if (Input.GetButtonDown("Map"))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             controller.MapToggle();
         }

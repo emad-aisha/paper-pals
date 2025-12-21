@@ -671,8 +671,12 @@ public class PlayerController : MonoBehaviour, IDamage {
             HaveTape = interact.SetTape();
             LoadSave.instance.SetPlayerTape(HaveTape);
         }
+        else if (Physics.Raycast(GameManager.instance.mainCamera.transform.position, Camera.main.transform.forward, out hit, interactDistance, InteractLayer)) {
+            IInteractable interact = hit.collider.GetComponent<IInteractable>();
+            interact.Interact();
+        }
 
-        canDash = GameManager.instance.hasDash;
+            canDash = GameManager.instance.hasDash;
     }
 
     public void Heal(int amount) {
