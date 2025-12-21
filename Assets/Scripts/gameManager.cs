@@ -45,16 +45,6 @@ public class GameManager : MonoBehaviour
     public GameObject LowHealth;
 
     [Header("Reminders")]
-    //public GameObject FlashlightMessage;
-    //public GameObject TapeMessage;
-    //public GameObject DoubleJumpMessage;
-    //public GameObject DashMessage;
-    //public GameObject jumpMessage;
-    //public GameObject jumpTrigger;
-    
-    //public GameObject disclaimerMenu;
-    //public TMP_Text disclaimerText;
-
     public GameObject reminderMenu;
     public TMP_Text reminderText;
 
@@ -437,9 +427,16 @@ public class GameManager : MonoBehaviour
 
     public void Win()
     {
-        PauseGame();
-        menuActive = menuWin;
-        menuActive.SetActive(true);
+        Time.timeScale = 1.0f;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        SceneManager.LoadScene("Outro");
+
+        //PauseGame();
+        //menuActive = menuWin;
+        //menuActive.SetActive(true);
     }
 
     public void WinTrophy()

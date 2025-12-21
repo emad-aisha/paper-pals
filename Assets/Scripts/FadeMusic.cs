@@ -1,22 +1,25 @@
 using System.Collections;
 using UnityEngine;
 
-public class FadeMusic : MonoBehaviour
-{
+public class FadeMusic : MonoBehaviour {
     private AudioSource source;
- 
-    void Awake()
-    {
+
+    void Awake() {
         source = GetComponent<AudioSource>();
+
+        source.volume = LoadSave.instance.GetMusicVolume();
     }
 
-  private IEnumerator FadeOutRoutine(float duration)
-    {
+    private void Update() {
+        source.volume = LoadSave.instance.GetMusicVolume();
+    }
+
+
+    private IEnumerator FadeOutRoutine(float duration) {
         float startVolume = source.volume;
         float timer = 0;
 
-        while (timer < duration)
-        {
+        while (timer < duration) {
             source.volume = Mathf.Lerp(startVolume, 0, timer / duration);
             timer += Time.deltaTime;
             yield return null;
@@ -24,8 +27,7 @@ public class FadeMusic : MonoBehaviour
         source.volume = 0;
         source.Stop();
     }
-    public void FadeOut(float duration)
-    {
+    public void FadeOut(float duration) {
         StartCoroutine(FadeOutRoutine(duration));
     }
 }

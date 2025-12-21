@@ -12,20 +12,20 @@ public class Credits : MonoBehaviour
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -600f);
+        rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -100f);
     }
 
     void Update()
     {
         rectTransform.anchoredPosition += new Vector2(0, scrollSpeed * Time.deltaTime);
-        if (CreditsFInished())
+        if (CreditsFinished())
         {
             SceneManager.LoadScene("Main Menu");
         }
         ReturnToMenu();
     }
 
-  bool CreditsFInished()
+  bool CreditsFinished()
     {
         float TopY = rectTransform.anchoredPosition.y;
         float Height = rectTransform.rect.height;

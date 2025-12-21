@@ -16,18 +16,8 @@ public class isGrounded : MonoBehaviour
 
     private void OnTriggerExit(Collider other) {
         if (other.name != "Player" && other.isTrigger == false) {
-            Debug.Log("stopped touching: " + other);
             grounded = false;
         }
     }
-
-    /*
-    private void OnTriggerEnter(Collider other) { 
-        if (other.name != "Player" && other.isTrigger == false) {
-            Debug.Log("touched: " + other);
-            grounded = true;
-        }
-    }
-    */
 
 }

@@ -57,7 +57,6 @@ public class Intro : MonoBehaviour
         yield return new WaitForSeconds(1);
         StartCoroutine(Fade(StudioIcon, 1, 0, AnimationTime));
         StartCoroutine(Fade(GameIcon, 1, 0, AnimationTime));
-        StartCoroutine(Fade(TYMessage, 1, 0, AnimationTime));
         yield return new WaitForSeconds(AnimationTime);
         SceneManager.LoadScene("Credits");
     }
