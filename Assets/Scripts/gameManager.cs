@@ -47,6 +47,13 @@ public class GameManager : MonoBehaviour
     [Header("Reminders")]
     public GameObject reminderMenu;
     public TMP_Text reminderText;
+    public GameObject FlashlightMessage;
+    public GameObject TapeMessage;
+    public GameObject DoubleJumpMessage;
+    public GameObject DashMessage;
+    public GameObject jumpMessage;
+    public GameObject jumpTrigger;
+    public GameObject FullHealth;
 
     [Header("")]
     public GameObject crosshair;
@@ -598,6 +605,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(HideHint(reminderMenu));
     }
 
+    public void FullHealthHint()
+    {
+        FullHealth.SetActive(true);
+        StartCoroutine(HideHint(FullHealth));
+    }
+
  
 
     public void StartHideHint(GameObject hintUI)
@@ -771,5 +784,11 @@ public class GameManager : MonoBehaviour
         {
             Display_X_Button.text = "( )";
         }
+    }
+
+    IEnumerator ReminderOn()
+    {
+        yield return new WaitForSeconds(1.5f);
+        ReminderOn();
     }
 }

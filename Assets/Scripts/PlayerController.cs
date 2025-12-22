@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+
 
 //using System.Diagnostics;
 using UnityEngine;
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     [SerializeField] AudioClip[] audJump;
     [SerializeField] float audJumpVol;
     [SerializeField] AudioClip[] audHurt;
+    [SerializeField] AudioClip PopSFX;
     [SerializeField] float audHurtVol;
 
     [Header("Animation")]
@@ -212,7 +215,17 @@ public class PlayerController : MonoBehaviour, IDamage {
                 GameManager.instance.mainCamera.fieldOfView = Mathf.Lerp(GameManager.instance.mainCamera.fieldOfView, OGFOV, Time.deltaTime * FOVChangeSpeed);
             }
 
-            if (Input.GetButtonDown("Heal") && HaveTape && HP < MaxHP) {
+            if (Input.GetButtonDown("Heal") && HaveTape) {
+                if (HP == MaxHP)
+                {
+                    if (!GameManager.instance.FullHealth.activeSelf)
+                    {
+                        GameManager.instance.FullHealthHint();
+                        aud.PlayOneShot(PopSFX);
+                    }
+                    return;
+                }
+
                 Heal(healAmount);
                 HaveTape = false;
                 GameManager.instance.TapeImage.SetActive(false);
@@ -228,6 +241,8 @@ public class PlayerController : MonoBehaviour, IDamage {
 
             if (mapOn) {
                 GameManager.instance.crosshair.SetActive(false); // Hide crosshair when map is open
+                RegenStamina(); 
+                
             }
             else {
                 GameManager.instance.crosshair.SetActive(true); // Show crosshair when map is closed
@@ -368,8 +383,7 @@ public class PlayerController : MonoBehaviour, IDamage {
 
         }
         else {
-            isSprinting = false;
-            sprintCurr += sprintRegenRate * Time.deltaTime;
+            RegenStamina();
         }
 
         if (sprintCurr > sprintTimer)
@@ -381,6 +395,13 @@ public class PlayerController : MonoBehaviour, IDamage {
         sprintCurrBoost = sprintMod * (sprintCurr / sprintTimer);
         finalSpeed = OGSpeed + sprintCurrBoost;
 
+        UpdateSprintBar();
+    }
+
+    void RegenStamina()
+    {
+        isSprinting = false;
+        sprintCurr += sprintRegenRate * Time.deltaTime;
         UpdateSprintBar();
     }
 
