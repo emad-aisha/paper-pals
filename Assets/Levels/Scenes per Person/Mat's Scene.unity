@@ -2201,11 +2201,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1955500904 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6355838910643190701, guid: 392bb4580e49a054dbebe91619fb45cd, type: 3}
-  m_PrefabInstance: {fileID: 1460082979}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2016273650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2759,25 +2754,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 835979620505542748, guid: de12e1933c0d8cb4cb0e22df94b57366, type: 3}
-      propertyPath: Sprite
-      value: 
-      objectReference: {fileID: 1955500904}
     - target: {fileID: 2283557193325631154, guid: de12e1933c0d8cb4cb0e22df94b57366, type: 3}
       propertyPath: m_Name
       value: Boss
-      objectReference: {fileID: 0}
-    - target: {fileID: 4138902773979526138, guid: de12e1933c0d8cb4cb0e22df94b57366, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4138902773979526138, guid: de12e1933c0d8cb4cb0e22df94b57366, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5998009822801915400, guid: de12e1933c0d8cb4cb0e22df94b57366, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
