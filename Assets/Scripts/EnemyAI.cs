@@ -110,6 +110,9 @@ public class EnemyAI : MonoBehaviour, IDamage
     float LeapTimer = 0f;
     float TravelTime = 0f;
 
+
+    Vector3 playerL;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -178,7 +181,7 @@ public class EnemyAI : MonoBehaviour, IDamage
         }
 
        
-            FaceTarget();
+        FaceTarget();
  
         if (enemyType == EnemyType.ranged)
         {
@@ -252,7 +255,11 @@ public class EnemyAI : MonoBehaviour, IDamage
         //boss leap attack
         if (PlayerInTrigger && LeapTimer >= LeapDuration && enemyType == EnemyType.boss)
         {
-            LeapFrog();
+            LeapFrog(playerL);
+            Debug.Log("jump");
+        }
+        else if (enemyType == EnemyType.boss) {
+            playerL = GameManager.instance.player.transform.position;
         }
     }
 
@@ -633,23 +640,26 @@ public class EnemyAI : MonoBehaviour, IDamage
         //anim.SetBool("catWalking", walking);
     }
 
-        Transform playerL;
-    void LeapFrog()
+    void LeapFrog(Vector3 playerTransform)
     {
-        StartCoroutine(PlayerLocation());
+        Debug.Log(playerTransform);
+
 
         //TravelTime for the Leap Attack
         TravelTime += Time.deltaTime;
-        Debug.Log(TravelTime);
 
         float Duration = 0.5f;//0.5f;
         float ZeroToOne = TravelTime / Duration;
 
-        int JumpHeight = 5;
+
+        //Debug.Log(ZeroToOne);
+
+        int JumpHeight = 10;
 
         //move to target
         Vector3 A = transform.position;//from the boss position
-        Vector3 B = playerL.position;//to the player position
+        Vector3 B = playerTransform;//to the player position
+        // TODO: test this
         Vector3 Pos = Vector3.Lerp(A, B, ZeroToOne); //position between A and B
 
         //moves the boss in an arc
@@ -674,12 +684,6 @@ public class EnemyAI : MonoBehaviour, IDamage
         SlamArea.SetActive(true);
         yield return new WaitForSeconds(SlamVisibility);
         SlamArea.SetActive(false);
-    }
-
-    IEnumerator PlayerLocation()
-    {
-        playerL = GameManager.instance.player.transform;
-        yield return new WaitForSeconds(5f);
     }
 }
 
