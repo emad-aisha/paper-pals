@@ -89,6 +89,7 @@ public class ButtonFunctions : MonoBehaviour
     public void Play()
     {
         MusicManager music = Object.FindFirstObjectByType<MusicManager>();
+        LoadSave.instance.ResetSettings();
 
         if (music != null)
         {
