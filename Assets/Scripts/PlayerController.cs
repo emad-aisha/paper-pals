@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour, IDamage {
             controller.Move(dashDirection * dashForce * Time.deltaTime);
 
             if (dashTimer >= dashDuration) {
-                Debug.Log("add a fov change and lines");
+                //Debug.Log("add a fov change and lines");
                 isDashing = false;
                 dashDirection = Vector3.zero;
             }
