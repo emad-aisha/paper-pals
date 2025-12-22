@@ -88,6 +88,10 @@ public class UIManager : MonoBehaviour {
             SetCostColors();
             UpdateHearts();
 
+            if (LoadSave.instance.GetHeartsBought() >= 2) {
+                PurchaseOptions[2].SetActive(false);
+            }
+
             SetInventory();
             SetEquipSave();
 
@@ -406,7 +410,7 @@ public class UIManager : MonoBehaviour {
             UpdateCoins();
 
 
-            if (LoadSave.instance.GetHeartsBought() == 2) {
+            if (LoadSave.instance.GetHeartsBought() >= 2) {
                 PurchaseOptions[2].SetActive(false);
             }
 
