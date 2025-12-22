@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 //using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IDamage {
@@ -406,7 +407,7 @@ public class PlayerController : MonoBehaviour, IDamage {
     }
 
     void Jump() {
-        if (Input.GetButtonDown("Jump") && jumpCount == 0 && feet.GetGrounded()) {
+        if (Input.GetButtonDown("Jump") && jumpCount == 0 && (feet.GetGrounded() || SceneManager.GetActiveScene().name == "Level 4")) {
             jumpVelocity.y = jumpSpeed;
             jumpCount++;
             aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);

@@ -1474,8 +1474,8 @@ Transform:
   m_GameObject: {fileID: 141812073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -12.52, z: 0}
-  m_LocalScale: {x: 1, y: 25, z: 1}
+  m_LocalPosition: {x: 0, y: -37.5, z: 0}
+  m_LocalScale: {x: 1, y: 75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1569324020}
@@ -17143,6 +17143,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Moving Platform V1 '
       objectReference: {fileID: 0}
+    - target: {fileID: 5681257449282012001, guid: 3bc69f5c0a834714299d67ff73dfd627, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5681257449282012001, guid: 3bc69f5c0a834714299d67ff73dfd627, type: 3}
+      propertyPath: m_Center.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6654192969487142477, guid: 3bc69f5c0a834714299d67ff73dfd627, type: 3}
       propertyPath: m_LocalScale.x
       value: 10
@@ -17199,6 +17207,10 @@ PrefabInstance:
       propertyPath: waypointPath
       value: 
       objectReference: {fileID: 2033306334}
+    - target: {fileID: 7569425473540684594, guid: 3bc69f5c0a834714299d67ff73dfd627, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
