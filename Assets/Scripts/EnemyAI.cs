@@ -199,7 +199,7 @@ public class EnemyAI : MonoBehaviour, IDamage
                 timeSinceLastSeen = 0f;
                 AgentAI.SetDestination(GameManager.instance.player.transform.position);
 
-                if (distance <= attackRange && attackTimer >= attackCooldown)
+                if (distance <= attackRange && attackTimer >= attackCooldown && enemyType == EnemyType.melee)
                 {
                     AttackPlayer();
                 }
@@ -633,10 +633,14 @@ public class EnemyAI : MonoBehaviour, IDamage
         //anim.SetBool("catWalking", walking);
     }
 
+        Transform playerL;
     void LeapFrog()
     {
+        StartCoroutine(PlayerLocation());
+
         //TravelTime for the Leap Attack
         TravelTime += Time.deltaTime;
+        Debug.Log(TravelTime);
 
         float Duration = 0.5f;//0.5f;
         float ZeroToOne = TravelTime / Duration;
@@ -645,7 +649,7 @@ public class EnemyAI : MonoBehaviour, IDamage
 
         //move to target
         Vector3 A = transform.position;//from the boss position
-        Vector3 B = GameManager.instance.player.transform.position;//to the player position
+        Vector3 B = playerL.position;//to the player position
         Vector3 Pos = Vector3.Lerp(A, B, ZeroToOne); //position between A and B
 
         //moves the boss in an arc
@@ -670,6 +674,12 @@ public class EnemyAI : MonoBehaviour, IDamage
         SlamArea.SetActive(true);
         yield return new WaitForSeconds(SlamVisibility);
         SlamArea.SetActive(false);
+    }
+
+    IEnumerator PlayerLocation()
+    {
+        playerL = GameManager.instance.player.transform;
+        yield return new WaitForSeconds(5f);
     }
 }
 
