@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: whatever.
+  m_text: Health already full.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b0076211ec710f24e8d9a0869d6569d3, type: 2}
   m_sharedMaterial: {fileID: 1708967487941591698, guid: b0076211ec710f24e8d9a0869d6569d3, type: 2}
@@ -2809,7 +2809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4580072882414999250
 Transform:
   m_ObjectHideFlags: 0
