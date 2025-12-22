@@ -159,7 +159,6 @@ public class GameManager : MonoBehaviour
 
 
         SetAbilities();
-        KeyCheck(true);
 
         SetEyedrops();
         SetWeapons();
@@ -284,11 +283,11 @@ public class GameManager : MonoBehaviour
     public void SetAbilities()
     {
         string currLevelName = SceneManager.GetActiveScene().name;
-        string levelOne = "Level 1";
-        string levelTwo = "Level 2";
+        string levelZero  = "Level 0";
+        string levelOne   = "Level 1";
+        string levelTwo   = "Level 2";
         string levelThree = "Level 3";
-        string levelFour = "Level 4";
-        string levelZero = "Level 0";
+        string levelFour  = "Level 4";
 
         // is this needed?
         if (currLevelName == levelZero)
